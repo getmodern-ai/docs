@@ -1,0 +1,209 @@
+---
+title: 'Verkada'
+---
+
+## About Verkada
+
+Verkada is a cloud-managed physical security platform that provides comprehensive surveillance, access control, and environmental monitoring solutions. Connecting Verkada to Modern enables automated security management, user provisioning, access control workflows, and incident response directly from your service desk.
+
+## What the Verkada integration enables
+
+| Capability          | Description                                                            |
+| ------------------- | ---------------------------------------------------------------------- |
+| Access Management   | Create, update, and manage users and their access permissions          |
+| Security Automation | Automate camera alerts, access events, and security workflows          |
+| User Provisioning   | Streamline employee onboarding with automatic Verkada account creation |
+| Event Monitoring    | Access real-time security events and alerts for incident response      |
+
+Anything defined in the [Verkada API](https://apidocs.verkada.com/reference/introduction) can be accessed through Modern.
+
+### Prerequisites
+
+* You must have admin permissions in your Verkada Command platform
+* Access to Verkada's API key management section
+* Organization admin privileges to create and manage API keys
+
+### Create an API Key
+
+Verkada uses a two-step authentication process with API keys and temporary access tokens.
+
+1. In Verkada Command, navigate to your **Admin / Org Settings**
+2. Go to the **API & Integrations** tab
+3. Click **"+ Add"**
+4. Configure your API key:
+   * **Name**: Enter "ServalIntegration" or another descriptive name
+   * **Endpoints**: Select the specific API endpoints that you want Modern to be able to access.
+   * **Permission Scope**: Choose between Read-Only or Read/Write based on your needs:
+     * **Read-Only**: For retrieving data (recommended for most use cases)
+     * **Read/Write**: For creating/modifying data
+5. Set the **Expiration**
+6. Click **"Generate API"**
+7. **Important**: Copy the API key immediately - it will only be displayed once
+
+For detailed API documentation, see [Verkada's Quick Start Guide](https://apidocs.verkada.com/reference/quick-start-guide).
+
+### Service Regions
+
+Verkada operates in different geographic regions. Make sure to use the correct API domain for your Verkada org:
+
+* **Default Region (United States)**: `https://api.verkada.com`
+* **Europe Region**: `https://api.eu.verkada.com`
+* **Australia**: `https://api.au.verkada.com`
+* **GovCloud Organizations**: `http://api.verkadagov.com`
+
+For more information, see [Verkada Service Regions](https://apidocs.verkada.com/reference/service-regions).
+
+***
+
+## Modern Configuration
+
+1. In Modern go to **Apps → Available → Verkada → Connect**
+
+2. Enter the following information:
+
+   | Field            | Description                                                              |
+   | ---------------- | ------------------------------------------------------------------------ |
+   | Integration Name | A friendly name for this integration (e.g., "Verkada Security Platform") |
+   | API Key          | The API key generated from Verkada Command                               |
+   | API Domain       | Your Verkada API domain / Service region                                 |
+   | Organization ID  | Your Verkada organization ID (found in Command settings)                 |
+
+3. Click **Save**
+
+The integration will automatically handle token exchange and refresh, so you don't need to manage authentication tokens manually.
+
+***
+
+## Available Workflows
+
+### Create Verkada User
+
+Automatically provisions new users in Verkada with their basic information and external ID mapping.
+
+**Inputs:**
+
+* Email address
+* First name
+* Last name
+* External ID (for system integration)
+* Employee ID (optional)
+
+**Use cases:**
+
+* Employee onboarding automation
+* Contractor access provisioning
+* Automated user lifecycle management
+
+***
+
+## Security & Authentication
+
+The Verkada integration uses Verkada's secure token-based authentication:
+
+1. **API Key Exchange**: Your API key is exchanged for a temporary access token (valid for 30 minutes)
+2. **Automatic Refresh**: Tokens are automatically refreshed before expiration
+3. **Secure Storage**: API keys are encrypted and securely stored in Modern
+4. **Regional Compliance**: Supports both US and EU data residency requirements
+
+All API communications use HTTPS with proper authentication headers.
+
+***
+
+## Usage Examples
+
+### Basic User Management
+
+```typescript  theme={null}
+import * as verkada from "modern/integrations/verkada";
+
+// Create a new user
+const newUser = await verkada.common.createUser(
+  {
+    email: "john.doe@company.com",
+    firstName: "John",
+    lastName: "Doe",
+    externalId: "EMP001",
+    employeeId: "12345",
+  },
+  ctx
+);
+```
+
+### Access Control Operations
+
+```typescript  theme={null}
+// List access points
+const accessPoints = await verkada.apiRequest(
+  {
+    path: "/access/v1/access_points",
+    method: "GET",
+  },
+  ctx
+);
+
+// Search for users
+const users = await verkada.apiRequest(
+  {
+    path: "/access/v1/user/search",
+    method: "GET",
+    query: { query: "john.doe@company.com" },
+  },
+  ctx
+);
+```
+
+### Camera and Device Management
+
+```typescript  theme={null}
+// Get camera information
+const cameras = await verkada.apiRequest(
+  {
+    path: "/cameras/v1/devices",
+    method: "GET",
+  },
+  ctx
+);
+
+// Retrieve camera alerts
+const alerts = await verkada.apiRequest(
+  {
+    path: "/cameras/v1/alerts",
+    method: "GET",
+  },
+  ctx
+);
+```
+
+***
+
+## Troubleshooting
+
+### Common Issues
+
+**"Invalid API Key" Error**
+
+* Verify your API key is correct and hasn't expired
+* Ensure the API key has the appropriate permissions (Read/Write for user creation)
+* Check that you're using the correct regional domain
+
+**"Token Expired" Error**
+
+* The integration automatically handles token refresh - this error should resolve itself
+* If persistent, try reconnecting the integration
+
+**"Region Mismatch" Error**
+
+* Verify you're using the correct API domain for your Verkada region
+* US customers: `https://api.verkada.com`
+* EU customers: `https://api.eu.verkada.com`
+* Australia customers: `https://api.au.verkada.com`
+* GovCloud organizations: `http://api.verkadagov.com`
+
+**Permission Errors**
+
+* Ensure your API key has the necessary permissions for the operations you're trying to perform
+* Organization admins can modify API key permissions in Verkada Command
+
+***
+
+Need help? Contact **[support@modern.com](mailto:support@modern.com)** for assistance with your Verkada integration.

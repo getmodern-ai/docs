@@ -1,0 +1,183 @@
+---
+title: 'Microsoft Graph'
+---
+
+## About Microsoft Graph
+
+Microsoft Graph is a unified API that provides access to Microsoft 365 and Enterprise Mobility + Security (EMS) services. This integration uses OAuth 2.0 Client Credentials flow for server-to-server authentication, enabling workflows to access Microsoft Graph APIs without user interaction.
+
+## What the Microsoft Graph integration enables
+
+| Capability           | Description                                                                                                            |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| Automation workflows | Manage mail, calendar, files, device management, security, and compliance tasks automatically through Modern workflows |
+| Identity & Access    | Manage Entra ID users, groups, and app permissions                                                                     |
+| Knowledge Base       | Index SharePoint and OneDrive content for Modern AI                                                                    |
+
+**Looking for Microsoft Teams?** See the dedicated [Microsoft Teams integration](/sections/integrations/microsoft-teams) for help desk and channel automation.
+
+Anything defined in the [Microsoft Graph API](https://learn.microsoft.com/en-us/graph/api/overview) can be accessed through Modern.
+
+***
+
+## Modern configuration
+
+Modern supports two methods of connecting with your Microsoft Entra tenant:
+
+* **Sign in with Microsoft** (recommended): Connect the official Modern
+  application with your Microsoft Entra tenant. This method integrates with the
+  Modern bot for Microsoft Teams without additional configuration.
+
+* **Custom application**: Create your own Microsoft Entra app registration and
+  create credentials for Modern to use. Adding a bot to Microsoft Teams requires
+  creating a custom Teams application and additional configuration.
+
+### Sign in with Microsoft
+
+1. In Modern, navigate to **Apps** → **Available** → **Microsoft Graph**
+2. Click **Connect** to bring up the "Connect" dialog.
+3. Click "**Sign in with Microsoft**". Modern will navigate you to Microsoft to complete sign in.
+4. When signing into Microsoft, log in using an account that has sufficient permissions for the following scopes:
+   * **Core identity and directory (readonly)**
+     * `User.Read` - Read user profile
+     * `User.ReadBasic.All` - Read basic profiles of all users
+     * `Directory.Read.All` - Read directory data
+
+   * **Groups and team membership (readonly)**
+     * `Group.Read.All` - Read all groups
+     * `GroupMember.Read.All` - Read group memberships
+
+   * **Teams (readonly)**
+     * `Team.ReadBasic.All` - Read basic team info
+     * `Channel.ReadBasic.All` - Read basic channel info
+     * `ChannelMessage.Read.All` - Read channel messages
+
+   * **SharePoint and OneDrive (readonly) - for knowledge base**
+     * `Sites.Read.All` - Read all SharePoint sites and document libraries
+     * `Files.Read.All` - Read files in all site collections
+
+   * **Offline access for refresh tokens**
+     * `offline_access` - Refresh token capability
+5. You will arrive at a "**Permissions requested**" screen.
+   * **Check the box** for **Consent on behalf of your organization**.
+   * Click **Accept**
+6. That's it! Microsoft will redirect you back to the Modern integration you just created.
+
+To configure Microsoft Teams, continue below.
+
+### Custom application
+
+1. In Modern, navigate to **Apps** → **Available** → **Microsoft Graph**
+2. Click **Connect** to bring up the **"Connect" dialog**.
+3. Click "**Custom application**" to open the **"Configure Microsoft Graph**" dialog\*\*.
+4. Start the Azure steps below, and fill in the following information as you go:
+   * **Instance Name**: Descriptive name for this integration
+   * **Tenant ID**: Your Azure AD tenant ID (from Azure step 1)
+   * **Client ID**: Your application client ID (from Azure step 1)
+   * **Client Secret**: The secret value (from Azure step 2)
+5. Once all fields are filled, click **Connect** to establish the integration
+6. You should land on the application configuration page for your new Microsoft Graph integration. Click on the "API integration" tab
+7. Click **Run** on the health checks to confirm permissions are set up properly.
+
+Your Microsoft Graph integration is now ready to use in workflows!
+
+### Microsoft Entra ID / Azure AD Configuration
+
+The following steps will require access to the Azure Portal with sufficient administrator
+permissions to perform these tasks.
+
+#### 1. Create Entra App Registration
+
+1. In a separate tab or window, go to the [Azure Portal](https://portal.azure.com) and sign in with admin privileges
+2. In the app selector, navigate to [Microsoft Entra](https://entra.microsoft.com/#home) with this link
+3. Navigate to [App registrations](https://entra.microsoft.com/#view/Microsoft_AAD_RegisteredApps/ApplicationsListBlade/quickStartType~/null/sourceType/Microsoft_AAD_IAM) in the left sidebar
+4. Click **New registration**
+5. Configure the application:
+   * **Name**: "Modern Microsoft Graph Integration" (or similar)
+   * **Supported account types**: "Accounts in this organizational directory only"
+   * **Redirect URI**: Leave blank
+6. Click **Register**
+7. **Copy these values** from the Overview page into the Modern "Connect" dialog:
+   * **Application (client) ID** - This is your `Client ID`
+   * **Directory (tenant) ID** - This is your `Tenant ID`
+
+#### 2. Create Client Secret
+
+1. Navigate to **Certificates & secrets** → **New client secret**
+2. Add description: "Modern Integration Secret"
+3. Choose expiration period and click **Add**
+4. **⚠️ Important**: Copy the secret **Value** immediately - this is your `Client Secret`
+5. Paste the secret into the Modern "Connect" dialog.
+6. At this point, the Modern "Connect" dialog should be complete.
+
+#### 3. Configure API Permissions
+
+1. Navigate to **API permissions** → **Add a permission** → **Microsoft Graph** → **Application permissions**
+
+2. **Add required scopes** based on your needs. Common permissions include:
+
+   **Applications & App Catalog:**
+
+   * `Application.Read.All` - Read applications
+   * `Application.ReadWrite.All` - Read and write applications
+   * `Application.ReadWrite.OwnedBy` - Read and write applications owned by the current user
+   * `AppCatalog.Read.All` - Read app catalog
+   * `AppCatalog.ReadWrite.All` - Read and write app catalog
+
+   **Directory & Users:**
+
+   * `Directory.Read.All` - Read directory data
+   * `User.Read.All` - Read user profiles
+   * `User.ReadWrite.All` - Read and write user profiles
+   * `Group.Read.All` - Read groups
+   * `Group.ReadWrite.All` - Read and write groups
+
+   **Communication:**
+
+   * `Mail.Read` - Read mail in all mailboxes
+   * `Calendars.Read` - Read calendars
+   * `Contacts.Read` - Read contacts
+
+   **Files & Content:**
+
+   * `Files.Read.All` - Read files in all sites
+   * `Sites.Read.All` - Read SharePoint items
+
+   **Teams:**
+
+   * `Team.ReadBasic.All` - Read team names/descriptions
+   * `TeamMember.Read.All` - Read team members
+
+   **Device Management:**
+
+   * `DeviceManagementManagedDevices.Read.All` - Read managed devices
+
+   **Reports & Security:**
+
+   * `Reports.Read.All` - Read usage reports
+   * `SecurityEvents.Read.All` - Read security events
+
+   For write operations, use the corresponding `.ReadWrite.All` permissions.
+
+   **For Microsoft Teams, the following permissions are required:**
+
+   * `ChannelMessage.Read.All` - Allows the app to read all channel messages in Microsoft Teams
+   * `Directory.Read.All` - Allows the app to read data in your organization's directory, such as users, groups and apps.
+   * `Group.Read.All`
+   * `Team.ReadBasic.All` - Get a list of all teams.
+   * `Teamwork.Migrate.All`
+   * `User.Read.All` - Allows the app to read user profiles without a signed in user.
+
+3. **Grant admin consent**: Click **Grant admin consent for \[Your Organization]** → **Yes**.
+
+4. Verify all permissions show **Granted for \[Your Organization]**
+
+**Note:** Granting admin consent [requires certain permissions](https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/grant-admin-consent?pivots=portal#prerequisites). The "Privileged Role Administrator" role should grant the minimum permissions needed.
+
+**Note:** The integration uses the `https://graph.microsoft.com/.default` scope, which grants access to all application permissions configured above. For detailed permission information, see the [Microsoft Graph permissions reference](https://learn.microsoft.com/en-us/graph/permissions-reference).
+
+***
+
+## Microsoft Teams
+
+For Microsoft Teams help desk and channel automation, use the dedicated **[Microsoft Teams integration](/sections/integrations/microsoft-teams)** instead of configuring Teams through Microsoft Graph. The Microsoft Teams integration provides a streamlined admin consent flow that grants only the permissions needed for Teams.

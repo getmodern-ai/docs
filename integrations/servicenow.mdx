@@ -1,0 +1,326 @@
+---
+title: 'ServiceNow'
+---
+
+## About ServiceNow
+
+ServiceNow is an IT service management (ITSM) platform that manages tickets, incidents, change requests, and IT assets.
+
+## What the ServiceNow integration enables
+
+| Capability          | Description                                                                                   |
+| ------------------- | --------------------------------------------------------------------------------------------- |
+| Ticket Sync         | Native bidirectional sync between Modern tickets and ServiceNow incidents                     |
+| Knowledge Base      | Sync knowledge articles from ServiceNow directly into Modern for AI-powered assistance        |
+| Workflow Automation | Build Modern workflows using the ServiceNow Table API, Catalog API, and Change Management API |
+
+***
+
+## ServiceNow Configuration
+
+<Warning>
+  This integration requires a **dedicated service account** with specific, limited permissions. Do not use a personal account or admin account. Following the principle of least privilege ensures security and auditability.
+</Warning>
+
+### Prerequisites
+
+Before configuring the ServiceNow integration in Modern, ensure you have:
+
+* Access to your ServiceNow instance as an administrator
+* Permissions to create users, roles, and ACLs
+* Knowledge of your ServiceNow instance name
+
+***
+
+## Step 1: Create a Dedicated Integration User
+
+<Steps>
+  <Step title="Navigate to User Administration">
+    1. Log in to your ServiceNow instance as an administrator
+    2. In the application navigator search bar, type **"Users"** and select **User Administration → Users**
+    3. Click **New** to create a new user
+  </Step>
+
+  <Step title="Configure User Details">
+    Fill in the required user information:
+
+    | Field                         | Value                                                                                                                                |
+    | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+    | **User ID**                   | `modern.integration`                                                                                                                 |
+    | **First name**                | `Modern`                                                                                                                             |
+    | **Last name**                 | `Integration`                                                                                                                        |
+    | **Active**                    | ✅ Checked                                                                                                                            |
+    | **Web service access only**   | ✅ Checked (recommended for API-only accounts)                                                                                        |
+    | **Internal Integration User** | ✅ Checked (if available in your ServiceNow version)                                                                                  |
+    | **Photo (Optional)**          | <a href="https://app.modern.com/logo.png" download="modern-logo.png">Download the Modern logo</a> then select it from your downloads |
+
+    <Tip>
+      Setting "Web service access only" ensures this account cannot be used for interactive login, improving security.
+    </Tip>
+
+    Click **Submit** to create the user.
+  </Step>
+
+  <Step title="Set the User Password">
+    1. On the Users page, search for the user you just created and click on it
+    2. Click **Set Password**
+    3. Click **Generate Password**
+    4. **Important**: Click the **Copy** button to copy the password and save it securely
+
+    <Warning>
+      Save this password immediately — you will not be able to view it again. You'll need it when configuring Modern.
+    </Warning>
+
+    5. Click **Submit**
+  </Step>
+</Steps>
+
+***
+
+## Step 2: Create a Custom Role for Modern
+
+<Info>
+  Creating a custom role with granular permissions is the **recommended approach** for production environments. This follows the principle of least privilege and provides better security than using out-of-the-box roles like `itil` or `admin`.
+</Info>
+
+<Steps>
+  <Step title="Create the Custom Role">
+    1. In the navigator, search for **"Roles"** and select **User Administration → Roles**
+    2. Click **New**
+    3. Fill in the role details:
+
+    | Field           | Value                                                                |
+    | --------------- | -------------------------------------------------------------------- |
+    | **Name**        | `x_serval_integration`                                               |
+    | **Description** | `Custom role for Modern integration with least-privilege API access` |
+
+    4. Click **Submit**
+  </Step>
+
+  <Step title="Add Base Roles">
+    Open the role you just created and scroll down to the **Contains Roles** related list. Add the following base roles:
+
+    | Role                     | Purpose                                              |
+    | ------------------------ | ---------------------------------------------------- |
+    | `rest_api_explorer`      | Enables REST API access                              |
+    | `personalize_choices`    | Allows reading sys\_choice values                    |
+    | `personalize_dictionary` | Allows reading sys\_dictionary for field definitions |
+
+    <Note>
+      These base roles provide the foundational REST API capabilities. We will add granular table access via ACLs in the next step.
+    </Note>
+  </Step>
+</Steps>
+
+***
+
+## Step 3: Configure Table Access via ACLs
+
+Modern requires specific read/write access to various ServiceNow tables. You'll create Access Control List (ACL) rules to grant only the necessary permissions.
+
+<Tabs>
+  <Tab title="Required Table Access">
+    The following tables require access:
+
+    ### Incident Management Tables
+
+    | Table               | Read | Create | Write | Fields                       |
+    | ------------------- | ---- | ------ | ----- | ---------------------------- |
+    | `incident`          | ✅    | ✅      | ✅     | All standard incident fields |
+    | `sys_journal_field` | ✅    | ❌      | ❌     | Comments and work notes      |
+
+    ### Service Catalog Tables
+
+    | Table         | Read | Create | Write | Fields               |
+    | ------------- | ---- | ------ | ----- | -------------------- |
+    | `sc_cat_item` | ✅    | ❌      | ❌     | Catalog item details |
+    | `sc_request`  | ✅    | ✅      | ❌     | Service requests     |
+    | `sc_req_item` | ✅    | ✅      | ✅     | Requested items      |
+
+    ### Configuration Tables (Read-Only)
+
+    | Table             | Read | Create | Write | Purpose                    |
+    | ----------------- | ---- | ------ | ----- | -------------------------- |
+    | `sys_user`        | ✅    | ❌      | ❌     | User lookup for assignment |
+    | `sys_user_group`  | ✅    | ❌      | ❌     | Assignment group lookup    |
+    | `sys_choice`      | ✅    | ❌      | ❌     | Field dropdown values      |
+    | `sys_dictionary`  | ✅    | ❌      | ❌     | Field definitions          |
+    | `cmdb_ci_service` | ✅    | ❌      | ❌     | Business services          |
+
+    ### Knowledge Base Tables (Read-Only)
+
+    | Table               | Read | Create | Write | Purpose                 |
+    | ------------------- | ---- | ------ | ----- | ----------------------- |
+    | `kb_knowledge_base` | ✅    | ❌      | ❌     | Knowledge base metadata |
+    | `kb_category`       | ✅    | ❌      | ❌     | Knowledge categories    |
+    | `kb_knowledge`      | ✅    | ❌      | ❌     | Knowledge articles      |
+
+    ### User Criteria Tables (Read-Only)
+
+    These tables are used to determine which users have access to knowledge articles and catalog items.
+
+    | Table                               | Read | Create | Write | Purpose                                                    |
+    | ----------------------------------- | ---- | ------ | ----- | ---------------------------------------------------------- |
+    | `user_criteria`                     | ✅    | ❌      | ❌     | User criteria definitions (users, groups, companies, etc.) |
+    | `kb_uc_can_read_mtom`               | ✅    | ❌      | ❌     | Knowledge article access - users who CAN read              |
+    | `kb_uc_cannot_read_mtom`            | ✅    | ❌      | ❌     | Knowledge article access - users who CANNOT read           |
+    | `sc_cat_item_user_criteria_mtom`    | ✅    | ❌      | ❌     | Catalog item access - users who CAN access                 |
+    | `sc_cat_item_user_criteria_no_mtom` | ✅    | ❌      | ❌     | Catalog item access - users who CANNOT access              |
+  </Tab>
+
+  <Tab title="Create ACLs">
+    For each table that requires access, create appropriate ACLs:
+
+    <Steps>
+      <Step title="Navigate to ACLs">
+        1. In the navigator, search for **"Access Control (ACL)"**
+        2. Select **System Security → Access Control (ACL)**
+      </Step>
+
+      <Step title="Create Read ACLs">
+        For each table that requires **read** access, create a new ACL:
+
+        1. Click **New**
+        2. Set **Type** to `record`
+        3. Set **Operation** to `read`
+        4. Set **Name** to the table name (e.g., `incident`)
+        5. In the **Requires role** related list, add your custom role `x_serval_integration`
+        6. Click **Submit**
+
+        Repeat for all tables listed in the Required Table Access tab.
+      </Step>
+
+      <Step title="Create Write ACLs">
+        For tables that require **create** or **write** access:
+
+        1. Click **New**
+        2. Set **Type** to `record`
+        3. Set **Operation** to `create` or `write` as needed
+        4. Set **Name** to the table name
+        5. In the **Requires role** related list, add your custom role `x_serval_integration`
+        6. Click **Submit**
+
+        Create **write** ACLs for:
+
+        * `incident` (create, write)
+        * `sc_request` (create)
+        * `sc_req_item` (create, write)
+      </Step>
+    </Steps>
+  </Tab>
+
+  <Tab title="Alternative: Use OOB Roles">
+    <Warning>
+      Using out-of-the-box roles is simpler but grants **more permissions than necessary**. Only use this approach for development/testing or if your organization's security policy permits.
+    </Warning>
+
+    Instead of creating custom ACLs, you can assign these out-of-the-box roles to the integration user:
+
+    | Role        | Purpose                                           | Notes                               |
+    | ----------- | ------------------------------------------------- | ----------------------------------- |
+    | `itil`      | ITSM functionality (incidents, problems, changes) | Grants broad ITSM access            |
+    | `catalog`   | Service catalog access                            | For catalog item and request access |
+    | `knowledge` | Knowledge base access                             | For knowledge article sync          |
+
+    To assign roles:
+
+    1. Open the integration user record
+    2. Scroll to the **Roles** related list
+    3. Click **Edit**
+    4. Add the roles from the list above
+    5. Click **Save**
+  </Tab>
+</Tabs>
+
+***
+
+## Step 4: Assign the Custom Role to the Integration User
+
+<Steps>
+  <Step title="Open the User Record">
+    1. Navigate to **User Administration → Users**
+    2. Find and open the `modern.integration` user
+  </Step>
+
+  <Step title="Add the Custom Role">
+    1. Scroll down to the **Roles** related list
+    2. Click **Edit**
+    3. Add the `x_serval_integration` role (or the OOB roles if you chose that approach)
+    4. Click **Save**
+  </Step>
+</Steps>
+
+***
+
+## Step 5 (Optional): Verify API Access
+
+<Info>
+  This step is optional but recommended to verify your configuration before connecting to Modern. If you encounter issues connecting, use these methods to troubleshoot.
+</Info>
+
+<Steps>
+  <Step title="Test with REST API Explorer">
+    1. In the navigator, search for **"REST API Explorer"**
+    2. In the **Namespace** dropdown, select `now`
+    3. In the **API Name** dropdown, select `Table API`
+    4. Click **Send** to test a simple query
+
+    If you see a successful response with data, the API access is working correctly.
+  </Step>
+
+  <Step title="Test with cURL (Optional)">
+    You can also test from the command line:
+
+    ```bash  theme={null}
+    curl -X GET \
+      'https://YOUR_INSTANCE.service-now.com/api/now/table/incident?sysparm_limit=1' \
+      -H 'Accept: application/json' \
+      -u 'modern.integration:YOUR_PASSWORD'
+    ```
+
+    Replace `YOUR_INSTANCE` and `YOUR_PASSWORD` with your actual values.
+  </Step>
+</Steps>
+
+***
+
+## Step 6: Identify Your ServiceNow Instance
+
+Your ServiceNow instance name can be found in your ServiceNow URL:
+
+* If your ServiceNow URL is `https://mycompany.service-now.com`, then:
+  * **Instance Name**: `mycompany`
+
+The instance name is the subdomain portion of your ServiceNow URL.
+
+***
+
+## Modern Configuration
+
+Once you have created the integration user with appropriate permissions, follow these steps to configure the integration in Modern:
+
+<Steps>
+  <Step title="Navigate to ServiceNow App">
+    1. In Modern, go to **Apps → Available → ServiceNow → Connect**
+    2. The ServiceNow configuration form will appear
+  </Step>
+
+  <Step title="Enter Configuration Details">
+    Fill in the following fields with the information from your ServiceNow setup:
+
+    | Field             | Description                            | Example                |
+    | ----------------- | -------------------------------------- | ---------------------- |
+    | **Instance Name** | Your ServiceNow instance identifier    | `mycompany`            |
+    | **Username**      | The username of your integration user  | `modern.integration`   |
+    | **Password**      | The password for your integration user | `your_secure_password` |
+  </Step>
+
+  <Step title="Test the Connection">
+    1. Navigate to the **API Integration** tab
+    2. Click **Run** on the healthchecks to verify that Modern can successfully authenticate with your ServiceNow instance
+  </Step>
+</Steps>
+
+<Info>
+  Need additional help with your ServiceNow integration? Contact **[support@modern.com](mailto:support@modern.com)** for technical assistance or advanced configuration questions.
+</Info>

@@ -1,0 +1,88 @@
+---
+title: 'GitHub'
+---
+
+Modern's GitHub integration lets you automate common Dev & IT tasks—from provisioning new repos to opening fully-formed pull requests—without leaving your service desk.\
+Everything runs through an official GitHub App, so actions are scoped, logged, and revocable at any time.
+
+***
+
+## What is GitHub?
+
+[GitHub](https://github.com) is the industry-standard platform for hosting Git repositories, collaborating on code, and managing the software-development lifecycle. Teams organize under **organizations**, group work in **repositories**, and collaborate through **branches**, **pull requests (PRs)**, and **issues**.
+
+***
+
+## What Modern can do once connected
+
+We have **two** GitHub Apps so you can choose the minimum level of access that fits your security posture:
+
+### AI Engineer
+
+| Capability           | Description                                                                |
+| -------------------- | -------------------------------------------------------------------------- |
+| Automation workflows | Read and write code only. Create branches, commit changes, open/update PRs |
+
+### Admin
+
+| Capability           | Description                                                               |
+| -------------------- | ------------------------------------------------------------------------- |
+| Access Management    | Add/remove organization members, manage team memberships                  |
+| Automation workflows | Create/delete repositories, configure webhooks + AI Engineer capabilities |
+
+> **Note**\
+> Modern never receives *repository secrets*, PATs, or environment variables.
+
+Anything defined in the [GitHub API](https://docs.github.com/en/rest?apiVersion=2022-11-28) can be accessed through Modern.
+
+***
+
+## Configure GitHub
+
+### Prerequisites
+
+* You must be an **Organization Owner** in GitHub to complete installation.\
+  Non-owners can start the flow but the app remains *pending approval* until an owner approves it.
+* Decide which Modern GitHub App you need: **AI Engineer** or **Admin**.
+
+<Frame>
+  <img src="https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/github/github_serval_modal.png?fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=3d410534b2d626cf79ae18b94e52c7b4" alt="Modern GitHub connection modal with access level options" data-og-width="908" width="908" data-og-height="663" height="663" data-path="images/integrations/github/github_serval_modal.png" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/github/github_serval_modal.png?w=280&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=1573d143cdee4c51ff52710d04c586b9 280w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/github/github_serval_modal.png?w=560&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=aed31411e5ad62c1b31641702e6fdbf9 560w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/github/github_serval_modal.png?w=840&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=ecb8b96a0a346a6a2a70ed5c9fe2f967 840w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/github/github_serval_modal.png?w=1100&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=71d08c2af1670206cd9e2a37889cbecd 1100w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/github/github_serval_modal.png?w=1650&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=ebdcdc2ab445cf680ab950d3b251c910 1650w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/github/github_serval_modal.png?w=2500&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=f86400359745ac6e4f71ef1bab0bb9bb 2500w" />
+</Frame>
+
+### Step-by-step
+
+1. In **Modern → Applications**, find **GitHub** and click **Connect**.
+2. Choose the **AI Engineer** or **Admin** access level.
+3. You are redirected to GitHub. Select the target **organization**.
+4. Review permissions and (optionally) limit the app to specific repositories.
+5. Click **Install & Authorize**.
+6. ✅ If you are an Org Owner, you are returned to Modern and the integration shows **Healthy**.\
+   🚧 If you are **not** an Org Owner, GitHub marks the installation **pending**. Modern displays an **"Installation Pending"** badge until an owner clicks **Approve** in GitHub ➜ *Settings → Installed GitHub Apps*.
+
+### Permission reference
+
+| App             | Read-only scopes                                             | Read/Write scopes                                                                                                           | Admin scopes                                         |
+| --------------- | ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| **AI Engineer** | `metadata`                                                   | `code`, `pull_requests`, `commit_statuses`                                                                                  | —                                                    |
+| **Admin**       | `codespaces`, `metadata`, `models`, many org-level analytics | Everything in AI Engineer **plus**:<br />`actions`, `administration`, `issues`, `packages`, `deployments`, `workflows`, ... | `org_projects`, `repo_projects`, `custom_properties` |
+
+*(Exact scope lists are visible during GitHub's install screen.)*
+
+***
+
+## Modern Configuration
+
+1. After GitHub redirects back, the tile turns **Healthy**.
+2. Build workflows in **Workflow Builder → GitHub Actions**. Modern automatically injects the correct installation token.
+3. When adding **user-management** steps, supply GitHub *usernames* (email addresses are not supported by the GitHub API).
+4. Modern health-checks the installation token every hour and surfaces any issues on the Applications page.
+
+### Managing access later
+
+* **Change permission tier** – Remove the existing GitHub App in GitHub **Settings → Installed GitHub Apps**, then repeat the connection flow with the other tier.
+* **Uninstall** – Remove the app in GitHub; Modern will mark the connection as *Disconnected* automatically.
+
+***
+
+Need help? Drop us a note at **[support@modern.com](mailto:support@modern.com)**.\
+Happy automating! 🚀

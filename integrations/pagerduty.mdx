@@ -1,0 +1,47 @@
+---
+title: 'PagerDuty'
+---
+
+## About PagerDuty
+
+PagerDuty provides incident management and on-call scheduling, helping businesses respond to critical issues and system outages in real-time.
+
+## What the PagerDuty integration enables
+
+| Capability           | Description                                                         |
+| -------------------- | ------------------------------------------------------------------- |
+| Automation workflows | Build workflows to take actions or query data from PagerDuty's API. |
+
+Anything defined in the [PagerDuty REST API](https://developer.pagerduty.com/api-reference/) can be accessed through Modern.
+
+## PagerDuty Configuration
+
+To connect PagerDuty to Modern, you'll need to create an API token in PagerDuty.
+
+### 1. Prerequisites
+
+1. **Permissions** – You must have API Access permission in PagerDuty (typically Account Owner, Admin, or custom role with API Access)
+2. **PagerDuty Web UI access** – API tokens can only be generated from the web interface
+3. **Account awareness** – Ensure you're creating the token in the correct PagerDuty account/subdomain
+
+### 2. Create a General Access REST API Token
+
+1. Sign in to PagerDuty and navigate to **Configuration** in the main menu
+2. Select **API Access** from the Configuration menu
+3. Click **Create New API Token**
+4. Provide a descriptive name for the token, e.g., "Modern Production Integration"
+5. Add a description explaining the token's purpose (optional but recommended)
+6. Click **Create Token**
+7. **Important**: Copy the token value immediately - it will only be displayed once
+8. Store the token securely in your secret management system
+
+**Security Note**: Treat API tokens like passwords. They provide full access to your PagerDuty account and should be stored securely and rotated regularly.
+
+## Modern Configuration
+
+Once you have your PagerDuty API token, follow these steps to connect it to Modern.
+
+1. In Modern, navigate to **Apps → Available → PagerDuty → Connect**
+2. Optionally, enter a name for the PagerDuty instance. This will be used to identify the instance in Modern.
+3. Paste the **API Token** you created above into the **API Key** field
+4. Click **Save** to complete the connection

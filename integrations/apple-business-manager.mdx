@@ -1,0 +1,107 @@
+---
+title: 'Apple Business Manager'
+---
+
+## About Apple Business Manager
+
+Apple Business Manager (ABM) is Apple's web portal for IT administrators to deploy and manage Apple devices, apps, and accounts at scale. Through ABM, organizations can enroll devices in Mobile Device Management (MDM) solutions, purchase and distribute apps and books, and create Managed Apple Accounts for their workforce.
+
+Connecting Apple Business Manager to Modern enables your IT team to automate device enrollment workflows, manage device assignments, and streamline provisioning directly from chat or workflows.
+
+## What the Apple Business Manager integration enables
+
+| Capability           | Description                                           |
+| -------------------- | ----------------------------------------------------- |
+| Device Management    | View and manage device assignments to MDM servers     |
+| Automation workflows | Automate device enrollment and provisioning workflows |
+
+Anything defined in the [Apple Business Manager API](https://developer.apple.com/documentation/applebusinessmanagerapi) can be accessed through Modern.
+
+***
+
+## Prerequisites
+
+Before connecting Apple Business Manager to Modern, you'll need:
+
+1. **Administrator access** to your organization's Apple Business Manager account
+2. **An API account** created in Apple Business Manager with a generated private key
+
+<Note>
+  Only users with the Administrator role in Apple Business Manager can create API accounts.
+</Note>
+
+***
+
+## Apple Business Manager configuration
+
+### 1. Create an API account in Apple Business Manager
+
+Follow Apple's official documentation to create an API account:
+
+1. Sign in to [Apple Business Manager](https://business.apple.com) with an Administrator account
+2. Click your name at the bottom of the sidebar, select **Preferences**, then select **API**
+3. Click **Get Started**, enter a name for the account (e.g., "Modern Integration"), then click **Create**
+4. Click **Generate Private Key** to download your `.pem` private key file
+5. Click **Manage** to view your **Client ID** and **Key ID** (you'll need both for Modern)
+
+<Warning>
+  **Important:** The private key file downloads only once. Store it securely—you cannot download it again. If you lose it, you'll need to generate a new key.
+</Warning>
+
+For detailed instructions, see Apple's documentation:
+
+* [Create an API account in Apple Business Manager](https://support.apple.com/guide/apple-business-manager/create-an-api-account-axm33189f66a/web)
+* [Apple Business Manager API Documentation](https://developer.apple.com/documentation/applebusinessmanagerapi)
+
+### 2. Note your credentials
+
+After creating the API account, you'll have:
+
+| Credential      | Description                                                                                           | Where to find it                                                                   |
+| --------------- | ----------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| **Client ID**   | A unique identifier for your API account (format: `BUSINESSAPI.xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`) | Apple Business Manager → Preferences → API → Manage                                |
+| **Key ID**      | A unique identifier for your private key (format: `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`)             | Apple Business Manager → Preferences → API → Manage (shown after generating a key) |
+| **Private Key** | A `.pem` file used to authenticate API requests                                                       | Downloaded when you generate the private key                                       |
+
+***
+
+## Modern Configuration
+
+1. In Modern, go to **Apps → Available → Apple Business Manager → Connect**
+2. Enter your **Client ID** from Apple Business Manager
+3. Enter your **Key ID** from Apple Business Manager
+4. Open your `.pem` private key file in a text editor and paste the entire contents (including the `-----BEGIN PRIVATE KEY-----` and `-----END PRIVATE KEY-----` lines) into the **Private Key** field
+5. Click **Save**
+
+***
+
+## Troubleshooting
+
+### Invalid private key error
+
+If you see an error about an invalid private key:
+
+* Ensure you're pasting the complete contents of the `.pem` file
+* The key should start with `-----BEGIN PRIVATE KEY-----` and end with `-----END PRIVATE KEY-----`
+* Don't include any extra whitespace before or after the key
+
+### Authentication failed
+
+If authentication fails:
+
+* Verify your Client ID is correct (it should start with `BUSINESSAPI.`)
+* Verify your Key ID is correct (it's the UUID shown next to your private key in Apple Business Manager)
+* Ensure the API account is enabled in Apple Business Manager
+* Check that you're using the correct private key for this API account
+* Ensure the Key ID matches the private key you're using (each key has a unique Key ID)
+
+### Need to rotate credentials
+
+To rotate your credentials:
+
+1. In Apple Business Manager, generate a new private key for your API account
+2. In Modern, reconnect the Apple Business Manager app with the new private key
+
+***
+
+Need help? Contact **[support@modern.com](mailto:support@modern.com)** for assistance with your Apple Business Manager integration.

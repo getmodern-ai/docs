@@ -1,0 +1,144 @@
+---
+title: 'Databricks'
+---
+
+## About Databricks
+
+Databricks is a unified analytics platform that combines data engineering, data science, and machine learning workloads. It provides a collaborative environment for working with big data and AI, built on Apache Spark. Connecting Databricks to Modern enables automated data workflows, cluster management, and job orchestration directly from your service desk.
+
+## What the Databricks integration enables
+
+| Capability           | Description                                                                            |
+| -------------------- | -------------------------------------------------------------------------------------- |
+| Account Management   | List and manage workspaces, users, groups, and service principals at the account level |
+| Cluster Operations   | Create, start, stop, and manage compute clusters                                       |
+| Job Management       | Create, run, and monitor data processing jobs                                          |
+| Workspace Operations | Manage notebooks, files, and workspace resources                                       |
+| Unity Catalog        | Access and manage data governance resources                                            |
+
+Both the [Databricks Account API](https://docs.databricks.com/api/account/) and [Databricks Workspace API](https://docs.databricks.com/api/workspace/) can be accessed through Modern.
+
+***
+
+## Databricks Configuration
+
+### Prerequisites
+
+* You must have admin access to your Databricks account console
+* You must know your Databricks account ID
+* You must have a workspace URL for workspace-level operations
+
+### 1. Create a Service Principal
+
+1. Log in to the [Databricks Account Console](https://accounts.cloud.databricks.com)
+2. Click **User management** in the left sidebar
+3. Select the **Service principals** tab
+4. Click **Add service principal**
+5. Enter a name for the service principal (e.g., "Modern Integration")
+6. Click **Add**
+
+<Tip>
+  Service principals are the recommended way to authenticate machine-to-machine
+  integrations with Databricks.
+</Tip>
+
+### 2. Generate an OAuth Secret
+
+1. Click on the service principal you just created to open its details
+2. Select the **Secrets** tab
+3. Under **OAuth secrets**, click **Generate secret**
+4. Set the secret's lifetime (maximum 730 days)
+5. **Important:** Copy both the **Secret** and **Client ID** immediately
+
+<Warning>
+  The secret is only shown once. Save it securely before closing the dialog. The
+  Client ID is the same as the service principal's Application ID.
+</Warning>
+
+### 3. Assign the Service Principal to Workspaces
+
+For the service principal to access workspace resources:
+
+1. In the Account Console, go to **Workspaces**
+2. Click on the workspace you want to connect
+3. Go to the **Permissions** tab
+4. Click **Add permissions**
+5. Search for and select your service principal
+6. Assign the appropriate role (e.g., "User" or "Admin")
+7. Click **Save**
+
+<Note>
+  The service principal must be explicitly assigned to each workspace it needs
+  to access. Account-level API access is automatic for account admins.
+</Note>
+
+### 4. Grant Additional Permissions (Optional)
+
+Depending on your use case, you may need to grant additional permissions for your service principal.
+
+***
+
+## Modern Configuration
+
+1. In Modern, navigate to **Apps → Available → Databricks → Connect**
+
+2. Enter the following information:
+
+   | Field                    | Description                                                               |
+   | ------------------------ | ------------------------------------------------------------------------- |
+   | Account ID               | Your Databricks account ID (see below)                                    |
+   | Workspace URL            | Your Databricks workspace URL (e.g., `my-workspace.cloud.databricks.com`) |
+   | Client ID                | The Client ID (Application ID) from your service principal                |
+   | Client Secret            | The OAuth secret generated for your service principal                     |
+   | Instance Name (Optional) | A friendly name to identify this connection                               |
+
+3. Click **Save**
+
+Your Databricks account ID can be found by logging into the [Account Console](https://accounts.cloud.databricks.com) and clicking your email in the top-right corner - the account ID is displayed in the dropdown. The account ID is a UUID in the format: `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`
+
+<Check>
+  You should now be able to build workflows that leverage Databricks APIs, such
+  as managing clusters, running jobs, or querying workspace resources.
+</Check>
+
+***
+
+## Cloud Provider Support
+
+Databricks operates on multiple cloud providers with different URL patterns:
+
+| Cloud Provider | Workspace URL Pattern    | Account Console                 |
+| -------------- | ------------------------ | ------------------------------- |
+| AWS            | `*.cloud.databricks.com` | `accounts.cloud.databricks.com` |
+| Azure          | `*.azuredatabricks.net`  | `accounts.azuredatabricks.net`  |
+| GCP            | `*.gcp.databricks.com`   | `accounts.gcp.databricks.com`   |
+
+<Note>
+  The Modern integration uses account-level OAuth tokens, which can access both
+  account-level APIs and workspace-level APIs for workspaces the service
+  principal has access to.
+</Note>
+
+***
+
+## Troubleshooting
+
+### "Unable to list workspaces" Error
+
+This typically means the service principal doesn't have account-level permissions:
+
+* Verify the service principal exists in the Account Console
+* Check that the Client ID and Secret are correct
+* Ensure the service principal has been granted account admin or appropriate account-level roles
+
+### "Unable to list clusters" Error
+
+This indicates workspace-level access issues:
+
+* Verify the service principal is assigned to the workspace
+* Check that the workspace URL is correct
+* Ensure the service principal has permissions to list clusters in that workspace
+
+***
+
+Need help? Contact **[support@modern.com](mailto:support@modern.com)** for assistance with your Databricks integration.

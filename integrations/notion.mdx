@@ -1,0 +1,81 @@
+---
+title: 'Notion'
+---
+
+## About Notion
+
+Notion is an all-in-one workspace platform that combines notes, databases, kanban boards, and documents. Connecting Notion to Modern enables automated documentation management, database operations, and content workflows directly from your service desk.
+
+## What the Notion integration enables
+
+| Capability           | Description                                                                                                                                         |
+| -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Automation workflows | Create pages from templates, update database entries, manage blocks, and more                                                                       |
+| Knowledge Sync       | Pull documentation for context-aware answers and relevant document recommendations. **Note**: Only pages where you have Edit access can be ingested |
+
+Anything defined in the [Notion API](https://developers.notion.com/reference/intro) can be accessed through Modern.
+
+***
+
+## Notion Configuration
+
+### Prerequisites
+
+* You must be a Workspace Owner or have admin permissions to create integrations
+* You must have **Edit access** to any pages or databases you want to ingest into Modern's knowledge base
+* Decide which pages and databases Modern should have access to
+
+<Note>
+  **Important**: Only Notion pages where you have **Edit access** will be available for ingestion into Modern. Pages where you have view-only or comment-only access will not appear in Modern, even if you share them with the integration.
+</Note>
+
+### Create an Internal Integration
+
+1. Navigate to [https://www.notion.so/my-integrations](https://www.notion.so/my-integrations)
+2. Click **+ New integration**
+3. Configure your integration:
+   * **Name**: Enter "Modern Integration" or another descriptive name
+   * **Associated workspace**: Select your workspace
+   * **Capabilities**: Choose the permissions Modern needs:
+     * Read content
+     * Update content
+     * Insert content (if creating new pages/blocks)
+     * Read comments (optional)
+     * Read user information (optional)
+4. Click **Submit** to create the integration
+5. Copy the **Internal Integration Token** (starts with `secret_`)
+
+### Grant Integration Access to Pages/Databases
+
+After creating the integration, you must explicitly grant it access to specific pages or databases:
+
+1. Open the Notion page or database you want Modern to access
+2. Click the **•••** menu in the top right
+3. Select **Add connections**
+4. Search for and select your integration (e.g., "Modern Integration")
+5. Click **Confirm**
+
+<Warning>
+  **Access Requirements for Knowledge Sync**: To ingest a Notion page into Modern's knowledge base, you must have **Edit access** to that page. If you only have view or comment permissions, the page will not be available for ingestion—even after sharing it with the integration.
+</Warning>
+
+> **Note**: Integrations only have access to pages they've been explicitly shared with. Child pages inherit permissions from their parent pages.
+
+***
+
+## Modern Configuration
+
+1. In Modern go to **Apps → Available → Notion → Connect**
+
+2. Enter the following information:
+
+   | Field            | Description                                                        |
+   | ---------------- | ------------------------------------------------------------------ |
+   | Integration Name | A friendly name for this integration (e.g., "Engineering Wiki")    |
+   | API Token        | The Internal Integration Token from Notion (starts with `secret_`) |
+
+3. Click **Save**
+
+***
+
+Need help? Contact **[support@modern.com](mailto:support@modern.com)** for assistance with your Notion integration.

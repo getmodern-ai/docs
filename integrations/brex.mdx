@@ -1,0 +1,146 @@
+---
+title: 'Brex'
+---
+
+# Brex Integration
+
+Connect your Brex account to enable expense management, card controls, and financial workflows.
+
+## Prerequisites
+
+Before setting up the Brex integration, you'll need:
+
+* A Brex account with admin access
+* Account admin or card admin permissions to generate API tokens
+
+## Getting Your API Token
+
+Brex uses user tokens to authenticate API requests. Tokens are passed as Bearer tokens in the Authorization header.
+
+### Creating a User Token
+
+1. Sign in to your [Brex Dashboard](https://dashboard.brex.com)
+2. Navigate to **Settings** → **Developer**
+3. Click **Create Token**
+4. Enter a descriptive name for the token (e.g., "Modern Integration")
+5. Select the required permissions (scopes) for your use case:
+   * **Users**: Read access for user management
+   * **Cards**: Read access for card information
+   * **Transactions**: Read access for transaction history
+   * **Departments**: Read access for department data
+6. Click **Allow Access**
+7. **Important**: Copy and save the token immediately — it won't be shown again
+
+For detailed instructions, see the [Brex Authentication Documentation](https://developer.brex.com/docs/authentication/).
+
+### Available Scopes
+
+When creating a token, you'll see all available permission scopes organized by category:
+
+<Frame caption="Brex API token creation showing available scopes">
+  <img src="https://mintlify.s3.us-west-1.amazonaws.com/modern/images/brex-api-scopes.png" alt="Brex API token creation interface showing available permission scopes" />
+</Frame>
+
+### Read vs Write Permissions
+
+<Info>
+  **Read-only scopes are required** for the Modern integration to function. If you want to perform actions (such as creating users, managing cards, or processing payments), you will need to grant **Write** or **Read/Write** scopes for the relevant resources.
+</Info>
+
+| Permission Level | Description                                                |
+| ---------------- | ---------------------------------------------------------- |
+| **None**         | No access to the resource                                  |
+| **Read**         | View-only access (required for healthchecks and data sync) |
+| **Read/Write**   | Full access to view and modify the resource                |
+
+### Recommended Scopes
+
+At minimum, grant **Read** access to these scopes for the integration to work:
+
+| Category     | Scope         | Permission | Description                   |
+| ------------ | ------------- | ---------- | ----------------------------- |
+| Team         | Users         | Read       | View user information         |
+| Team         | Departments   | Read       | View department data          |
+| Team         | Cards         | Read       | View card details             |
+| Transactions | Card Accounts | Read       | View card account information |
+
+For workflows that require creating or modifying data, grant **Read/Write** access to the relevant scopes.
+
+## Connecting Brex
+
+1. In Modern, navigate to **Applications** and select your application
+2. Go to the **API Integration** tab
+3. Search for and select **Brex**
+4. Enter your Brex API Token
+5. Click **Save**
+
+## Token Management
+
+### Token Expiration
+
+User tokens expire automatically if not used for **90 days**. To avoid disruption:
+
+* Monitor token usage in the Brex Developer settings
+* Regenerate tokens before they expire
+* Set up reminders to rotate tokens periodically
+
+### Revoking Tokens
+
+If you suspect a token has been compromised:
+
+1. Go to **Settings** → **Developer** in the Brex Dashboard
+2. Find the token you want to revoke
+3. Click **Revoke** to immediately disable the token
+4. Generate a new token and update your integration
+
+## Security Best Practices
+
+* **Protect your token**: Treat API tokens like passwords — never expose them in client-side code or public repositories
+* **Use minimal permissions**: Only grant the scopes your integration actually needs
+* **Monitor usage**: Regularly review API activity in the Brex Developer dashboard
+* **Rotate tokens**: Periodically regenerate tokens to limit exposure from potential breaches
+
+## Healthchecks
+
+After connecting, the following healthchecks verify your integration:
+
+| Check              | Description                         | Required Scope       |
+| ------------------ | ----------------------------------- | -------------------- |
+| List Users         | Verifies access to user data        | `users.read`         |
+| List Cards         | Confirms access to card information | `cards.read`         |
+| List Card Accounts | Confirms access to card accounts    | `accounts.card.read` |
+| List Departments   | Confirms access to department data  | `departments.read`   |
+
+## Troubleshooting
+
+### Invalid Token
+
+* Ensure you're using a valid user token
+* Verify the token hasn't expired (90 days of inactivity)
+* Check that the token hasn't been revoked
+
+### Permission Denied
+
+* Verify your token has the required scopes for the operation
+* Check that your Brex account has access to the requested resources
+* Some features may require specific Brex plan tiers
+
+### Token Expired
+
+* Tokens expire after 90 days of inactivity
+* Generate a new token from the Brex Developer settings
+* Update your integration with the new token
+
+## API Base URL
+
+Brex API requests are made to:
+
+* **Standard API**: `https://platform.brexapis.com`
+* **Secure API** (PCI compliant): `https://secure-platform.brexapis.com`
+
+## Additional Resources
+
+* [Brex Developer Portal](https://developer.brex.com)
+* [Brex Authentication Documentation](https://developer.brex.com/docs/authentication/)
+* [Brex API Reference](https://developer.brex.com/openapi/)
+* [Brex Dashboard](https://dashboard.brex.com)

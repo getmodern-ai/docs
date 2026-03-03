@@ -1,0 +1,252 @@
+---
+title: 'Snowflake'
+---
+
+## About Snowflake
+
+Snowflake is a cloud-based data warehousing platform that enables data storage, processing, and analytic solutions. Connecting Snowflake to Modern enables automated data operations, user management, and resource orchestration directly from your service desk.
+
+## What the Snowflake integration enables
+
+| Capability              | Description                                                    |
+| ----------------------- | -------------------------------------------------------------- |
+| Account Management      | Manage accounts, users, roles, and access policies             |
+| Warehouse Operations    | Create, start, suspend, and manage compute warehouses          |
+| Database Management     | Create and manage databases, schemas, tables, and views        |
+| Security Administration | Manage network policies, grants, and security integrations     |
+| Task Orchestration      | Create and manage tasks, streams, and pipes for data pipelines |
+
+***
+
+## Prerequisites
+
+* A Snowflake account with `ACCOUNTADMIN` or `SECURITYADMIN` role access
+* Your Snowflake account URL
+
+***
+
+## Step 1: Create a Service User
+
+Create a dedicated service user for the Modern integration. This follows security best practices by isolating integration access from personal accounts.
+
+```sql  theme={null}
+USE ROLE ACCOUNTADMIN;
+
+CREATE USER SERVAL_USER
+  COMMENT = 'Service account for Modern integration';
+```
+
+<Tip>
+  Using a dedicated service user makes it easy to audit integration activity and
+  manage access separately from personal accounts.
+</Tip>
+
+***
+
+## Step 2: Create a Role
+
+Create a dedicated role with the specific permissions Modern needs.
+
+### 2.1 Create the Role
+
+```sql  theme={null}
+CREATE ROLE SERVAL_ROLE
+  COMMENT = 'Role for Modern integration';
+```
+
+### 2.2 Grant Database Access
+
+Grant the role access to the databases and schemas Modern should have access to:
+
+```sql  theme={null}
+-- Grant access to a specific database
+GRANT USAGE ON DATABASE <your_database> TO ROLE SERVAL_ROLE;
+
+-- Grant access to all schemas in the database
+GRANT USAGE ON ALL SCHEMAS IN DATABASE <your_database> TO ROLE SERVAL_ROLE;
+
+-- Grant read access to all tables
+GRANT SELECT ON ALL TABLES IN DATABASE <your_database> TO ROLE SERVAL_ROLE;
+
+-- Grant access to a warehouse for running queries
+GRANT USAGE ON WAREHOUSE <your_warehouse> TO ROLE SERVAL_ROLE;
+```
+
+### 2.3 Assign the Role to the Service User
+
+```sql  theme={null}
+GRANT ROLE SERVAL_ROLE TO USER SERVAL_USER;
+```
+
+***
+
+## Step 3: Create a Network Policy
+
+Snowflake requires a network policy for programmatic access tokens. This policy controls which IP addresses can access your account.
+
+### 3.1 Get Modern's IP Addresses
+
+Contact **[support@modern.com](mailto:support@modern.com)** to request the list of IP addresses that Modern uses to connect to Snowflake. You'll need these for the network rule.
+
+### 3.2 Create a Network Rule
+
+Create a network rule with Modern's IP addresses:
+
+```sql  theme={null}
+CREATE OR REPLACE NETWORK RULE serval_network_rule
+  MODE = INGRESS
+  TYPE = IPV4
+  VALUE_LIST = ('<serval_ip_1>', '<serval_ip_2>')
+  COMMENT = 'Allow Modern IPs for integration';
+```
+
+<Note>
+  Replace `<serval_ip_1>`, `<serval_ip_2>`, etc. with the IP addresses provided
+  by Modern support.
+</Note>
+
+### 3.3 Create a Network Policy
+
+```sql  theme={null}
+CREATE OR REPLACE NETWORK POLICY serval_network_policy
+  ALLOWED_NETWORK_RULE_LIST = ('serval_network_rule')
+  COMMENT = 'Network policy for Modern integration';
+```
+
+### 3.4 Assign the Network Policy to the Service User
+
+```sql  theme={null}
+ALTER USER SERVAL_USER SET NETWORK_POLICY = SERVAL_NETWORK_POLICY;
+```
+
+***
+
+## Step 4: Create a Programmatic Access Token (PAT)
+
+PATs allow programmatic access to Snowflake's REST APIs.
+
+### 4.1 Create the PAT
+
+```sql  theme={null}
+ALTER USER SERVAL_USER ADD PROGRAMMATIC ACCESS TOKEN serval_pat
+  ROLE_RESTRICTION = 'SERVAL_ROLE'
+  DAYS_TO_EXPIRY = 90
+  COMMENT = 'Token for Modern integration';
+```
+
+### 4.2 Copy the Token
+
+The token value is displayed in the output. **Copy it immediately** - it's only shown once.
+
+<Warning>
+  PATs expire based on the `DAYS_TO_EXPIRY` setting (default 90 days). You'll need
+  to create a new token and update the connection in Modern before it expires.
+</Warning>
+
+***
+
+## Step 5: Configure Modern
+
+1. In Modern, navigate to **Apps → Available → Snowflake → Connect**
+2. Enter your **Account URL** and **Access Token** (the PAT from Step 4)
+3. Click **Connect**
+
+<Check>
+  You should now be able to build workflows that leverage Snowflake APIs.
+</Check>
+
+***
+
+## Finding Your Account URL
+
+Your Snowflake account URL can be found from your browser's address bar:
+
+* If your URL is `https://app.snowflake.com/<org>/<account>/...`
+* Your account URL is: `<org>-<account>.snowflakecomputing.com`
+
+You can also run this query:
+
+```sql  theme={null}
+SELECT CURRENT_ORGANIZATION_NAME || '-' || CURRENT_ACCOUNT_NAME || '.snowflakecomputing.com' AS account_url;
+```
+
+| Cloud Provider | Account URL Pattern                        |
+| -------------- | ------------------------------------------ |
+| AWS            | `org-account.snowflakecomputing.com`       |
+| Azure          | `org-account.azure.snowflakecomputing.com` |
+| GCP            | `org-account.gcp.snowflakecomputing.com`   |
+
+***
+
+## Quick Reference
+
+Once you have Modern's IP addresses, here's the complete setup:
+
+```sql  theme={null}
+USE ROLE ACCOUNTADMIN;
+
+-- 1. Create service user
+CREATE USER SERVAL_USER
+  COMMENT = 'Service account for Modern integration';
+
+-- 2. Create role and grant permissions
+CREATE ROLE SERVAL_ROLE;
+GRANT USAGE ON DATABASE <your_database> TO ROLE SERVAL_ROLE;
+GRANT USAGE ON ALL SCHEMAS IN DATABASE <your_database> TO ROLE SERVAL_ROLE;
+GRANT SELECT ON ALL TABLES IN DATABASE <your_database> TO ROLE SERVAL_ROLE;
+GRANT USAGE ON WAREHOUSE <your_warehouse> TO ROLE SERVAL_ROLE;
+GRANT ROLE SERVAL_ROLE TO USER SERVAL_USER;
+
+-- 3. Create network rule and policy (contact support@modern.com for IPs)
+CREATE OR REPLACE NETWORK RULE serval_network_rule
+  MODE = INGRESS
+  TYPE = IPV4
+  VALUE_LIST = ('<serval_ip_1>', '<serval_ip_2>');
+
+CREATE OR REPLACE NETWORK POLICY serval_network_policy
+  ALLOWED_NETWORK_RULE_LIST = ('serval_network_rule');
+
+ALTER USER SERVAL_USER SET NETWORK_POLICY = SERVAL_NETWORK_POLICY;
+
+-- 4. Create PAT
+ALTER USER SERVAL_USER ADD PROGRAMMATIC ACCESS TOKEN serval_pat
+  ROLE_RESTRICTION = 'SERVAL_ROLE'
+  DAYS_TO_EXPIRY = 90;
+```
+
+***
+
+## Troubleshooting
+
+### "Network policy is required" Error
+
+The service user doesn't have a network policy assigned:
+
+1. Verify you have a network policy: `SHOW NETWORK POLICIES;`
+2. Check the service user's policy: `DESCRIBE USER SERVAL_USER;`
+3. Assign the policy: `ALTER USER SERVAL_USER SET NETWORK_POLICY = SERVAL_NETWORK_POLICY;`
+
+### "Insufficient privileges" Error
+
+The role associated with the PAT doesn't have access to the requested resource:
+
+```sql  theme={null}
+-- Grant database access to the Modern role
+GRANT USAGE ON DATABASE <database> TO ROLE SERVAL_ROLE;
+GRANT USAGE ON SCHEMA <database>.<schema> TO ROLE SERVAL_ROLE;
+GRANT SELECT ON ALL TABLES IN SCHEMA <database>.<schema> TO ROLE SERVAL_ROLE;
+```
+
+### Token Expired
+
+Create a new PAT for the service user and update the connection in Modern:
+
+```sql  theme={null}
+ALTER USER SERVAL_USER ADD PROGRAMMATIC ACCESS TOKEN serval_pat_new
+  ROLE_RESTRICTION = 'SERVAL_ROLE'
+  DAYS_TO_EXPIRY = 90;
+```
+
+***
+
+Need help? Contact **[support@modern.com](mailto:support@modern.com)** for assistance with your Snowflake integration.

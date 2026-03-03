@@ -1,0 +1,366 @@
+---
+title: 'Freshservice'
+---
+
+## About Freshservice
+
+Freshservice is a IT-service-management platform. Connecting Freshservice to Modern allows the syncing of tickets between the two systems.
+
+## What the Freshservice integration enables
+
+| Capability           | Description                                                                              |
+| -------------------- | ---------------------------------------------------------------------------------------- |
+| Access Management    | Create, update, and manage users and their permissions                                   |
+| Automation workflows | Trigger automated processes and approval flows                                           |
+| Sync Tickets         | Maintain data consistency across platforms, sync tickets between Modern and Freshservice |
+
+***
+
+## Freshservice configuration (in Freshservice)
+
+You authenticate Modern with a Freshservice **API key** tied to an agent account. The agent account determines what Modern can do via the Freshservice API, so proper setup is critical for ticket syncing to work.
+
+<Warning>
+  Modern needs **agent-level** access to create tickets, update tickets, and post replies. A requester-only account will result in `403 Forbidden` errors during ticket syncing. The account **must** be an Agent, not a Requester.
+</Warning>
+
+### Create a dedicated service account (recommended)
+
+<Steps>
+  <Step title="Create a new agent">
+    Navigate to **Admin** → click the **hamburger menu** in the top left → **Global Settings** → **"Agents"** in the User Management section.
+
+    Click **New Agent** and fill in the details:
+
+    * **Name**: `Modern Integration` (or any descriptive name)
+    * **Email**: A valid email address (e.g., `modern-integration@yourcompany.com`)
+    * **Agent Type**: Make sure this is **Full-time Agent**, not Occasional Agent
+
+    <Warning>
+      The agent **must** be a Full-time Agent. Occasional Agents have restricted API access and cannot perform all the operations Modern needs (creating tickets, posting replies, updating fields).
+    </Warning>
+  </Step>
+
+  <Step title="Configure account-wide permissions">
+    After creating the agent, go to the agent's profile → **Permissions** → **"Add admin role"** under account-wide permissions.
+
+    Select **Workspace Admin** → **Save**.
+
+    This grants the agent admin-level API access across all workspaces.
+  </Step>
+
+  <Step title="Create a custom workspace role">
+    Create a dedicated role in Freshservice before assigning workspace access:
+
+    1. Go to **Admin** → click the **hamburger menu** in the top left → **Global Settings** → **Roles**.
+    2. Click **New role**.
+    3. Name the role **Modern Supervisor**.
+    4. Under **Tickets**, configure at least these minimum permissions:
+       * **View tickets**
+       * **Send reply to a ticket**
+       * **Forward a conversation**
+       * **Edit notes** → **Edit everyone's notes**
+       * **Delete a conversation**
+       * **Merge / split a ticket**
+       * **Edit ticket properties**
+       * **Move tickets**
+       * **Create and Edit Tasks in Tickets** → **Allow reordering of tasks**
+       * **Delete a ticket**
+       * **Export Tickets**
+    5. Click **Save**.
+
+    You can grant additional permissions if your process requires them, but the list above is the minimum needed for Modern ticket sync.
+  </Step>
+
+  <Step title="Assign workspace permissions to the service account">
+    Under the service account's **Workspace permissions**, click **Add to workspace** → **Add role**.
+
+    Select **"Modern Supervisor"** and **"across the workspace"** → **Save**.
+
+    <Tip>
+      * Repeat this step for **every workspace** that you want Modern to sync tickets with. Without workspace-level permissions, Modern will receive `403 Forbidden` errors when trying to create or update tickets in that workspace.
+      * For any group where you assign this role, if the group is **restricted**, also add the service account to that group itself.
+    </Tip>
+  </Step>
+
+  <Step title="Activate the agent and enable API access">
+    1. Ensure the agent account is **activated** — the agent must accept the invitation email and set a password.
+    2. Sign in as the agent → go to **Profile Settings** (top-right avatar) → **API Settings**.
+    3. Ensure the API key is **enabled**. Copy the API key.
+
+    <Warning>
+      If the agent has never signed in, the API key will not work. The agent must complete the activation process first.
+    </Warning>
+  </Step>
+</Steps>
+
+### Using an existing admin account
+
+If you prefer not to create a dedicated service account, you can use an existing admin's API key. Sign in as the admin → go to **Profile Settings** → **API Settings** and copy the key.
+
+<Info>
+  When using an admin's API key, all ticket actions performed by Modern (creating tickets, posting replies) will appear as if that admin performed them in Freshservice.
+</Info>
+
+***
+
+## Modern Configuration
+
+1. In Modern navigate to **Apps → Available → Freshservice → Connect**.
+2. Complete the form:
+
+<Frame>
+  <img src="https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/freshservice/freshservice_serval_add.png?fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=138f527a5a6878bd0fd350d33b77844a" alt="Freshservice Connection Form" data-og-width="1046" width="1046" data-og-height="1190" height="1190" data-path="images/integrations/freshservice/freshservice_serval_add.png" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/freshservice/freshservice_serval_add.png?w=280&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=66aee7297ea91ee5187ca7f0879e1a03 280w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/freshservice/freshservice_serval_add.png?w=560&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=f3232b4602bbc75d16e0912ffc08e234 560w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/freshservice/freshservice_serval_add.png?w=840&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=500e9e424276709d89447fc2c5682fc6 840w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/freshservice/freshservice_serval_add.png?w=1100&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=79441828dad258f35aa05352d56237b9 1100w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/freshservice/freshservice_serval_add.png?w=1650&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=24fed185163ea4baa75a9acf5b93577b 1650w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/freshservice/freshservice_serval_add.png?w=2500&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=4ba8254f1cd4a785cf5445855e067664 2500w" />
+</Frame>
+
+| Field               | Value                                                                                        |
+| ------------------- | -------------------------------------------------------------------------------------------- |
+| Service Instance ID | Your Freshservice domain. For `https://acme.freshservice.com` enter `acme.freshservice.com`. |
+| API Key             | The key you generated above.                                                                 |
+
+3. Click **Save**.
+
+Modern can now post comments, update tickets and read data according to the Freshservice permissions you configured.
+
+***
+
+## Real-time Ticket Synchronization with Webhooks (Optional)
+
+By default, Modern polls Freshservice every 30 seconds to sync tickets. For faster, real-time synchronization, you can configure Freshservice webhooks to push updates to Modern immediately.
+
+<Info>
+  Webhook setup is optional. Polling will continue to work as a fallback even after webhooks are configured.
+</Info>
+
+### Benefits of webhooks
+
+* **Lower latency**: Ticket changes appear in Modern within seconds instead of up to 30 seconds
+* **Reduced API usage**: Fewer outbound API calls from Modern to Freshservice
+* **Better rate limit management**: Less likely to hit Freshservice API limits for high-volume environments
+
+### Prerequisites
+
+Before configuring webhooks, ensure you have:
+
+* Admin access to Freshservice
+* A working Modern integration (completed the steps above)
+* Your Modern webhook URLs and authentication token (found in Modern's ticket sync settings page for your Freshservice integration)
+
+### Find your webhook URLs and token in Modern
+
+In Modern, navigate to your Freshservice integration's ticket sync settings. You will see two webhook URLs and an authentication token:
+
+| Field                         | Purpose                                                               |
+| ----------------------------- | --------------------------------------------------------------------- |
+| **Ticket Update Webhook URL** | Ends with `/ticket-update` — use this for the Ticket Update automator |
+| **New Reply Webhook URL**     | Ends with `/reply` — use this for the New Message automator           |
+| **Authentication Token**      | Same token used for both webhooks                                     |
+
+<Frame caption="Modern's ticket sync settings showing separate webhook URLs for ticket updates and new replies">
+  <img src="https://mintcdn.com/serval/B2ucD-3eH5Jzk0Vb/images/integrations/freshservice/freshservice_serval_webhook_config.png?fit=max&auto=format&n=B2ucD-3eH5Jzk0Vb&q=85&s=419d6614dc8d4657b3b18861b969fba0" alt="Modern webhook configuration panel showing two webhook URLs, authentication header name, and authentication token" data-og-width="1826" width="1826" data-og-height="844" height="844" data-path="images/integrations/freshservice/freshservice_serval_webhook_config.png" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/serval/B2ucD-3eH5Jzk0Vb/images/integrations/freshservice/freshservice_serval_webhook_config.png?w=280&fit=max&auto=format&n=B2ucD-3eH5Jzk0Vb&q=85&s=91b1771a45472e97e277f84b6af287d2 280w, https://mintcdn.com/serval/B2ucD-3eH5Jzk0Vb/images/integrations/freshservice/freshservice_serval_webhook_config.png?w=560&fit=max&auto=format&n=B2ucD-3eH5Jzk0Vb&q=85&s=a91dbf20fe7a0a4453944e4a58e8f3ec 560w, https://mintcdn.com/serval/B2ucD-3eH5Jzk0Vb/images/integrations/freshservice/freshservice_serval_webhook_config.png?w=840&fit=max&auto=format&n=B2ucD-3eH5Jzk0Vb&q=85&s=d6c6a99d75bdf7f8506e90489b9d806b 840w, https://mintcdn.com/serval/B2ucD-3eH5Jzk0Vb/images/integrations/freshservice/freshservice_serval_webhook_config.png?w=1100&fit=max&auto=format&n=B2ucD-3eH5Jzk0Vb&q=85&s=8dbbfbfa28cfdb331f5f1efd10892441 1100w, https://mintcdn.com/serval/B2ucD-3eH5Jzk0Vb/images/integrations/freshservice/freshservice_serval_webhook_config.png?w=1650&fit=max&auto=format&n=B2ucD-3eH5Jzk0Vb&q=85&s=e76ffdb7d82735ff01795297d846e787 1650w, https://mintcdn.com/serval/B2ucD-3eH5Jzk0Vb/images/integrations/freshservice/freshservice_serval_webhook_config.png?w=2500&fit=max&auto=format&n=B2ucD-3eH5Jzk0Vb&q=85&s=9ef2069c6435d9a6677cfa074a2bd4e3 2500w" />
+</Frame>
+
+### Overview
+
+Modern uses **two separate webhooks** for Freshservice — one for ticket updates and one for new messages. This separation ensures that ticket metadata and messages are processed independently, which improves reliability and avoids duplicate message ingestion.
+
+| Webhook       | Trigger               | URL suffix       | Purpose                                                         |
+| ------------- | --------------------- | ---------------- | --------------------------------------------------------------- |
+| Ticket Update | **Ticket is Updated** | `/ticket-update` | Syncs ticket field changes (status, priority, assignment, etc.) |
+| New Message   | **Reply is sent**     | `/reply`         | Syncs new messages (replies and forwards)                       |
+
+You will create two Workflow Automators in Freshservice — one for each webhook.
+
+### Webhook 1: Ticket Updates
+
+This webhook fires when ticket fields change (status, priority, assignee, etc.). It does **not** include message data.
+
+<Steps>
+  <Step title="Navigate to Workflow Automator">
+    In Freshservice, go to **Admin** → **Helpdesk Productivity** → **Workflow Automator**.
+
+    Click **New Automator** to create a new workflow.
+  </Step>
+
+  <Step title="Create the automator">
+    Configure the automator with a **Ticket is Updated** event that triggers a **Trigger Webhook** action:
+
+    | Setting | Value                            |
+    | ------- | -------------------------------- |
+    | Name    | `Modern - Ticket Update Webhook` |
+    | Event   | **Ticket is Updated**            |
+  </Step>
+
+  <Step title="Configure the webhook action">
+    Under **Actions**, add a **Trigger Webhook** action with the following settings:
+
+    | Field          | Value                                                                               |
+    | -------------- | ----------------------------------------------------------------------------------- |
+    | Request Type   | `POST`                                                                              |
+    | Callback URL   | Copy and paste the **Ticket Update Webhook URL** from Modern's ticket sync settings |
+    | Encoding       | `JSON`                                                                              |
+    | Authentication | Select **No Auth**                                                                  |
+    | Custom Headers | `X-Modern-Webhook-Token` set to the authentication token from Modern                |
+
+    <Warning>
+      Make sure the Callback URL ends with `/ticket-update`. Without this suffix the webhook will be rejected.
+    </Warning>
+
+    In the **Content** section of the webhook action, select the following properties. These are the ticket fields Modern uses for syncing:
+
+    * Ticket ID
+    * Ticket ID {numeric}
+    * Subject
+    * Description
+    * Ticket URL
+    * Status
+    * Priority
+    * Type
+    * Source
+    * Urgency
+    * Impact
+    * Category
+    * Group Name
+    * Agent Name
+    * Agent Email
+    * Department Name
+    * Tags
+    * Created At
+    * Due By Time
+    * Current Date and Time
+    * Helpdesk Name
+    * Helpdesk URL
+    * Event Performer ID
+    * Event Performer Name
+    * Event Performer Email
+
+    <Warning>
+      Do **not** select **Latest Public Comment**. Message data should only be sent via the New Message webhook (below).
+    </Warning>
+
+    Save the automator.
+  </Step>
+
+  <Step title="Enable the automator">
+    Ensure the automator is **Active**. You can toggle it on from the Workflow Automator list.
+
+    <Check>
+      Test by changing a ticket's status or priority in Freshservice. The change should appear in Modern within seconds.
+    </Check>
+  </Step>
+</Steps>
+
+### Webhook 2: New Messages
+
+This webhook fires when a new message (reply or forward) is sent on a ticket. It includes message metadata so Modern can correlate the message to the correct ticket.
+
+<Steps>
+  <Step title="Create a new automator">
+    In Freshservice, go to **Admin** → **Helpdesk Productivity** → **Workflow Automator**.
+
+    Click **New Automator** to create a second workflow.
+  </Step>
+
+  <Step title="Configure the automator">
+    | Setting | Value                          |
+    | ------- | ------------------------------ |
+    | Name    | `Modern - New Message Webhook` |
+    | Event   | **Reply is sent**              |
+  </Step>
+
+  <Step title="Configure the webhook action">
+    Under **Actions**, add a **Trigger Webhook** action:
+
+    | Field          | Value                                                                           |
+    | -------------- | ------------------------------------------------------------------------------- |
+    | Request Type   | `POST`                                                                          |
+    | Callback URL   | Copy and paste the **New Reply Webhook URL** from Modern's ticket sync settings |
+    | Encoding       | `JSON`                                                                          |
+    | Authentication | Select **No Auth**                                                              |
+    | Custom Headers | `X-Modern-Webhook-Token` set to the authentication token from Modern            |
+
+    <Warning>
+      Make sure the Callback URL ends with `/reply`. Without this suffix the webhook will be rejected.
+    </Warning>
+
+    In the **Content** section, select only the properties needed to identify the ticket and the message:
+
+    * Ticket ID
+    * Ticket ID {numeric}
+    * Latest Public Comment
+    * Helpdesk URL
+    * Current Date and Time
+    * Event Performer ID
+    * Event Performer Name
+    * Event Performer Email
+
+    <Tip>
+      You don't need to select ticket metadata fields (status, priority, etc.) here. Those are handled by the Ticket Update webhook.
+    </Tip>
+
+    Save the automator.
+  </Step>
+
+  <Step title="Enable the automator">
+    Ensure the automator is **Active**.
+
+    <Check>
+      Test by replying to a ticket in Freshservice. The message should appear in Modern within seconds.
+    </Check>
+  </Step>
+</Steps>
+
+### Enabling webhooks in Modern
+
+After creating both Workflow Automators in Freshservice, return to Modern's ticket sync settings and toggle on **Enable webhook sync**. This tells Modern to expect webhooks for real-time updates.
+
+<Warning>
+  Enabling webhook sync disables polling. Make sure both Workflow Automators are active before enabling this setting.
+</Warning>
+
+### Troubleshooting webhooks
+
+<AccordionGroup>
+  <Accordion title="Tickets not syncing in Modern">
+    * Verify that both webhook URLs are correct and include the proper suffix (`/ticket-update` or `/reply`)
+    * Check that the Modern integration is properly configured and connected
+    * Ensure both Workflow Automators are active in Freshservice
+    * Confirm the `X-Modern-Webhook-Token` header value matches what Modern shows
+  </Accordion>
+
+  <Accordion title="New messages not appearing">
+    * Make sure you created the second automator with the **Reply is sent** event (not **Ticket is Updated**)
+    * Verify the Callback URL ends with `/reply`
+    * Check that **Latest Public Comment** is selected in the New Message webhook's Content properties
+  </Accordion>
+
+  <Accordion title="Delayed synchronization">
+    If webhooks appear to be working but updates are delayed:
+
+    * Freshservice may be batching webhook deliveries during high load
+    * Check Freshservice's webhook delivery logs for failures
+    * Polling will continue to work as a fallback
+  </Accordion>
+
+  <Accordion title="403 Forbidden errors when Modern creates or updates tickets">
+    If Modern can read tickets from Freshservice but fails when creating, updating, or replying to tickets:
+
+    1. **Verify the agent type** — The API key must belong to a **Full-time Agent**, not a Requester or Occasional Agent. Navigate to **Admin → Agents** and check the agent's type.
+
+    2. **Check workspace access** — The agent must have an explicit role in each workspace where Modern syncs tickets. Go to the agent's profile → **Workspace permissions** and confirm the agent has **Modern Supervisor** (or an equivalent custom role with the same minimum permissions) for the relevant workspaces.
+
+    3. **Check restricted group membership** — For any group where you assign this role, if the group is restricted, add the service account to that group itself.
+
+    4. **Verify agent activation** — The agent must have completed the activation process (accepted invitation email, set a password). An unactivated agent's API key will not have full access.
+
+    5. **Check API key status** — Sign in as the agent → **Profile Settings** → **API Settings** and ensure the API key is enabled.
+
+    6. **Test the API key directly** — Run this command to verify the agent's access:
+
+    ```bash  theme={null}
+    curl -u "YOUR_API_KEY:X" "https://your-domain.freshservice.com/api/v2/tickets?per_page=1"
+    ```
+
+    If this returns a `403`, the API key does not have sufficient permissions.
+  </Accordion>
+</AccordionGroup>

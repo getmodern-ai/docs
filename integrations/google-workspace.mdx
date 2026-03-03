@@ -1,0 +1,414 @@
+---
+title: 'Google Workspace'
+---
+
+## About Google Workspace
+
+Google Workspace (formerly G Suite) provides email, calendar, drive and directory services for organisations. Connecting Google Workspace to Modern lets you automate common admin tasks, enforce security policies and modify user data directly inside Modern workflows.
+
+## What the Google Workspace integration enables
+
+| Capability           | Connection Method        | Description                                                                                  |
+| -------------------- | ------------------------ | -------------------------------------------------------------------------------------------- |
+| Access Management    | OAuth or Service Account | Create, update, and manage users and their permissions                                       |
+| Automation workflows | OAuth or Service Account | Manage groups, and organizational data. Create aliases, manage settings, and more            |
+| Knowledge Base Sync  | Service Account only     | Automatically sync and index Google Drive content (Docs, Sheets, Slides) for semantic search |
+| Gmail Delegation     | Service Account only     | Manage email delegation settings                                                             |
+
+***
+
+## Choose your connection method
+
+We offer two different configuration mechanisms for Google Workspace:
+
+* **Standard OAuth integration:**
+  * Simple integration process
+  * Suitable for basic user and group management
+  * No domain-wide delegation required
+* **Service Account integration:**
+  * More manual configuration required
+  * Full control over scopes and permissions
+  * Required for advanced APIs (e.g., [Gmail delegation APIs](https://developers.google.com/gmail/api/reference/rest/v1/users.settings.delegates/create))
+  * Enables domain-wide delegation
+
+To get started, navigate to the "Applications" page in your team, select "Connect new" and click on "Google Workspace":
+
+<Frame>
+  <img src="https://mintcdn.com/serval/2yD3bPadWazatQgL/images/integrations/google-workspace/image(10).png?fit=max&auto=format&n=2yD3bPadWazatQgL&q=85&s=1c7856c9ac97472fee32f3fd823f815a" alt="Google Workspace connection option in Modern Apps page" data-og-width="2048" width="2048" data-og-height="1229" height="1229" data-path="images/integrations/google-workspace/image(10).png" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/serval/2yD3bPadWazatQgL/images/integrations/google-workspace/image(10).png?w=280&fit=max&auto=format&n=2yD3bPadWazatQgL&q=85&s=5045aedf70ed82670fcc6d0060006308 280w, https://mintcdn.com/serval/2yD3bPadWazatQgL/images/integrations/google-workspace/image(10).png?w=560&fit=max&auto=format&n=2yD3bPadWazatQgL&q=85&s=abb7352860f82b0d2afc34882182bb85 560w, https://mintcdn.com/serval/2yD3bPadWazatQgL/images/integrations/google-workspace/image(10).png?w=840&fit=max&auto=format&n=2yD3bPadWazatQgL&q=85&s=ba0be4bf019be27f5b912c868f6825c6 840w, https://mintcdn.com/serval/2yD3bPadWazatQgL/images/integrations/google-workspace/image(10).png?w=1100&fit=max&auto=format&n=2yD3bPadWazatQgL&q=85&s=e7f8af4b470fedc07c46c1705ca1565f 1100w, https://mintcdn.com/serval/2yD3bPadWazatQgL/images/integrations/google-workspace/image(10).png?w=1650&fit=max&auto=format&n=2yD3bPadWazatQgL&q=85&s=f3347314b3198c676bf3fb189a98f3eb 1650w, https://mintcdn.com/serval/2yD3bPadWazatQgL/images/integrations/google-workspace/image(10).png?w=2500&fit=max&auto=format&n=2yD3bPadWazatQgL&q=85&s=3d53851225358b0d5b23e3172e1dab00 2500w" />
+</Frame>
+
+Select "Sign in with Google" for standard OAuth or "Service Account" for service account integration.
+
+## Service Account Integration Setup
+
+### Step 1: Create Google Cloud Project and Service Account
+
+1. Navigate to [console.cloud.google.com](http://console.cloud.google.com) and login
+2. Create a new project:
+   * Click "Select a Project" → "New Project"
+   * Choose any name for your project
+
+<Frame>
+  <img src="https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(12).png?fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=a90915c4a9c2a9d558dcd3d6acbd4e01" alt="Google Cloud Console Select Project menu" data-og-width="2940" width="2940" data-og-height="1658" height="1658" data-path="images/integrations/google-workspace/image(12).png" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(12).png?w=280&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=027489d89dd4c6c5a214d7078af15910 280w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(12).png?w=560&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=5b5664cedff1a842e24528f9a225d331 560w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(12).png?w=840&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=82441d4388ed03981fc530a7740ef4ea 840w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(12).png?w=1100&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=c9b808d74cd1e030888bc95d12ad9e03 1100w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(12).png?w=1650&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=d222737587839fc830def828f8df22ec 1650w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(12).png?w=2500&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=296b4950cd34bcbccd451fd6c3573ba1 2500w" />
+</Frame>
+
+<Frame>
+  <img src="https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(13).png?fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=91d606b4408fc34648dbe9f3924278e6" alt="Google Cloud Console New Project creation dialog" data-og-width="1242" width="1242" data-og-height="868" height="868" data-path="images/integrations/google-workspace/image(13).png" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(13).png?w=280&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=1dac21c11413bb15b6e2c8a027a81606 280w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(13).png?w=560&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=5e3aab852fc09ec2f71be66befa99dba 560w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(13).png?w=840&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=3c08d4c3d7a758470dbd466f0077ddf9 840w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(13).png?w=1100&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=23ac8cb7afc4212e4fcb6bb22ba1731d 1100w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(13).png?w=1650&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=ad97ec5ee2492adf9089056641fe9a95 1650w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(13).png?w=2500&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=b1808e79a33348d8798ec7a44a9b5fc2 2500w" />
+</Frame>
+
+3. Create a service account:
+   * Search for "Service account" by selecting the search bar at the top of the page, or by typing "/" to activate search.
+   * Select "Create service account"
+   * Provide a Service account name and account ID.
+   * All other fields are optional and you can select "Done" to complete Service account creation.
+
+<Frame>
+  <img src="https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(16).png?fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=e03dbb94a331645bfeb5b9363f61bd84" alt="Google Cloud service account creation dialog" data-og-width="2048" width="2048" data-og-height="930" height="930" data-path="images/integrations/google-workspace/image(16).png" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(16).png?w=280&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=fc70e0d6e4841c3f055bd5d68806aa82 280w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(16).png?w=560&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=66f813a7f8ed816ab5cbe29528ee2b9f 560w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(16).png?w=840&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=7263e7823c4fa68924bd449d77bc31fe 840w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(16).png?w=1100&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=d2813ea346b5acd74520d9598e0a877e 1100w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(16).png?w=1650&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=b7f524ea742224719d8a67d0e022e88e 1650w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(16).png?w=2500&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=bbe01dccbe5a059c1369b37bf4228ed5 2500w" />
+</Frame>
+
+### Step 2: Enable Required APIs
+
+**Critical:** Enable the required APIs in your Google Cloud project:
+
+1. Navigate to "APIs & Services" → "Library"
+2. Search for and select enable for the following APIs:
+   * **Admin SDK API** (required for user and group management)
+   * **Gmail API** (required for Gmail operations)
+   * **Google Drive API** (required for Drive file operations)
+   * **Google Sheets API** (required for Sheets operations)
+3. Note: API selection is customizable to your use case.
+
+**Note:** API enablement takes 5-10 minutes to propagate. If you encounter 403 errors initially, wait and try again.
+
+### Step 3: Configure Service Account Permissions
+
+Grant Modern permission to impersonate your service account:
+
+1. Navigate to "IAM & Admin" → "Service Accounts" in your Google Cloud project
+2. Click on the service account you created in Step 1
+3. Go to the "Permissions" tab and click "Grant Access"
+4. Add the principal: `modern@modern-424322.iam.gserviceaccount.com`
+5. Assign the role: "Service Account Token Creator"
+
+<Frame>
+  <img src="https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(17).png?fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=a61ee846a28e2827978bbdb9a8dd209a" alt="Google Cloud IAM Grant Access dialog" data-og-width="1790" width="1790" data-og-height="1204" height="1204" data-path="images/integrations/google-workspace/image(17).png" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(17).png?w=280&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=8f04d980f0c06d6eb6a371725b55a7c8 280w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(17).png?w=560&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=f48c2e8c8fbd375d20488145251f5445 560w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(17).png?w=840&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=dcb3ff88f24ba520c1dfbd9318c800ce 840w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(17).png?w=1100&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=eb3348117f16839d1af0221fe36fa0dd 1100w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(17).png?w=1650&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=2bf9b8d29f12df0af9da5ecfe477a3f4 1650w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(17).png?w=2500&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=98b1467d1f0ea1e2bc114e2a3e71f0f4 2500w" />
+</Frame>
+
+<Frame>
+  <img src="https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(18).png?fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=8b2bee711d4c539e754e2101b11d5e05" alt="Google Cloud Service Account Token Creator role selection" data-og-width="1340" width="1340" data-og-height="1642" height="1642" data-path="images/integrations/google-workspace/image(18).png" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(18).png?w=280&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=d4365de96296d90652b3d8f5e20d108b 280w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(18).png?w=560&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=ee3e2101cbba3092e98870fecd1192a9 560w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(18).png?w=840&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=ceddf5e422828b0e88e1d2088394b111 840w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(18).png?w=1100&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=4e3a080086e18df55a2625f9742cced4 1100w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(18).png?w=1650&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=ab66a2dbf55b285aa2bfabd3b01388d7 1650w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(18).png?w=2500&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=0550ea3a1d91ba83c366de89de06e4b6 2500w" />
+</Frame>
+
+**Note:** If you encounter domain restriction errors, complete [Step 5: Organization Policies](#step-5-organization-policies-optional) first.
+
+### Step 4: Configure Domain-Wide Delegation
+
+1. **Get your service account's Unique ID / Client ID:**
+
+   * Go to your service account → "Details" page
+   * Copy the "Unique ID" / "Client ID" (long numeric string, e.g., `116634191637610572786`)
+
+2. **Configure in Google Workspace Admin Console:**
+   * Navigate to [admin.google.com](https://admin.google.com) → "Security" → "Access and data control" → "API controls" → "Manage Domain Wide Delegation"
+   * Click "Add New"
+   * Enter your service account's **Unique ID / Client ID** in the "Client ID" field
+
+<Frame caption="Paste your Client ID and comma-delimited scopes (defined below) here">
+  <img style={{maxWidth: "400px"}} src="https://mintcdn.com/serval/2yD3bPadWazatQgL/images/integrations/google-workspace/image(21).png?fit=max&auto=format&n=2yD3bPadWazatQgL&q=85&s=e141d659fca85821222f364691d4d39d" alt="Google Workspace Admin Add a new client ID dialog" data-og-width="955" width="955" data-og-height="855" height="855" data-path="images/integrations/google-workspace/image(21).png" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/serval/2yD3bPadWazatQgL/images/integrations/google-workspace/image(21).png?w=280&fit=max&auto=format&n=2yD3bPadWazatQgL&q=85&s=3a48754484678e54cf6406e2d4fb9618 280w, https://mintcdn.com/serval/2yD3bPadWazatQgL/images/integrations/google-workspace/image(21).png?w=560&fit=max&auto=format&n=2yD3bPadWazatQgL&q=85&s=e21a0257fc9139f367a0f7bfa3073b35 560w, https://mintcdn.com/serval/2yD3bPadWazatQgL/images/integrations/google-workspace/image(21).png?w=840&fit=max&auto=format&n=2yD3bPadWazatQgL&q=85&s=970ec13fe2d075299b1e9fb07af602b7 840w, https://mintcdn.com/serval/2yD3bPadWazatQgL/images/integrations/google-workspace/image(21).png?w=1100&fit=max&auto=format&n=2yD3bPadWazatQgL&q=85&s=497039244f2f6505995224a7628f337e 1100w, https://mintcdn.com/serval/2yD3bPadWazatQgL/images/integrations/google-workspace/image(21).png?w=1650&fit=max&auto=format&n=2yD3bPadWazatQgL&q=85&s=4d2889a4f47c4f9811a7d5161cdfea2b 1650w, https://mintcdn.com/serval/2yD3bPadWazatQgL/images/integrations/google-workspace/image(21).png?w=2500&fit=max&auto=format&n=2yD3bPadWazatQgL&q=85&s=9a3d400b701700cd534f2b938fa82af1 2500w" />
+</Frame>
+
+3. **Select and authorize scopes:**
+   * We recommend using **All Scopes** for the full range of Modern capabilities. Use **Minimal Scopes** if you only need basic user and group management.
+
+<CodeGroup>
+  ```text All Scopes (Recommended) theme={null}
+  https://www.googleapis.com/auth/admin.directory.user
+  https://www.googleapis.com/auth/admin.directory.group
+  https://www.googleapis.com/auth/admin.directory.group.member
+  https://www.googleapis.com/auth/admin.directory.domain.readonly
+  https://www.googleapis.com/auth/apps.groups.settings
+  https://www.googleapis.com/auth/gmail.settings.basic
+  https://www.googleapis.com/auth/gmail.settings.sharing
+  https://www.googleapis.com/auth/calendar
+  https://www.googleapis.com/auth/drive
+  https://www.googleapis.com/auth/drive.metadata
+  https://www.googleapis.com/auth/spreadsheets
+  https://www.googleapis.com/auth/spreadsheets.readonly
+  https://www.googleapis.com/auth/cloud-platform
+  ```
+
+  ```text Minimal Directory-Only Scopes theme={null}
+  https://www.googleapis.com/auth/admin.directory.user
+  https://www.googleapis.com/auth/admin.directory.group
+  https://www.googleapis.com/auth/admin.directory.group.member
+  https://www.googleapis.com/auth/admin.directory.domain.readonly
+  https://www.googleapis.com/auth/cloud-platform
+  ```
+</CodeGroup>
+
+**Comma-separated (copy/paste into Google Admin Console):**
+
+<CodeGroup>
+  ```text All Scopes (Recommended) theme={null}
+  https://www.googleapis.com/auth/admin.directory.user,https://www.googleapis.com/auth/admin.directory.group,https://www.googleapis.com/auth/admin.directory.group.member,https://www.googleapis.com/auth/admin.directory.domain.readonly,https://www.googleapis.com/auth/apps.groups.settings,https://www.googleapis.com/auth/gmail.settings.basic,https://www.googleapis.com/auth/gmail.settings.sharing,https://www.googleapis.com/auth/calendar,https://www.googleapis.com/auth/drive,https://www.googleapis.com/auth/drive.metadata,https://www.googleapis.com/auth/spreadsheets,https://www.googleapis.com/auth/spreadsheets.readonly,https://www.googleapis.com/auth/cloud-platform
+  ```
+
+  ```text Minimal Directory-Only Scopes theme={null}
+  https://www.googleapis.com/auth/admin.directory.user,https://www.googleapis.com/auth/admin.directory.group,https://www.googleapis.com/auth/admin.directory.group.member,https://www.googleapis.com/auth/admin.directory.domain.readonly,https://www.googleapis.com/auth/cloud-platform
+  ```
+</CodeGroup>
+
+<Warning>
+  The `cloud-platform` scope is **required** in both scope sets. It enables Modern to impersonate your service account. Removing it will cause authentication to fail.
+</Warning>
+
+For details on what each scope enables, see [Scope Reference](#scope-reference) below. If you plan to use [Knowledge Base Sync](#knowledge-base-sync), make sure the Drive and Sheets scopes are included.
+
+<Info>
+  Having trouble with scopes or permissions? See [Troubleshooting](#troubleshooting) for common error messages and solutions.
+</Info>
+
+* Paste the comma-separated scopes into the "OAuth scopes" field
+* Click "Authorize"
+
+<Frame>
+  <img src="https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(20).png?fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=6a7c6ebf01980d1000ab51bd0648bfe7" alt="Google Workspace Admin domain-wide delegation interface" data-og-width="1778" width="1778" data-og-height="1226" height="1226" data-path="images/integrations/google-workspace/image(20).png" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(20).png?w=280&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=c939858c44cfedc0ca966532832565dd 280w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(20).png?w=560&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=89c061c295c994ab064604f6727e98a0 560w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(20).png?w=840&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=0f6aa4b46e8155c8403f51bd963db49e 840w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(20).png?w=1100&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=d4a88d0086fe97ebec55b4fdf7b1aed6 1100w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(20).png?w=1650&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=ff22722148d1514704eb1cb1dfeb983f 1650w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(20).png?w=2500&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=1b994dad2bfe46ef47b6ad26f4fe1d84 2500w" />
+</Frame>
+
+### Step 5: Organization Policies (Optional)
+
+Only complete this step if you received domain restriction errors in Step 3.
+
+1. Navigate to [Google Cloud Console → Organization Policies](https://console.cloud.google.com/iam-admin/orgpolicies/list)
+2. Search for `iam.allowedPolicyMemberDomains`
+3. Select "Domain Restricted Sharing" → "Manage Policy"
+4. Select "Override Parent's Policy" and "Merge with Parent"
+5. Click "Add a rule" → "Custom" → "Allow"
+6. Enter `C04gvbkuc` as the custom value
+7. Save the policy
+
+<Frame>
+  <img src="https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(23).png?fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=42c25cfd773ca92fd8e67a6defdf50f2" alt="Google Cloud organization policies list" data-og-width="1766" width="1766" data-og-height="1016" height="1016" data-path="images/integrations/google-workspace/image(23).png" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(23).png?w=280&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=ec48871452c985b7e5e89c9c266bd8eb 280w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(23).png?w=560&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=38dc0f171f666dba875ffe6a31bcc7f6 560w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(23).png?w=840&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=df99d86c3287ab52cc8b8015711e480a 840w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(23).png?w=1100&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=75657c88f5d93c855623ca3b43347eeb 1100w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(23).png?w=1650&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=3d3cf79371f93edbed5067659b313047 1650w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(23).png?w=2500&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=0c2892b21788d5530673c080f0634b42 2500w" />
+</Frame>
+
+<Frame>
+  <img src="https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(24).png?fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=2124a52933ed71f0cdb7aadb2e31c58a" alt="Google Cloud Domain Restricted Sharing policy configuration" data-og-width="1692" width="1692" data-og-height="1392" height="1392" data-path="images/integrations/google-workspace/image(24).png" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(24).png?w=280&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=31fbc9cd1399da35119da1efeae36a41 280w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(24).png?w=560&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=a74fd82e5bf88dc5298d91839b2e9dad 560w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(24).png?w=840&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=8cb7b837f692558572a4138aaafead7e 840w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(24).png?w=1100&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=f922eaa9445227f69e61ae0dfa998c83 1100w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(24).png?w=1650&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=d418358901048b61fe0f411e25e6cbdc 1650w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(24).png?w=2500&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=fadff71730da08c65cf2c02fef7ed4c5 2500w" />
+</Frame>
+
+<Frame>
+  <img src="https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(25).png?fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=55c415fe10191c9da1350982783113be" alt="Google Cloud organization policy custom rule configuration" data-og-width="1054" width="1054" data-og-height="1280" height="1280" data-path="images/integrations/google-workspace/image(25).png" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(25).png?w=280&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=510c81d0357ae8afe50f46b688b08a0f 280w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(25).png?w=560&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=d39bb11fff6fbf1f4e05b4f5f7361ce2 560w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(25).png?w=840&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=ee7ca3d2eaeb700115028f5eeed32aab 840w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(25).png?w=1100&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=86fd3256662db3d2529fe09a134bc0d4 1100w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(25).png?w=1650&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=901381d4d0ccdb697265b884091db88b 1650w, https://mintcdn.com/serval/muF_YomC37fBCG6k/images/integrations/google-workspace/image(25).png?w=2500&fit=max&auto=format&n=muF_YomC37fBCG6k&q=85&s=4e4480c556b5c247805581d404c5523c 2500w" />
+</Frame>
+
+**If you don't have Organization Policy access:**
+
+* Request access from your Organization Administrator
+* Contact your Google Cloud Administrator
+* Use a different Google Cloud project where you have admin rights
+
+### Step 6: Complete Connection
+
+Return to Modern to complete the integration:
+
+1. Navigate to "Applications" → "Google Workspace" → "Connect" → "Service Account"
+2. Enter the required information:
+   * **Google Workspace domain:** Your organization's domain (e.g., `company.com`)
+   * **Service Account email:** Your service account's email address
+   * **Default subject:** An admin user in your domain (e.g., `admin@company.com`)
+   * **Scopes:** The comma-separated list from [Step 4](#step-4:-configure-domain-wide-delegation)
+3. Click "Submit"
+
+<Check>
+  Your Google Workspace integration is now ready to use!
+</Check>
+
+## Knowledge Base Sync
+
+Once your Google Workspace integration is configured with the Drive API scopes, you can enable knowledge base synchronization to make your Google Drive content searchable within Modern.
+
+### What Gets Synced
+
+Modern automatically syncs and indexes the following Google Drive content types:
+
+* **Google Docs** - Full text content converted to markdown
+* **Google Sheets** - Exported as CSV and converted to markdown tables
+* **Google Slides** - Slide text content as markdown
+* **Folders** - Folder hierarchy for organization (no content to index)
+
+<Note>
+  **Not supported yet:** - Files from other formats (PDF, Word, etc.) are not
+  currently synced - Comments and suggestions within documents - Revision
+  history
+</Note>
+
+### How Sync Works
+
+**Initial Sync:**
+
+1. Modern discovers all accessible Google Drive files and folders
+2. Downloads and converts supported file types to searchable markdown
+3. Creates embeddings for semantic search
+4. Maintains folder hierarchy for organization
+
+**Incremental Updates:**
+
+* Modern automatically detects changes to synced files using the Drive Changes API
+* Only modified files are re-downloaded and re-indexed
+* The `drive.metadata` scope enables efficient change detection
+
+<Warning>
+  **Folder Selection Required:** You must explicitly select which folders to sync from your Google Drive. For security and privacy, Modern will not sync any files until you configure folder selection.
+
+  Navigate to your Google Workspace integration settings → Knowledge Source tab to select folders. Only files within the selected folders (and their subfolders) will be synced and indexed for search.
+</Warning>
+
+### Required Scopes for Knowledge Base Sync
+
+At minimum, you need these scopes for knowledge base functionality:
+
+```
+https://www.googleapis.com/auth/drive.readonly
+https://www.googleapis.com/auth/drive.metadata.readonly
+```
+
+For full functionality including Sheets export:
+
+```
+https://www.googleapis.com/auth/drive
+https://www.googleapis.com/auth/drive.metadata
+https://www.googleapis.com/auth/spreadsheets.readonly
+```
+
+<Tip>
+  The `drive.metadata` scope is critical for incremental sync. Without it,
+  Modern must perform full re-syncs which are much slower and more
+  resource-intensive.
+</Tip>
+
+### Managing Your Knowledge Base
+
+After enabling sync:
+
+1. Navigate to your Google Workspace app in Modern
+2. Go to the "Knowledge Source" tab
+3. Click "Sync" to start an initial sync
+4. Monitor sync progress and view synced items
+5. Toggle individual items' visibility to control what's searchable
+
+<Info>
+  **Sync frequency:** Incremental syncs run automatically every few hours to
+  detect changes. You can manually trigger a sync at any time.
+</Info>
+
+## Troubleshooting
+
+### Common Setup Issues
+
+If you encounter errors during setup, verify these configurations:
+
+| Component                       | Verification                                                                                                   |
+| ------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| **APIs Enabled**                | Google Cloud Console → APIs & Services → Enabled APIs                                                          |
+| **Service Account Permissions** | Service Account → Permissions → Verify `modern@modern-424322.iam.gserviceaccount.com` has "Token Creator" role |
+| **Domain-Wide Delegation**      | Google Workspace Admin Console → Security → API Controls → Verify Client ID is listed                          |
+
+### Error Messages and Solutions
+
+#### "impersonate: status code 401: unauthorized\_client"
+
+**Missing:** Service account permissions\
+**Fix:** Complete [Step 3: Configure Service Account Permissions](#step-3:-configure-service-account-permissions)
+
+#### "Admin SDK API has not been used in project \[PROJECT\_ID] before or it is disabled"
+
+**Missing:** API enablement\
+**Fix:** Complete [Step 2: Enable Required APIs](#step-2:-enable-required-apis)
+
+#### "Client is unauthorized to retrieve access tokens using this method"
+
+**Missing:** Domain-wide delegation\
+**Fix:** Complete [Step 4: Configure Domain-Wide Delegation](#step-4:-configure-domain-wide-delegation)
+
+#### "Domain restricted sharing policy"
+
+**Missing:** Organization policy configuration\
+**Fix:** Complete [Step 5: Organization Policies](#step-5:-organization-policies-\(optional\))
+
+### Knowledge Base Sync Issues
+
+#### "Failed to list Drive files"
+
+* Verify the `drive` and `drive.metadata` scopes are configured in domain-wide delegation
+* Check that the Drive API is enabled in your Google Cloud project
+* Ensure your default subject user has access to the files you're trying to sync
+
+#### "No files synced" but files exist
+
+* Check folder permissions — Modern can only sync files accessible to the default subject user
+* Verify files are of supported types (Docs, Sheets, Slides)
+* Check that files aren't in the Trash
+
+#### Slow initial sync
+
+* Initial syncs can take time for large Drive accounts (hundreds of files)
+* Consider using folder selection to limit scope
+* Incremental syncs after the initial sync are much faster
+
+### Getting Help
+
+If you continue to experience issues:
+
+1. Verify all steps in the setup process are complete
+2. Wait 10-15 minutes for Google services to propagate changes
+3. Check that your default subject user has admin privileges in Google Workspace
+
+***
+
+## Scope Reference
+
+Below is a breakdown of what each Google API scope enables. Use this to decide which scopes are appropriate for your organization.
+
+### Admin Directory
+
+| Scope                             | Description                  |
+| --------------------------------- | ---------------------------- |
+| `admin.directory.user`            | Manage users in your domain  |
+| `admin.directory.group`           | Manage groups in your domain |
+| `admin.directory.group.member`    | Manage group memberships     |
+| `admin.directory.domain.readonly` | Read domain information      |
+| `apps.groups.settings`            | Manage group settings        |
+
+### Gmail
+
+| Scope                    | Description                      |
+| ------------------------ | -------------------------------- |
+| `gmail.settings.basic`   | Manage basic Gmail settings      |
+| `gmail.settings.sharing` | Manage Gmail delegation settings |
+
+### Calendar
+
+| Scope      | Description                    |
+| ---------- | ------------------------------ |
+| `calendar` | Full access to Google Calendar |
+
+### Drive and Knowledge Base
+
+| Scope            | Description                                                                      |
+| ---------------- | -------------------------------------------------------------------------------- |
+| `drive`          | Full access to Google Drive files. **Required for Knowledge Base sync.**         |
+| `drive.metadata` | Access to file metadata for change detection. **Required for incremental sync.** |
+
+### Sheets
+
+| Scope                   | Description                       |
+| ----------------------- | --------------------------------- |
+| `spreadsheets`          | Full access to Google Sheets      |
+| `spreadsheets.readonly` | Read-only access to Google Sheets |
+
+### Platform
+
+| Scope            | Description                                                       |
+| ---------------- | ----------------------------------------------------------------- |
+| `cloud-platform` | **Required.** Enables Modern to impersonate your service account. |
+
+<Info>
+  All scopes are prefixed with `https://www.googleapis.com/auth/`. For example, `admin.directory.user` refers to `https://www.googleapis.com/auth/admin.directory.user`.
+</Info>

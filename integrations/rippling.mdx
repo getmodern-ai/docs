@@ -1,0 +1,55 @@
+---
+title: 'Rippling'
+---
+
+## About Rippling
+
+Rippling is a workforce management platform that combines HR, IT, payroll, and finance tools in one system. It automates employee management from onboarding to offboarding, helping businesses streamline their operations.
+
+## What the Rippling integration enables
+
+| Capability           | Description                                                              |
+| -------------------- | ------------------------------------------------------------------------ |
+| Access Management    | Read employee data, manage workers, and sync organizational structure    |
+| Automation workflows | Automate onboarding/offboarding, access reviews, and device provisioning |
+
+***
+
+## Rippling configuration (in Rippling)
+
+### 1. Generate API credentials
+
+1. Log into your Rippling admin dashboard
+2. Navigate to **Settings → API Access**
+3. Click **Create New API Key**
+4. Name your API key (e.g., "Modern Integration")
+5. Select the appropriate scopes for your integration needs:
+   * `companies.read` - Read company information
+   * `users.read` - Read employee data
+   * `users.write` - Write employee data
+   * `workers.read` - Read worker details including compensation and teams
+   * `workers.write` - Write worker details including compensation and teams
+   * `departments.read` - Read department structure
+   * `teams.read` - Read team information
+   * `custom-fields.read` - Read custom field definitions
+   * `supergroups.read` - Read supergroup information
+   * `supergroups.read-write` - Write supergroup information
+   * Additional write scopes if you need to modify data
+6. Copy and securely store the generated API key - it will only be shown once
+
+### 2. Configure permissions
+
+Ensure the API key has access to the data you want to sync with Modern. Rippling uses role-based access control, so verify that the service account or user associated with the API key has the necessary permissions.
+
+***
+
+## Modern configuration
+
+1. In Modern, navigate to **Applications → Available → Rippling**
+2. Click **Connect**
+3. Fill in the connection form:
+   * **Company Name**: Your company's identifier in Rippling
+   * **API Key**: The API key you generated in step 6 above
+4. Click **Save**
+
+Your Rippling account is now connected—run a manual sync to verify connectivity and ensure data flows correctly.

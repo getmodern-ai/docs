@@ -1,0 +1,125 @@
+---
+title: 'Envoy'
+---
+
+## About Envoy
+
+Envoy is a modern visitor management platform that helps organizations create a welcoming and secure workplace. The Envoy API enables workplace management and visitor invitation workflows.
+
+## What the Envoy integration enables
+
+| Capability           | Description                                                 |
+| -------------------- | ----------------------------------------------------------- |
+| Workplace Management | Manage workplace operations and configurations              |
+| Visitor Invitations  | Create and manage visitor invitations and related workflows |
+
+***
+
+## Setting up Envoy API Access
+
+This guide will walk you through setting up client API key authentication for Envoy, which is ideal for integrating with Modern.
+
+### Step 1: Create or identify an authorized API User
+
+Before you can access the Envoy API, you need to set up a dedicated API user account:
+
+1. Navigate to your [Envoy employee directory](https://dashboard.envoy.com/employees)
+2. Click **Add Employee** to create a new employee manually
+3. Fill in the required information for your API user:
+   * Use a service account email (e.g., `api-user@yourcompany.com`)
+   * Assign a **Global Admin** role to ensure full API access
+4. **Important**: Disable the setting **"Show employee as a host on the Visitors Kiosk"** to prevent the API user from appearing in visitor-facing interfaces
+
+<Warning>
+  Ensure the API user has Global Admin permissions to access all necessary API endpoints. Limited roles may restrict API functionality.
+</Warning>
+
+### Step 2: Create an Integration in the Dev Dashboard
+
+Next, you'll need to create an integration to generate your API credentials:
+
+1. Visit the [Envoy Dev Dashboard](https://dashboard.envoy.com/dev-dashboard)
+2. Click **Create New** to start a new integration
+3. Configure your integration:
+   * **Name**: Provide a descriptive name (e.g., "Modern Integration")
+   * **Description**: Add a brief description of the integration's purpose
+
+<Frame>
+  <img src="https://mintcdn.com/serval/PD6ju3J0zYRJUZwe/images/envoy-create.png?fit=max&auto=format&n=PD6ju3J0zYRJUZwe&q=85&s=95dcf506aab34dc2dc762e1a45564fd8" alt="Envoy Dev Dashboard create integration form" data-og-width="2306" width="2306" data-og-height="814" height="814" data-path="images/envoy-create.png" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/serval/PD6ju3J0zYRJUZwe/images/envoy-create.png?w=280&fit=max&auto=format&n=PD6ju3J0zYRJUZwe&q=85&s=a5bd6b0f72ae73c4a01d7471e26df3e1 280w, https://mintcdn.com/serval/PD6ju3J0zYRJUZwe/images/envoy-create.png?w=560&fit=max&auto=format&n=PD6ju3J0zYRJUZwe&q=85&s=96955b510bc4507e5b702ba4701f82f8 560w, https://mintcdn.com/serval/PD6ju3J0zYRJUZwe/images/envoy-create.png?w=840&fit=max&auto=format&n=PD6ju3J0zYRJUZwe&q=85&s=300fa78963dce94a743f94380b2d043b 840w, https://mintcdn.com/serval/PD6ju3J0zYRJUZwe/images/envoy-create.png?w=1100&fit=max&auto=format&n=PD6ju3J0zYRJUZwe&q=85&s=24e55b792d199528461ba87b10a29afa 1100w, https://mintcdn.com/serval/PD6ju3J0zYRJUZwe/images/envoy-create.png?w=1650&fit=max&auto=format&n=PD6ju3J0zYRJUZwe&q=85&s=7bc8fb73921ff7ac2eb9f550d0f35e4a 1650w, https://mintcdn.com/serval/PD6ju3J0zYRJUZwe/images/envoy-create.png?w=2500&fit=max&auto=format&n=PD6ju3J0zYRJUZwe&q=85&s=d5d9ec2f54c50dd77875f4410ea18072 2500w" />
+</Frame>
+
+### Step 3: Configure API Scopes
+
+Select the appropriate API scopes for your integration based on your needs:
+
+<Frame>
+  <img src="https://mintcdn.com/serval/PD6ju3J0zYRJUZwe/images/envoy-scopes.png?fit=max&auto=format&n=PD6ju3J0zYRJUZwe&q=85&s=413a8eb5b38370119ab28ba5b92c1de1" alt="Envoy API scopes configuration" data-og-width="2218" width="2218" data-og-height="766" height="766" data-path="images/envoy-scopes.png" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/serval/PD6ju3J0zYRJUZwe/images/envoy-scopes.png?w=280&fit=max&auto=format&n=PD6ju3J0zYRJUZwe&q=85&s=cf48fc783f7ebb009576ad8bbc60a327 280w, https://mintcdn.com/serval/PD6ju3J0zYRJUZwe/images/envoy-scopes.png?w=560&fit=max&auto=format&n=PD6ju3J0zYRJUZwe&q=85&s=79e5fa23ded7b7eeb93b759222ae2f4c 560w, https://mintcdn.com/serval/PD6ju3J0zYRJUZwe/images/envoy-scopes.png?w=840&fit=max&auto=format&n=PD6ju3J0zYRJUZwe&q=85&s=5813952757dfdd4af50c08a6c35e7aa7 840w, https://mintcdn.com/serval/PD6ju3J0zYRJUZwe/images/envoy-scopes.png?w=1100&fit=max&auto=format&n=PD6ju3J0zYRJUZwe&q=85&s=70a022e5db79a61b82da603ffda17424 1100w, https://mintcdn.com/serval/PD6ju3J0zYRJUZwe/images/envoy-scopes.png?w=1650&fit=max&auto=format&n=PD6ju3J0zYRJUZwe&q=85&s=3e9d9f217ff363f87d6b3d8eff98088b 1650w, https://mintcdn.com/serval/PD6ju3J0zYRJUZwe/images/envoy-scopes.png?w=2500&fit=max&auto=format&n=PD6ju3J0zYRJUZwe&q=85&s=acb29565f3bcbeb0f6353f136b1687f2 2500w" />
+</Frame>
+
+<Tip>
+  Start with minimal scopes and add more as needed. This follows the principle of least privilege and enhances security.
+</Tip>
+
+### Recommended Scopes
+
+We recommend starting with these core scopes as a foundation for your Envoy integration:
+
+| Scope            | Description                                  |
+| ---------------- | -------------------------------------------- |
+| `locations.read` | View location information and settings       |
+| `employees.read` | Access employee directory                    |
+| `visitors.read`  | View visitor information and check-in status |
+| `visitors.write` | Create and update visitor records            |
+| `entries.read`   | View entry logs and check-in data            |
+| `entries.write`  | Create and manage entry records              |
+| `invites.read`   | Access invitation details                    |
+| `invites.write`  | Create and manage invitations                |
+
+<Info>
+  These scopes provide comprehensive access to manage visitors, invitations, and workplace data. Add additional scopes only as needed for specific use cases.
+</Info>
+
+### Step 4: Enable the Integration
+
+1. After selecting your scopes, check the box **"Is the integration ready to be displayed?"**
+2. Click **Save** to create your integration
+
+### Step 5: Retrieve Your Client API Key
+
+Once your integration is saved, Envoy will generate a 'Envoy API Credentials" dropdown below in the same page:
+
+1. In 'Envoy API Credentials' dropdown, locate the **Client API Key** section
+2. Copy the API key to your clipboard
+3. Store this key securely - you'll need to provide this to Modern to complete the integration
+
+<Frame>
+  <img src="https://mintcdn.com/serval/PD6ju3J0zYRJUZwe/images/envoy-api.png?fit=max&auto=format&n=PD6ju3J0zYRJUZwe&q=85&s=1d202a64e007145cba344a74c9afe605" alt="Envoy API credentials with Client API Key" data-og-width="1760" width="1760" data-og-height="890" height="890" data-path="images/envoy-api.png" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/serval/PD6ju3J0zYRJUZwe/images/envoy-api.png?w=280&fit=max&auto=format&n=PD6ju3J0zYRJUZwe&q=85&s=29a7b9d90fca1c44049def14009bb66f 280w, https://mintcdn.com/serval/PD6ju3J0zYRJUZwe/images/envoy-api.png?w=560&fit=max&auto=format&n=PD6ju3J0zYRJUZwe&q=85&s=c27d18d713af015f918d65c6027ceee2 560w, https://mintcdn.com/serval/PD6ju3J0zYRJUZwe/images/envoy-api.png?w=840&fit=max&auto=format&n=PD6ju3J0zYRJUZwe&q=85&s=b88eff8e5e2baa8d7591c0c98c553beb 840w, https://mintcdn.com/serval/PD6ju3J0zYRJUZwe/images/envoy-api.png?w=1100&fit=max&auto=format&n=PD6ju3J0zYRJUZwe&q=85&s=fb6bace6f21d23d6f8e80781b56764c2 1100w, https://mintcdn.com/serval/PD6ju3J0zYRJUZwe/images/envoy-api.png?w=1650&fit=max&auto=format&n=PD6ju3J0zYRJUZwe&q=85&s=cedb82c30bf685f3dab27c3055da0f55 1650w, https://mintcdn.com/serval/PD6ju3J0zYRJUZwe/images/envoy-api.png?w=2500&fit=max&auto=format&n=PD6ju3J0zYRJUZwe&q=85&s=abf130cac0815da0d8455f0db9e8fc4a 2500w" />
+</Frame>
+
+### Step 6: Add the key to Modern
+
+1. In Modern, navigate to **Applications → Connect new → Envoy → Connect**
+
+2. Enter the following information:
+
+   | Field         | Description                                                             |
+   | ------------- | ----------------------------------------------------------------------- |
+   | Instance Name | A friendly name for this integration (e.g., "Envoy Visitor Management") |
+   | API Key       | The Client API Key you copied from Envoy                                |
+
+3. Click **Submit** to complete the integration
+
+<Check>
+  Your Envoy integration is now connected! You can start creating workflows to automate visitor management and workplace operations.
+</Check>
+
+***
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Healthcheck failure">
+    * Verify your API key is properly copied and pasted with no other characters
+    * Ensure you have granted proper permissions for healthchecks: `locations.read` and `companies.read`
+  </Accordion>
+</AccordionGroup>

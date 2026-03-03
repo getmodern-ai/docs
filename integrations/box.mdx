@@ -1,0 +1,167 @@
+---
+title: 'Box'
+---
+
+## About Box
+
+Box is a cloud content management platform that enables secure file storage, sharing, and collaboration. This integration enables Modern workflows to access and manage files, folders, users, and enterprise settings in Box.
+
+## What the Box integration enables
+
+| Capability      | Description                                           |
+| --------------- | ----------------------------------------------------- |
+| File Management | Read, write, and organize files and folders           |
+| User Management | Manage enterprise users and groups                    |
+| Webhooks        | Create and manage webhooks for event-driven workflows |
+| Box Sign        | Manage signature requests                             |
+| Box AI          | Access Box AI API capabilities                        |
+
+Anything defined in the [Box API](https://developer.box.com/reference) can be accessed through Modern.
+
+***
+
+## Choose your connection method
+
+Modern supports two methods of connecting to Box:
+
+* **OAuth 2.0** (recommended):
+  * Simple integration process with one-click authorization
+  * Permissions are limited to what the authorizing user has access to
+  * Suitable for most use cases
+* **Client Credentials Grant**:
+  * More manual configuration required
+  * Full control over scopes and permissions via the Box Developer Console
+  * Server-to-server authentication without user interaction
+  * Service Account has its own isolated content area
+
+To get started, navigate to **Apps** → **Available** → **Box** and click **Connect**.
+
+***
+
+## OAuth 2.0 Integration (Recommended)
+
+1. In Modern, navigate to **Apps** → **Available** → **Box**
+2. Click **Connect** to open the connection dialog
+3. Choose **"OAuth 2.0"**
+4. Select the permission presets you need:
+   * **Read Files and Folders** - Read access to all files and folders
+   * **Read and Write Files and Folders** - Full read/write access
+   * **Manage Users** - Manage enterprise and app users
+   * **Manage Groups** - Create, update, and delete groups
+   * **Manage Webhooks** - Create and manage webhooks
+   * **Enterprise Administration** - View and edit enterprise attributes
+   * **Box Sign** - Manage signature requests
+   * **Box AI** - Access Box AI capabilities
+5. Click **Connect Account**
+6. Sign in to Box and authorize the application
+
+<Note>
+  **Scope limitations:** The effective permissions are limited to what the authorizing user has access to in Box. For example, if you select "Manage Users" but the authorizing user doesn't have admin privileges, user management operations will fail.
+</Note>
+
+***
+
+## Client Credentials Grant Integration
+
+Use this method when you need:
+
+* An isolated content area (Service Account has its own folder tree)
+* Full control over scopes configured in the Box Developer Console
+* Server-to-server authentication without user interaction
+
+### Step 1: Create a Box Platform App
+
+1. Go to the [Box Developer Console](https://app.box.com/developers/console)
+2. Click **Create New App**
+3. Enter an app name (e.g., "Modern Integration")
+4. Under **Authentication Method**, select **Server Authentication (Client Credentials Grant)**
+5. Click **Create App**
+
+### Step 2: Configure Application Scopes
+
+1. Navigate to the **Configuration** tab in your app
+2. Under **Application Scopes**, enable the permissions you need:
+   * Read all files and folders stored in Box
+   * Read and write all files and folders stored in Box
+   * Manage users
+   * Manage groups
+   * Manage webhooks
+   * Manage enterprise properties
+   * etc.
+3. Click **Save Changes**
+
+### Step 3: Submit App for Approval
+
+After configuring your app, you must submit it for approval before it can be used.
+
+1. In the Box Developer Console, navigate to the Authorization tab for your app
+2. Click **Review and Submit** in the app configuration
+3. Wait for a Box Admin to approve the app
+
+<Warning>
+  **Important:** If you skip this step, you may encounter an "Internal Server Error" when trying to connect in Modern. Make sure your app has been submitted and approved before proceeding.
+</Warning>
+
+### Step 4: Authorize in Box Admin Console
+
+Your Box app must be authorized by a Box Admin before it can be used.
+
+1. Go to [Box Admin Console](https://app.box.com/master/platform-apps) → **Integrations** → **Platform Apps**
+2. Click **Authorize**
+
+### Step 5: Connect in Modern
+
+1. Navigate to **Apps** → **Available** → **Box**
+2. Click **Connect** → **"Client Credentials Grant"**
+3. Fill in the following fields:
+   * **Instance Name**: A descriptive name for this connection
+   * **Client ID**: From Box Developer Console (Configuration tab)
+   * **Client Secret**: From Box Developer Console (requires 2FA enabled on your account to view)
+   * **Subject Type**:
+     * **Enterprise** - Authenticate as Service Account (recommended for most use cases)
+     * **User** - Authenticate as a specific user
+   * **Subject ID**: Your Enterprise ID (from the **General Settings** tab) or User ID
+4. Click **Connect**
+
+***
+
+## Available Scopes Reference
+
+| Scope                          | Description                                         |
+| ------------------------------ | --------------------------------------------------- |
+| `root_readonly`                | Read all files and folders                          |
+| `root_readwrite`               | Read and write all files and folders                |
+| `manage_managed_users`         | Manage enterprise users                             |
+| `manage_app_users`             | Manage app users                                    |
+| `manage_groups`                | Manage groups                                       |
+| `manage_webhook`               | Manage webhooks                                     |
+| `manage_enterprise_properties` | View and edit enterprise attributes                 |
+| `manage_data_retention`        | Manage retention policies (requires Box Governance) |
+| `sign_requests.readwrite`      | Manage signature requests (requires Box Sign)       |
+| `ai.readwrite`                 | Access Box AI API                                   |
+
+For detailed scope information, see [Box Scopes Documentation](https://developer.box.com/guides/api-calls/permissions-and-errors/scopes).
+
+***
+
+## Box User Types
+
+| User Type           | Description                                       |
+| ------------------- | ------------------------------------------------- |
+| **Managed User**    | Regular Box user in your enterprise               |
+| **Service Account** | Application-owned user with isolated content area |
+| **App User**        | Application-managed user created via API          |
+
+**Service Accounts** are automatically created when you set up a Box Platform App with server authentication. They have their own folder tree and do not have access to other users' content unless explicitly granted via collaboration.
+
+For more information, see [Box User Types](https://developer.box.com/platform/user-types).
+
+***
+
+## External Resources
+
+* [Box Developer Console](https://app.box.com/developers/console)
+* [Box Admin Console](https://app.box.com/master/platform-apps)
+* [Box API Reference](https://developer.box.com/reference)
+* [Box Authentication Guide](https://developer.box.com/guides/authentication)
+* [Box Scopes Documentation](https://developer.box.com/guides/api-calls/permissions-and-errors/scopes)

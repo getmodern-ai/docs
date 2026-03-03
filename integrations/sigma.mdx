@@ -1,0 +1,141 @@
+---
+title: 'Sigma Computing'
+---
+
+## About Sigma Computing
+
+Sigma Computing is a cloud-based business intelligence and analytics platform that enables teams to explore, analyze, and visualize data from various sources. Connecting Sigma to Modern enables automated user management, team administration, and workbook operations directly from your workflows.
+
+## What the Sigma Computing integration enables
+
+| Capability           | Description                                                                  |
+| -------------------- | ---------------------------------------------------------------------------- |
+| Automation Workflows | Build Modern workflows to automate anything accessible via Sigma's REST APIs |
+
+All resources exposed by the [Sigma REST API v2](https://help.sigmacomputing.com/reference/get-started-sigma-api) are available to Modern workflows, including:
+
+* **Members**: User management (create, update, deactivate, list)
+* **Teams**: Team management (create, update, list, manage members)
+* **Workbooks**: Analytics workbook management (list, export, permissions)
+* **Connections**: Data warehouse connection management
+* **Datasets**: Dataset management
+* **Workspaces**: Workspace management
+* **User Attributes**: Row-level security configuration
+* **Grants**: Permission management
+
+***
+
+## Sigma Computing Configuration
+
+### Prerequisites
+
+Before configuring the Sigma Computing integration in Modern, ensure you have:
+
+* Administrator access to your Sigma Computing account
+* Permissions to access the Administration section
+* Ability to create API credentials in Developer Access
+
+<Warning>
+  These steps require Sigma administrator privileges. If you do not have these privileges, contact your Sigma administrator.
+</Warning>
+
+### Step 1: Create API Credentials
+
+<Steps>
+  <Step title="Access Developer Settings">
+    1. Log in to your Sigma Computing account
+    2. Navigate to **Administration** (click your profile icon in the top right)
+    3. Select **Developer Access** from the left sidebar
+  </Step>
+
+  <Step title="Create API Client">
+    1. Click **Create New** or **Add Client** in the API Clients section
+    2. Fill in the client information:
+       * **Name**: Enter a descriptive name (e.g., "Modern Integration")
+       * **Description**: Optional description for your reference
+    3. Click **Create** to generate the credentials
+  </Step>
+
+  <Step title="Copy Credentials">
+    After creating the API client, you'll see:
+
+    * **Client ID**: Copy this value
+    * **Client Secret**: Copy this value immediately
+
+    <Warning>
+      The Client Secret is only shown once. Store it securely. If you lose it, you'll need to regenerate the credentials.
+    </Warning>
+  </Step>
+
+  <Step title="Identify Your API Base URL">
+    Your API base URL depends on your cloud provider and region. You can find this in the **Developer Access** section, or refer to the table below:
+
+    | Cloud Provider | Region         | API Base URL                      |
+    | -------------- | -------------- | --------------------------------- |
+    | AWS            | US West        | `aws-api.sigmacomputing.com`      |
+    | AWS            | US East        | `api.us-a.aws.sigmacomputing.com` |
+    | AWS            | Canada         | `api.ca.aws.sigmacomputing.com`   |
+    | AWS            | Europe         | `api.eu.aws.sigmacomputing.com`   |
+    | AWS            | United Kingdom | `api.uk.aws.sigmacomputing.com`   |
+    | AWS            | Australia      | `api.au.aws.sigmacomputing.com`   |
+    | Azure          | US             | `api.us.azure.sigmacomputing.com` |
+    | Azure          | Europe         | `api.eu.azure.sigmacomputing.com` |
+    | Azure          | Canada         | `api.ca.azure.sigmacomputing.com` |
+    | Azure          | United Kingdom | `api.uk.azure.sigmacomputing.com` |
+    | GCP            | -              | `api.sigmacomputing.com`          |
+
+    <Tip>
+      Your API base URL is typically shown in the Developer Access section of Sigma's Administration panel.
+    </Tip>
+  </Step>
+</Steps>
+
+***
+
+## Modern Configuration
+
+Once you have created your Sigma API credentials, follow these steps to configure the integration in Modern:
+
+<Steps>
+  <Step title="Navigate to Sigma Integration">
+    1. In Modern, go to **Apps → Available → Sigma Computing → Connect**
+    2. The Sigma Computing configuration form will appear
+  </Step>
+
+  <Step title="Enter Configuration Details">
+    Fill in the following fields with the information from your Sigma configuration:
+
+    | Field             | Description                                  | Example                      |
+    | ----------------- | -------------------------------------------- | ---------------------------- |
+    | **API Base URL**  | Your Sigma API base URL (without `https://`) | `aws-api.sigmacomputing.com` |
+    | **Client ID**     | The Client ID from Step 1                    | `abc123def456...`            |
+    | **Client Secret** | The Client Secret from Step 1                | `••••••••••••`               |
+
+    <Warning>
+      Enter the API Base URL without the `https://` prefix. For example, use `aws-api.sigmacomputing.com` instead of `https://aws-api.sigmacomputing.com`.
+    </Warning>
+  </Step>
+
+  <Step title="Submit Configuration">
+    1. Click **Submit** to complete the integration setup
+    2. Modern will verify the connection using your credentials
+  </Step>
+</Steps>
+
+***
+
+## API Rate Limits
+
+Be aware of the following rate limits when building workflows with Sigma:
+
+* The authentication token endpoint is rate limited to **1 request per second**
+* API tokens expire after **1 hour** (Modern handles token refresh automatically)
+* Most endpoints support pagination with a default page size of 50 and maximum of 1000
+
+<Tip>
+  Modern automatically handles token expiration and refresh, so you don't need to manage authentication in your workflows.
+</Tip>
+
+***
+
+Need help? Contact **[support@modern.com](mailto:support@modern.com)** for assistance with your Sigma Computing integration.

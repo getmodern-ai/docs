@@ -1,0 +1,100 @@
+---
+title: 'Stripe'
+---
+
+Connect your Stripe account to enable payment and billing workflows.
+
+## Prerequisites
+
+Before setting up the Stripe integration, you'll need:
+
+* A Stripe account (create one at [stripe.com](https://stripe.com))
+* Access to the [Stripe Dashboard](https://dashboard.stripe.com)
+
+## Getting Your API Key
+
+Stripe uses API keys to authenticate requests. You'll need a **secret key** to connect your Stripe account.
+
+### API Key Types
+
+| Key Type             | Prefix                   | Description                                                     |
+| -------------------- | ------------------------ | --------------------------------------------------------------- |
+| Test mode secret key | `sk_test_`               | Use for testing and development. Doesn't process real payments. |
+| Live mode secret key | `sk_live_`               | Use in production. Processes real payments.                     |
+| Restricted key       | `rk_test_` or `rk_live_` | Limited permissions for specific use cases.                     |
+
+### Creating a Secret API Key
+
+1. Log in to the [Stripe Dashboard](https://dashboard.stripe.com)
+2. Navigate to **Developers** → **API keys** ([direct link](https://dashboard.stripe.com/apikeys))
+3. Click **Create secret key**
+4. Enter a verification code sent to your email or phone
+5. Give your key a name (e.g., "Modern Integration")
+6. Click **Create**
+7. **Important**: Copy and save the key immediately — you won't be able to see it again
+
+### Creating a Restricted API Key (Recommended)
+
+For better security, you can create a restricted key with only the permissions needed:
+
+1. On the [API keys](https://dashboard.stripe.com/apikeys) tab, click **Create restricted key**
+2. Enter a name for the key
+3. Set permissions for the resources you need:
+   * **Charges**: Read (for viewing payment history)
+   * **Customers**: Read/Write (for customer management)
+   * **Balance**: Read (for balance information)
+   * **Balance Transactions**: Read (for transaction history)
+4. Click **Create key**
+5. Copy and save the key immediately
+
+## Connecting Stripe
+
+1. In Modern, navigate to **Applications** and select your application
+2. Go to the **API Integration** tab
+3. Search for and select **Stripe**
+4. Enter your Stripe API key (starts with `sk_test_` or `sk_live_`)
+5. Click **Save**
+
+## Testing vs Production
+
+* **Test Mode**: Use keys starting with `sk_test_` for development and testing. No real payments are processed.
+* **Live Mode**: Use keys starting with `sk_live_` when you're ready to process real payments.
+
+You can switch between test and live mode in the Stripe Dashboard using the toggle in the top-right corner.
+
+## Security Best Practices
+
+* **Never expose secret keys** in client-side code, GitHub, or public repositories
+* **Use restricted keys** when possible to limit access to only necessary resources
+* **Rotate keys regularly** if you suspect they may have been compromised
+* **Store keys securely** using environment variables or a secrets manager
+
+To rotate a key:
+
+1. Go to **Developers** → **API keys** in the Stripe Dashboard
+2. Click the menu (⋯) next to the key
+3. Select **Rotate key**
+4. Update your integration with the new key
+
+## Troubleshooting
+
+### Invalid API Key
+
+* Ensure you're using a secret key (starts with `sk_`)
+* Verify the key hasn't been deleted or rotated
+* Check you're using the correct mode (test vs live)
+
+### Permission Denied
+
+* If using a restricted key, verify it has the required permissions
+* Check that your Stripe account has access to the requested resources
+
+### Rate Limiting
+
+Stripe has [rate limits](https://docs.stripe.com/rate-limits) on API requests. If you encounter rate limiting, reduce the frequency of requests.
+
+## Additional Resources
+
+* [Stripe API Keys Documentation](https://docs.stripe.com/keys)
+* [Stripe API Authentication](https://docs.stripe.com/api/authentication)
+* [Stripe Dashboard](https://dashboard.stripe.com)

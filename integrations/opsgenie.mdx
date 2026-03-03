@@ -1,0 +1,102 @@
+---
+title: 'Opsgenie'
+---
+
+## About Opsgenie
+
+Opsgenie is Atlassian's incident-management and on-call scheduling platform. Connecting Opsgenie to Modern lets you create, update and route alerts or incidents as part of fully-automated runbooks.
+
+## What the Opsgenie integration enables
+
+| Capability           | Description                                            |
+| -------------------- | ------------------------------------------------------ |
+| Access Management    | Create, update, and manage users and their permissions |
+| Automation workflows | Streamline alert routing and incident management       |
+
+Anything defined in the [Opsgenie API](https://docs.opsgenie.com/docs/api-overview) can be accessed through Modern.
+
+***
+
+## Opsgenie Configuration
+
+In Opsgenie there are two equally valid ways to obtain an API key, and which one you choose depends on how much scope you need and what plan your organisation is on:
+
+| Key type                 | Scope & typical use                                                                                                              | Where you create it                                       | Who can create it                                                   |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------- |
+| Account-level key        | Full-account configuration and reporting calls (ideal when Modern needs to manage many teams or global settings)                 | Settings → App Settings → API Key Management              | Owner or Admin role, or a custom role with Edit Configuration right |
+| Integration-specific key | Alert/incident automation tied to one "API" integration (often enough for creating, updating, acknowledging alerts for one team) | Settings → Integrations or Teams → \[Team] → Integrations | Team Admin (for team-level) or any Owner/Admin (for global)         |
+
+Below are step-by-step instructions for both methods so you can choose the one that best fits your Modern workflow.
+
+***
+
+### 1. Prerequisites
+
+1. **Role** – You must be an Owner or Admin (or hold a custom role with the Edit Configuration right). These roles are the only ones that can reach the relevant settings pages.
+2. **Opsgenie Web UI access** – Keys can only be generated from the browser UI (not the mobile app).
+3. **Plan awareness** – Free & Essentials plans hide the global Integrations page, so you will create the key from inside a team instead.
+
+***
+
+### 2. Method A – Create an Account-level API Key
+
+Use this when Modern needs to manage multiple teams, schedules, or other account-wide settings via the Opsgenie REST API.
+
+1. Sign in to Opsgenie and open Settings from the left navigation bar.
+2. Under App Settings, choose API Key Management. (Only Owners/Admins will see this option.)
+3. Click Add New API Key.
+4. Name the key something descriptive, e.g. "Modern Production".
+5. Select the Access Rights you want to grant.
+   * Account-level keys can call almost any configuration or incident API, but certain high-impact alert actions (e.g., Create Alert, Acknowledge) are deliberately blocked for safety.
+6. Copy the key value shown at the top of the dialog before you click Add API Key (it is only shown once).
+7. Store the key in a secure secret vault or environment variable for Modern.
+
+**Tip – Regenerate**: You can use Regenerate in the same dialog if you need to rotate the key; remember to update it in Modern immediately after.
+
+***
+
+### 3. Method B – Create an Integration-specific API Key
+
+Use this when you only need alert-level automation or when you're on a plan that restricts the global settings pages.
+
+#### 3.1 Global "API" integration (all plans that expose Settings → Integrations)
+
+1. Go to Settings → Integrations.
+2. Click Add Integration and search for "API".
+3. Give the integration a meaningful name (e.g. "Modern Default API").
+4. (Optional) Pick an Assignee team if alerts from Modern should go to one team by default.
+5. Press Continue – the integration saves at this point.
+6. Expand Steps to configure and copy the auto-generated API Key.
+
+#### 3.2 Team-level "API" integration (Free & Essentials plans, or when you want tight scope)
+
+1. In the top bar click Teams, then choose your target team.
+2. Open Integrations in the left sidebar and press Add integration.
+3. Search for "API", select it, name it, and save.
+4. Copy the API Key from the integration details panel.
+
+**Why choose team-level?** The key can only manipulate alerts that belong to that team, giving you a natural guard-rail if you need to segregate duties.
+
+***
+
+### Best-practice notes
+
+* **Principle of least privilege** – Grant only the domains and HTTP verbs Modern really needs. Opsgenie lets you narrow scopes under Access Management for each key.
+* **Endpoint selection** – Use [https://api.opsgenie.com](https://api.opsgenie.com) for US instances or [https://api.eu.opsgenie.com](https://api.eu.opsgenie.com) for EU instances when configuring Modern's HTTP client.
+* **Rotation & revocation** – Account Owners/Admins can regenerate or delete keys in the same pages where they were created. Modern will stop working until the new key is updated in your secret store.
+* **Audit-trail** – Each request is logged against the key it uses, helping you trace Modern's activity.
+
+***
+
+### Next steps
+
+You now have a valid Opsgenie API key. Keep it safe—you will paste it into Modern in the "Connect Opsgenie" step of the Modern integration guide (covered in the next section of the full document).
+
+## Modern configuration
+
+1. In Modern go to **Apps → Available → Opsgenie → Connect**.
+2. Paste the **API Key** you created above.
+3. Select the correct **Region** (`US` or `EU`) to match your Opsgenie instance.
+4. Click **Save**.
+
+Modern now uses this key to create or update alerts and incidents. Rotate the key anytime—just update it in Modern to keep workflows running.

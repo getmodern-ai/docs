@@ -1,0 +1,113 @@
+---
+title: 'Oomnitza'
+---
+
+> Automate IT asset management and lifecycle workflows with Oomnitza
+
+## Overview
+
+The Oomnitza integration enables you to automate IT asset management workflows within your organization. Connect Modern to Oomnitza to streamline hardware tracking, software license management, SaaS subscriptions, and inventory management programmatically.
+
+<CardGroup cols={2}>
+  <Card title="Key Features" icon="desktop">
+    * Manage hardware assets and inventory
+    * Track software licenses and SaaS subscriptions
+    * Automate user provisioning workflows
+    * Monitor asset status and locations
+  </Card>
+
+  <Card title="Common Use Cases" icon="wand-magic-sparkles">
+    * Automated asset provisioning for new employees
+    * Asset recovery during offboarding
+    * Software license compliance and optimization
+    * SaaS user management and access reviews
+  </Card>
+</CardGroup>
+
+## Oomnitza Resources
+
+The Oomnitza API provides access to the following resources within your asset management system:
+
+| Resource           | Description                                             |
+| ------------------ | ------------------------------------------------------- |
+| **Assets**         | Physical assets like laptops, monitors, and peripherals |
+| **Users**          | People who can be assigned assets and software          |
+| **Software**       | Software titles and license tracking                    |
+| **SaaS**           | SaaS applications and subscriptions                     |
+| **Locations**      | Physical locations where assets are deployed            |
+| **Contracts**      | Software and hardware contracts                         |
+| **Accessories**    | Peripheral accessories and equipment                    |
+| **Stockrooms**     | Inventory storage locations                             |
+| **Custom Objects** | Custom data objects for extended tracking               |
+
+## Prerequisites
+
+Before setting up the Oomnitza integration, ensure you have:
+
+<Info>
+  * Admin access to your Oomnitza instance
+  * API access enabled for your account
+  * Your Oomnitza instance URL (e.g., `company.oomnitza.com`)
+</Info>
+
+## Oomnitza Configuration
+
+### Create a Service Account
+
+<Steps>
+  <Step title="Log in to Oomnitza">
+    Access your Oomnitza instance at your organization's URL (e.g., `https://company.oomnitza.com`)
+  </Step>
+
+  <Step title="Navigate to User Management">
+    Go to **Configuration > User Management** to create a dedicated service account for the integration
+  </Step>
+
+  <Step title="Create a Service Account">
+    Create a new user with an appropriate role that has API access. Use a descriptive name like "Modern Integration Service"
+
+    <Tip>
+      We recommend creating a dedicated service account rather than using a personal account for integrations.
+    </Tip>
+  </Step>
+
+  <Step title="Note Your Credentials">
+    Record the username and password for the service account. You'll need these to configure the integration in Modern.
+  </Step>
+</Steps>
+
+<Warning>
+  Store your credentials securely. These provide API access to your Oomnitza instance.
+</Warning>
+
+***
+
+## Modern Configuration
+
+1. In Modern, navigate to **Apps → Available → Oomnitza → Connect**
+
+2. Enter the following information:
+
+   | Field           | Description                                                                                               |
+   | --------------- | --------------------------------------------------------------------------------------------------------- |
+   | Oomnitza Domain | Your Oomnitza instance URL (e.g., `company.oomnitza.com`). Do not include `https://` or trailing slashes. |
+   | Username        | Your Oomnitza service account username                                                                    |
+   | Password        | Your Oomnitza service account password                                                                    |
+
+3. Click **Save**
+
+<Check>
+  You should now be able to build workflows that leverage Oomnitza APIs, such as managing assets, users, software licenses, and SaaS subscriptions.
+</Check>
+
+***
+
+## Additional Resources
+
+<Card title="Oomnitza REST API Documentation" icon="book" href="https://oomnitza.zendesk.com/hc/en-us/articles/17200339347991-Oomnitza-REST-APIs">
+  Complete guide for using Oomnitza REST APIs
+</Card>
+
+***
+
+Need help? Contact **[support@modern.com](mailto:support@modern.com)** for assistance with your Oomnitza integration.

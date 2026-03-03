@@ -1,0 +1,62 @@
+---
+title: 'HubSpot'
+---
+
+## About HubSpot
+
+HubSpot is a comprehensive customer relationship management (CRM) platform that includes marketing, sales, and service tools. Connecting HubSpot to Modern enables automated user management, team administration, and streamlined access control workflows directly from your service desk.
+
+## What the HubSpot integration enables
+
+| Capability           | Description                                                                                                |
+| -------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Access Management    | Create, update, and manage users and their permissions. Add users to teams and manage team configurations. |
+| Automation workflows | Streamline user provisioning and account management tasks                                                  |
+
+Anything defined in the [HubSpot API](https://developers.hubspot.com/docs/reference/api/overview) can be accessed through Modern.
+
+***
+
+## HubSpot configuration
+
+### Prerequisites
+
+* You must have admin permissions in your HubSpot account to create private apps
+* Access to HubSpot's developer settings to configure API scopes
+
+### Create a Private App
+
+1. Navigate to your HubSpot account and go to **Settings** (gear icon)
+2. In the left sidebar, navigate to **Integrations → Private Apps**
+3. Click **Create a private app**
+4. Configure your app:
+   * **App name**: Enter "Modern Integration" or another descriptive name
+   * **Description**: Brief description of the integration purpose
+5. Go to the **Scopes** tab and select the required permissions (at minimum):
+   * `settings.users.read`
+   * `settings.users.write`
+   * `settings.users.teams.read`
+   * `settings.users.teams.write`
+6. Click **Create app**
+7. Copy the **Access token** that appears (this will only be shown once)
+
+For detailed instructions on creating private apps, see [HubSpot's Private Apps Guide](https://developers.hubspot.com/docs/guides/apps/private-apps/overview).
+
+***
+
+## Modern Configuration
+
+1. In Modern go to **Apps → Available → HubSpot → Connect**
+
+2. Enter the following information:
+
+   | Field            | Description                                                            |
+   | ---------------- | ---------------------------------------------------------------------- |
+   | Integration Name | A friendly name for this integration (e.g., "HubSpot User Management") |
+   | Access Token     | The private app access token from HubSpot                              |
+
+3. Click **Save**
+
+***
+
+Need help? Contact **[support@modern.com](mailto:support@modern.com)** for assistance with your HubSpot integration.

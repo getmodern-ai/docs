@@ -1,0 +1,90 @@
+---
+title: 'GitLab'
+---
+
+Modern's GitLab integration lets you automate DevOps workflows—from managing projects and merge requests to running CI/CD pipelines—directly from your service desk.
+The integration connects via a Personal Access Token and supports both gitlab.com and self-hosted GitLab instances.
+
+***
+
+## What is GitLab?
+
+[GitLab](https://gitlab.com) is a complete DevOps platform that provides source code management, CI/CD, security testing, and project planning in a single application. Teams organize work in **groups**, collaborate through **projects**, and ship code using **merge requests**, **pipelines**, and **issues**.
+
+***
+
+## What Modern can do once connected
+
+| Capability           | Description                                                                               |
+| -------------------- | ----------------------------------------------------------------------------------------- |
+| Automation workflows | Manage projects, branches, merge requests, issues, CI/CD pipelines, deployments, and more |
+
+Anything defined in the [GitLab REST API v4](https://docs.gitlab.com/ee/api/rest/) can be accessed through Modern.
+
+***
+
+## Configure GitLab
+
+### Prerequisites
+
+* A GitLab account with sufficient permissions to create a Personal Access Token
+* For self-hosted instances, the GitLab API must be reachable from the network
+
+### Create a Personal Access Token
+
+1. In GitLab, click your avatar in the top-left corner and select **Edit profile**
+2. In the left sidebar, select **Access Tokens**
+3. Click **Add new token**
+4. Configure your token:
+   * **Token name**: Enter a descriptive name (e.g., "Modern Integration")
+   * **Expiration date**: Set an appropriate expiration date per your security policy
+   * **Scopes**: Select the scopes required for your use case (see [Scope reference](#scope-reference) below)
+5. Click **Create personal access token**
+6. Copy the token value — it is only shown once
+
+For details, see [GitLab Personal Access Tokens documentation](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html).
+
+### Scope reference
+
+Select scopes based on the actions you want Modern to perform:
+
+| Scope              | Access                                               |
+| ------------------ | ---------------------------------------------------- |
+| `api`              | Full API access — read/write across all endpoints    |
+| `read_api`         | Read-only API access                                 |
+| `read_user`        | Read user profile information                        |
+| `read_repository`  | Read repository contents (files, commits, branches)  |
+| `write_repository` | Write to repositories (push code, manage branches)   |
+| `read_registry`    | Read container registry images                       |
+| `write_registry`   | Write to the container registry                      |
+| `admin_mode`       | Perform admin actions (self-hosted admin users only) |
+
+<Info>
+  For most workflows, the `api` scope is recommended as it provides full access to all GitLab API endpoints.
+</Info>
+
+***
+
+## Modern Configuration
+
+1. In Modern, go to **Apps → Available → GitLab → Connect**
+
+2. Enter the following information:
+
+   | Field                 | Description                                                                                                           |
+   | --------------------- | --------------------------------------------------------------------------------------------------------------------- |
+   | Instance Domain       | Your GitLab instance domain (e.g., `gitlab.com` or `gitlab.yourcompany.com`). Leave blank to default to `gitlab.com`. |
+   | Personal Access Token | The token you created above                                                                                           |
+
+3. Click **Save**
+
+Modern will validate the connection by checking the token against the GitLab API. Once verified, the integration shows **Healthy** on the Applications page.
+
+### Managing access later
+
+* **Rotate token** — Generate a new Personal Access Token in GitLab, then update the token in Modern's integration settings.
+* **Disconnect** — Remove the integration from the Modern Applications page. The Personal Access Token should also be revoked in GitLab.
+
+***
+
+Need help? Contact **[support@modern.com](mailto:support@modern.com)** for assistance with your GitLab integration.

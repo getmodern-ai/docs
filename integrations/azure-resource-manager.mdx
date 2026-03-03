@@ -1,0 +1,136 @@
+---
+title: 'Azure Resource Manager'
+---
+
+## About Azure Resource Manager
+
+Azure Resource Manager (ARM) is the deployment and management service for Azure. It provides a management layer that enables you to create, update, and delete resources in your Azure account. This integration enables Modern workflows to interact with Azure infrastructure including subscriptions, resource groups, virtual machines, and other Azure services.
+
+## What the Azure Resource Manager integration enables
+
+| Capability           | Description                                                                                                                         |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Automation workflows | Manage Azure subscriptions, resource groups, virtual machines, storage accounts, and other Azure resources through Modern workflows |
+
+Anything defined in the [Azure Resource Manager REST API](https://learn.microsoft.com/en-us/rest/api/resources/) can be accessed through Modern.
+
+***
+
+## Modern configuration
+
+Modern supports two methods of connecting with your Azure tenant:
+
+* **Sign in with Microsoft** (recommended when available): Connect using your Microsoft account with delegated permissions. This method uses OAuth 2.0 authorization code flow.
+
+* **Client Credentials**: Create your own Microsoft Entra app registration with application permissions. This method is recommended for server-to-server automation without user interaction.
+
+### Sign in with Microsoft
+
+<Note>
+  This option is only available if your Modern instance has been configured with Microsoft OAuth credentials that include Azure Resource Manager permissions.
+</Note>
+
+1. In Modern, navigate to **Apps** → **Available** → **Azure Resource Manager**
+2. Click **Connect** to bring up the "Connect" dialog
+3. Click "**Sign in with Microsoft**"
+4. Sign in with a Microsoft account that has access to the Azure subscriptions you want to manage
+5. Review and accept the requested permissions:
+   * `https://management.azure.com/user_impersonation` - Access Azure Service Management as you
+6. You will be redirected back to Modern with your integration configured
+
+### Client Credentials
+
+1. In Modern, navigate to **Apps** → **Available** → **Azure Resource Manager**
+2. Click **Connect** to bring up the "Connect" dialog
+3. Click "**Client Credentials**"
+4. Fill in the following information (see Azure configuration steps below):
+   * **Instance Name**: A descriptive name for this integration (e.g., "Production Azure")
+   * **Tenant ID**: Your Azure AD tenant ID
+   * **Client ID**: Your application client ID
+   * **Client Secret**: Your application client secret
+5. Click **Submit** to establish the integration
+6. Click **Run** on the health checks to confirm permissions are set up properly
+
+***
+
+## Microsoft Entra ID / Azure AD Configuration
+
+The following steps require access to the Azure Portal with sufficient administrator permissions.
+
+### 1. Create Entra App Registration
+
+1. Go to the [Azure Portal](https://portal.azure.com) and sign in with admin privileges
+2. Navigate to [Microsoft Entra](https://entra.microsoft.com/#home)
+3. Navigate to [App registrations](https://entra.microsoft.com/#view/Microsoft_AAD_RegisteredApps/ApplicationsListBlade/quickStartType~/null/sourceType/Microsoft_AAD_IAM) in the left sidebar
+4. Click **New registration**
+5. Configure the application:
+   * **Name**: "Modern Azure Resource Manager Integration" (or similar)
+   * **Supported account types**: "Accounts in this organizational directory only"
+   * **Redirect URI**: Leave blank
+6. Click **Register**
+7. **Copy these values** from the Overview page:
+   * **Application (client) ID** → This is your `Client ID`
+   * **Directory (tenant) ID** → This is your `Tenant ID`
+
+### 2. Create Client Secret
+
+1. Navigate to **Certificates & secrets** → **Client secrets** → **New client secret**
+2. Add description: "Modern Integration Secret"
+3. Choose an expiration period and click **Add**
+4. **Important**: Copy the secret **Value** immediately - this is your `Client Secret`. You won't be able to see it again.
+
+### 3. Configure API Permissions
+
+1. Navigate to **API permissions** → **Add a permission**
+2. Select **Azure Service Management** (not Microsoft Graph)
+3. Select **Delegated permissions** or **Application permissions** based on your needs:
+   * **Application permissions** (for client credentials flow):
+     * `user_impersonation` - Access Azure Service Management as the application
+4. Click **Add permissions**
+5. Click **Grant admin consent for \[Your Organization]** → **Yes**
+6. Verify the permission shows **Granted for \[Your Organization]**
+
+### 4. Assign Azure RBAC Roles
+
+API permissions alone are not sufficient for Azure Resource Manager. You must also assign Azure RBAC roles to your application:
+
+1. Navigate to the Azure subscription(s) you want to manage
+2. Go to **Access control (IAM)** → **Add** → **Add role assignment**
+3. Select an appropriate role:
+   * **Reader**: Read-only access to all resources
+   * **Contributor**: Full access to manage resources (but not access control)
+   * **Owner**: Full access including access control (use sparingly)
+4. Click **Next**, then select **User, group, or service principal**
+5. Click **Select members** and search for your app registration name
+6. Select the application and click **Select**
+7. Click **Review + assign**
+
+Repeat for each subscription you want Modern to access.
+
+***
+
+## Troubleshooting
+
+### "No subscriptions found" error
+
+This typically means:
+
+* The application doesn't have any Azure RBAC role assignments
+* The RBAC roles were assigned to a different subscription than expected
+* The application permissions haven't been granted admin consent
+
+### Authentication errors
+
+Common authentication error codes:
+
+* **AADSTS700016**: Application not found in the directory. Verify your Client ID and Tenant ID.
+* **AADSTS7000215**: Invalid client secret. Check that you copied the secret value (not the secret ID).
+* **AADSTS700082**: Client secret has expired. Generate a new secret in the Azure Portal.
+
+***
+
+## Additional Resources
+
+* [Azure Resource Manager documentation](https://learn.microsoft.com/en-us/azure/azure-resource-manager/)
+* [Azure RBAC documentation](https://learn.microsoft.com/en-us/azure/role-based-access-control/)
+* [Microsoft Entra app registrations](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app)

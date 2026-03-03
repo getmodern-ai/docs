@@ -1,0 +1,146 @@
+---
+title: 'OpenPath (Avigilon Alta)'
+---
+
+## About OpenPath
+
+OpenPath, now part of Avigilon Alta, is a cloud-based access control platform that provides touchless entry, mobile credentials, and comprehensive facility management. Connecting OpenPath to Modern enables automated access management, user provisioning, and security workflows directly from your service desk.
+
+## What the OpenPath integration enables
+
+| Capability        | Description                                                          |
+| ----------------- | -------------------------------------------------------------------- |
+| Access Management | Create, update, and manage users and their access credentials        |
+| User Provisioning | Streamline employee onboarding with automatic OpenPath account setup |
+| Entry Management  | Manage access points, doors, and entry permissions                   |
+| Group Management  | Organize users into groups for simplified access control             |
+
+Anything defined in the [Avigilon Alta API](https://openpath.readme.io/reference/overview) can be accessed through Modern.
+
+***
+
+## Prerequisites
+
+* Admin access to your OpenPath organization in the [Control Portal](https://control.openpath.com)
+* Your OpenPath account email and password
+* Your OpenPath Organization ID
+
+***
+
+## Finding Your Organization ID
+
+OpenPath requires an Organization ID to route API requests to the correct organization. You can find your Organization ID directly from the OpenPath Control Portal URL.
+
+<Steps>
+  <Step title="Log in to OpenPath Control Portal">
+    Navigate to [control.openpath.com](https://control.openpath.com) and log in with your admin credentials.
+  </Step>
+
+  <Step title="Find the Organization ID in the URL">
+    Once logged in, look at the URL in your browser's address bar. The Organization ID is the number that appears after `/o/` in the URL.
+
+    For example, in the URL:
+
+    ```
+    https://control.openpath.com/o/302/dashboards/activityDashboard
+    ```
+
+    The Organization ID is **302**.
+  </Step>
+
+  <Step title="Copy the Organization ID">
+    Make note of this number—you'll need it when configuring the Modern integration.
+  </Step>
+</Steps>
+
+<Tip>
+  You can navigate to any page in the OpenPath portal—the Organization ID will always be visible in the URL after `/o/`. For example, navigating to User Management at `https://control.openpath.com/o/302/users` shows the same Organization ID.
+</Tip>
+
+***
+
+## Modern Configuration
+
+<Steps>
+  <Step title="Navigate to the OpenPath integration">
+    In Modern, go to **Apps → Available → OpenPath → Connect**
+  </Step>
+
+  <Step title="Enter your credentials">
+    Fill in the following fields:
+
+    | Field           | Description                                             |
+    | --------------- | ------------------------------------------------------- |
+    | Organization ID | Your OpenPath Organization ID (found in the portal URL) |
+    | Email           | Your OpenPath admin account email                       |
+    | Password        | Your OpenPath admin account password                    |
+
+    <Warning>
+      Use a dedicated service account for integrations rather than a personal admin account. This ensures the integration continues to work if individual employees leave the organization.
+    </Warning>
+  </Step>
+
+  <Step title="Save the integration">
+    Click **Save** to complete the setup. Modern will validate your credentials and establish the connection.
+  </Step>
+</Steps>
+
+***
+
+## How Authentication Works
+
+The OpenPath integration uses username/password authentication to obtain JWT tokens for API access:
+
+1. **Login Request**: When making API calls, Modern authenticates with your email and password
+2. **JWT Token**: OpenPath returns a JWT token that authorizes subsequent requests
+3. **Organization Scoping**: All API requests are scoped to your Organization ID (e.g., `/orgs/302/users`)
+4. **Automatic Handling**: Token management is handled automatically by Modern
+
+<Note>
+  If your OpenPath account has Multi-Factor Authentication (MFA) enabled, you may need to use an app-specific password or contact OpenPath support for API access configuration.
+</Note>
+
+***
+
+## Troubleshooting
+
+### Common Issues
+
+**"Authentication Failed" Error**
+
+* Verify your email and password are correct
+* Ensure the account has admin permissions in OpenPath
+* If MFA is enabled, check if you need to configure app-specific credentials
+
+**"Invalid Organization ID" Error**
+
+* Double-check the Organization ID from your OpenPath portal URL
+* Ensure the Organization ID is entered as a number without any extra characters
+* Verify your account has access to the specified organization
+
+**"Permission Denied" Error**
+
+* Confirm your OpenPath account has sufficient admin privileges
+* Some API endpoints may require specific role permissions
+* Contact your OpenPath administrator to verify account permissions
+
+**"Rate Limit Exceeded" Error**
+
+* OpenPath enforces API rate limits to ensure platform stability
+* If you encounter this error, reduce the frequency of API calls
+* Consider implementing request batching for bulk operations
+
+***
+
+## API Reference
+
+For complete API documentation, refer to the official Avigilon Alta API guides:
+
+* [API Overview](https://openpath.readme.io/reference/overview)
+* [Authentication Guide](https://openpath.readme.io/docs/authenticating-with-the-api)
+* [Query Parameters](https://openpath.readme.io/docs/query-semantics)
+* [Best Practices](https://openpath.readme.io/docs/best-practices)
+
+***
+
+Need help? Contact **[support@modern.com](mailto:support@modern.com)** for assistance with your OpenPath integration.

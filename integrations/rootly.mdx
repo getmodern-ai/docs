@@ -1,0 +1,64 @@
+---
+title: 'Rootly'
+---
+
+## About Rootly
+
+Rootly is an incident management platform that helps teams respond to and resolve incidents faster with automated workflows, status pages, and retrospectives.
+
+## What the Rootly integration enables
+
+| Capability           | Description                                                                  |
+| -------------------- | ---------------------------------------------------------------------------- |
+| Automation workflows | Create and manage incidents, alerts, and retrospectives through Rootly's API |
+| Incident Management  | Automate incident creation, updates, and resolution workflows                |
+
+Anything defined in the [Rootly API](https://docs.rootly.com/api-reference/overview) can be accessed through Modern.
+
+## Rootly Configuration
+
+To connect Rootly to Modern, you'll need to create an API token in Rootly. Rootly supports three types of API keys, each with different permission scopes:
+
+| API Key Type     | Permissions                                                                                                                                                                                                                                |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Global API Key   | Global API Keys are assigned On-Call and Incident Response role when they're generated. The assigned role's permissions control the key's permissions. Global API Keys are able to interact with all entities within your Rootly instance. |
+| Team API Key     | Team API Keys inherit the same permissions of a Team Admin. They have full read and edit access to any Rootly entity that team owns, such as the team's Schedules and Escalation Policies.                                                 |
+| Personal API Key | Personal API Keys inherit the permissions of the user who created the API key.                                                                                                                                                             |
+
+### 1. Prerequisites
+
+1. **Permissions** – You must have appropriate role permissions in Rootly (Admin for Global keys, Team Admin for Team keys, or user access for Personal keys)
+2. **Rootly Web UI access** – API keys can only be generated from the web interface
+3. **Organization access** – Ensure you're creating the key in the correct Rootly organization
+
+### 2. Create an API Key
+
+1. Sign in to Rootly and click the **Organization dropdown** in the top navigation
+2. Select **Organization Settings** from the dropdown menu
+3. Navigate to **API Keys** in the settings menu
+4. Click **Generate New API Key**
+5. Select the **API Key Type** that matches your integration needs:
+   * **Global API Key** – For organization-wide access and automation
+   * **Team API Key** – For team-specific workflows and entities
+   * **Personal API Key** – For user-scoped automation
+6. Provide a descriptive name for the key, e.g., "Modern Production Integration"
+7. Click **Generate** or **Create** to create the key
+8. **Important**: Copy the token value immediately - it will only be displayed once
+9. Store the token securely in your secret management system
+
+**Security Note**: Treat API tokens like passwords. They provide access to your Rootly account based on their scope and should be stored securely and rotated regularly.
+
+## Modern Configuration
+
+Once you have your Rootly API token, follow these steps to connect it to Modern.
+
+1. In Modern, navigate to **Apps → Available → Rootly → Connect**
+
+2. Enter the following:
+
+   | Field         | Description                                                       |
+   | ------------- | ----------------------------------------------------------------- |
+   | Instance Name | Friendly name for the Rootly instance (e.g., "Production Rootly") |
+   | API Key       | The API token you created above                                   |
+
+3. Click **Save** to complete the connection

@@ -1,0 +1,60 @@
+---
+title: 'FleetDM'
+---
+
+> Connect your FleetDM instance to enable device management and security workflows
+
+## About FleetDM
+
+Connecting [FleetDM](https://fleetdm.com) to Modern lets you automate device management workflows, run queries across your fleet, and integrate device data with your other business systems.
+
+| Capability           | Description                                                            |
+| -------------------- | ---------------------------------------------------------------------- |
+| Device Management    | Query and manage hosts across your fleet                               |
+| User Management      | Manage Fleet users and access                                          |
+| Policy Enforcement   | Monitor and enforce security policies                                  |
+| Automation Workflows | Automate device provisioning, compliance checks, and incident response |
+
+***
+
+## FleetDM Configuration (Generate an API Token)
+
+FleetDM uses API tokens tied to user accounts for authentication.
+
+<Steps>
+  <Step title="Log in to FleetDM">
+    Log in to your FleetDM instance.
+  </Step>
+
+  <Step title="Generate the API token">
+    Go to **My account** → **Get API token** (`/profile`).
+
+    <Warning>
+      Copy and save the token immediately — you won't be able to see it again.
+    </Warning>
+  </Step>
+</Steps>
+
+***
+
+## Modern Configuration
+
+1. In Modern, go to **Apps → Available → FleetDM → Connect**
+2. Enter your **API Domain** — this is the domain you use to access the Fleet UI, without `https://`
+   * Example: `yourcompany.cloud.fleetdm.com`
+3. Enter your **API Token**
+4. Click **Save**
+
+***
+
+## Troubleshooting
+
+### Connection Timeout
+
+* Verify your Fleet server is accessible from Modern
+* Check that the API domain is correct
+
+### Permission Denied
+
+* Verify your FleetDM user account has the required permissions
+* Some endpoints require Admin or Maintainer roles

@@ -1,87 +1,95 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
+  "theme": "almond",
   "name": "Integrations",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#dd6b20",
+    "light": "#faf8f5",
+    "dark": "#000000"
   },
   "favicon": "/favicon.svg",
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "Integrations",
         "groups": [
           {
-            "group": "Getting started",
-            "pages": [
-              "index",
-              "quickstart",
-              "development"
-            ]
+            "group": "Overview",
+            "pages": ["index"]
           },
           {
-            "group": "Customization",
+            "group": "Integrations",
             "pages": [
-              "essentials/settings",
-              "essentials/navigation"
-            ]
-          },
-          {
-            "group": "Writing content",
-            "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
-            ]
-          },
-          {
-            "group": "AI tools",
-            "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "API reference",
-        "groups": [
-          {
-            "group": "API documentation",
-            "pages": [
-              "api-reference/introduction"
-            ]
-          },
-          {
-            "group": "Endpoint examples",
-            "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "integrations/custom-app",
+              "integrations/apple-business-manager",
+              "integrations/asana",
+              "integrations/ashby",
+              "integrations/aws",
+              "integrations/azure-resource-manager",
+              "integrations/bamboohr",
+              "integrations/box",
+              "integrations/brex",
+              "integrations/calendly",
+              "integrations/cisco-meraki",
+              "integrations/clickup",
+              "integrations/conductorone",
+              "integrations/crowdstrike",
+              "integrations/crxplorer",
+              "integrations/databricks",
+              "integrations/datadog",
+              "integrations/daytona",
+              "integrations/envoy",
+              "integrations/exchange-online",
+              "integrations/figma",
+              "integrations/firstbase",
+              "integrations/fleetdm",
+              "integrations/freshservice",
+              "integrations/front",
+              "integrations/github",
+              "integrations/gitlab",
+              "integrations/google-workspace",
+              "integrations/hibob",
+              "integrations/hubspot",
+              "integrations/incident-io",
+              "integrations/ironclad",
+              "integrations/jamf",
+              "integrations/jira",
+              "integrations/jumpcloud",
+              "integrations/justworks",
+              "integrations/kandji",
+              "integrations/linear",
+              "integrations/microsoft-graph",
+              "integrations/mosyle",
+              "integrations/navan",
+              "integrations/notion",
+              "integrations/okta",
+              "integrations/oomnitza",
+              "integrations/openpath",
+              "integrations/opsgenie",
+              "integrations/pagerduty",
+              "integrations/pandadoc",
+              "integrations/persona",
+              "integrations/ramp",
+              "integrations/rapid7",
+              "integrations/rippling",
+              "integrations/rootly",
+              "integrations/servicenow",
+              "integrations/sigma",
+              "integrations/slack",
+              "integrations/slack-admin",
+              "integrations/snipeit",
+              "integrations/snowflake",
+              "integrations/stripe",
+              "integrations/vanta",
+              "integrations/verkada",
+              "integrations/workday",
+              "integrations/zendesk",
+              "integrations/zoom"
             ]
           }
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
+    ]
   },
   "logo": {
     "light": "/logo/light.svg",
@@ -91,26 +99,14 @@
     "links": [
       {
         "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "href": "mailto:support@getmodern.ai"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "label": "Log In",
+      "href": "https://app.getmodern.ai"
     }
-  },
-  "contextual": {
-    "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
   },
   "footer": {
     "socials": {

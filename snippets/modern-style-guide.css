@@ -1,0 +1,241 @@
+@theme {
+	/* Font families */
+	--font-sans:
+		"ModernSans", "Inter", ui-sans-serif, system-ui, sans-serif,
+		"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+	--font-serif:
+		"ModernSerif", "Soehne", ui-serif, Georgia, Cambria, "Times New Roman",
+		Times, serif;
+	--font-mono:
+		ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+		"Courier New", monospace;
+
+	--text-xs: 0.6875rem; /* 11px - micro labels, captions */
+	--text-sm: 0.75rem; /* 12px - small labels, captions */
+	--text-base: 0.8125rem; /* 13px - body text */
+	--text-lg: 0.875rem; /* 14px - emphasized body, lead text */
+	--text-xl: 1rem; /* 16px - section headings */
+	--text-2xl: 1.25rem; /* 20px - page headings */
+	--text-3xl: 1.5rem; /* 24px - feature headings */
+	--text-4xl: 1.875rem; /* 30px - hero headings */
+	--text-5xl: 2.25rem; /* 36px - display headings */
+	--text-6xl: 3rem; /* 48px - large display */
+	--text-7xl: 3.75rem; /* 60px - extra large display */
+
+	--leading-4xl: 3rem;
+
+	/* Colors */
+	--color-neutral-100: #ffffff;
+	--color-neutral-900: #000000;
+
+	--color-oatmeal-100: #faf8f5;
+	--color-oatmeal-200: #f3eee6;
+	--color-oatmeal-300: #f0ebe2;
+	--color-oatmeal-400: #ece7de;
+	--color-oatmeal-500: #c1b5a2;
+	--color-oatmeal-600: #9d8f7a;
+	--color-oatmeal-700: #786b59;
+	--color-oatmeal-800: #584d3f;
+	--color-oatmeal-900: #3a3228;
+
+	--color-white-alpha-100: rgba(255, 255, 255, 0.06);
+	--color-white-alpha-200: rgba(255, 255, 255, 0.08);
+	--color-white-alpha-300: rgba(255, 255, 255, 0.16);
+	--color-white-alpha-400: rgba(255, 255, 255, 0.24);
+	--color-white-alpha-500: rgba(255, 255, 255, 0.36);
+	--color-white-alpha-600: rgba(255, 255, 255, 0.48);
+	--color-white-alpha-700: rgba(255, 255, 255, 0.64);
+	--color-white-alpha-800: rgba(255, 255, 255, 0.8);
+	--color-white-alpha-900: rgba(255, 255, 255, 0.92);
+
+	--color-black-alpha-100: rgba(0, 0, 0, 0.06);
+	--color-black-alpha-200: rgba(0, 0, 0, 0.08);
+	--color-black-alpha-300: rgba(0, 0, 0, 0.16);
+	--color-black-alpha-400: rgba(0, 0, 0, 0.24);
+	--color-black-alpha-500: rgba(0, 0, 0, 0.36);
+	--color-black-alpha-600: rgba(0, 0, 0, 0.48);
+	--color-black-alpha-700: rgba(0, 0, 0, 0.64);
+	--color-black-alpha-800: rgba(0, 0, 0, 0.8);
+	--color-black-alpha-900: rgba(0, 0, 0, 0.92);
+
+	--color-gray-100: #faf7f0;
+	--color-gray-200: #ede9de;
+	--color-gray-300: #ded8c9;
+	--color-gray-400: #b1a995;
+	--color-gray-500: #7e7867;
+	--color-gray-600: #58544b;
+	--color-gray-700: #282725;
+	--color-gray-800: #21201f;
+	--color-gray-900: #1a1a19;
+
+	--color-red-100: #fed7d7;
+	--color-red-200: #feb2b2;
+	--color-red-300: #fc8181;
+	--color-red-400: #f56565;
+	--color-red-500: #e53e3e;
+	--color-red-600: #c53030;
+	--color-red-700: #9b2c2c;
+	--color-red-800: #822727;
+	--color-red-900: #63171b;
+
+	--color-orange-100: #feebc8;
+	--color-orange-200: #fbd38d;
+	--color-orange-300: #f6ad55;
+	--color-orange-400: #ed8936;
+	--color-orange-500: #dd6b20;
+	--color-orange-600: #c05621;
+	--color-orange-700: #9c4221;
+	--color-orange-800: #7b341e;
+	--color-orange-900: #652b19;
+
+	--color-yellow-100: #f8ebbf;
+	--color-yellow-200: #faf089;
+	--color-yellow-300: #f6e05e;
+	--color-yellow-400: #ecc94b;
+	--color-yellow-500: #d69e2e;
+	--color-yellow-600: #b7791f;
+	--color-yellow-700: #975a16;
+	--color-yellow-800: #744210;
+	--color-yellow-900: #5f370e;
+
+	--color-green-100: #e3f695;
+	--color-green-200: #9ec308;
+	--color-green-300: #447556;
+	--color-green-400: #3c654a;
+	--color-green-500: #2e4934;
+	--color-green-600: #29412e;
+	--color-green-700: #243a29;
+	--color-green-800: #22543d;
+	--color-green-900: #141915;
+
+	--color-blue-100: #bee3f8;
+	--color-blue-200: #90cdf4;
+	--color-blue-300: #63b3ed;
+	--color-blue-400: #4299e1;
+	--color-blue-500: #3182ce;
+	--color-blue-600: #2b6cb0;
+	--color-blue-700: #2c5282;
+	--color-blue-800: #2a4365;
+	--color-blue-900: #1a365d;
+
+	--color-purple-100: #e9d8fd;
+	--color-purple-200: #d6bcfa;
+	--color-purple-300: #b794f4;
+	--color-purple-400: #9f7aea;
+	--color-purple-500: #805ad5;
+	--color-purple-600: #6b46c1;
+	--color-purple-700: #553c9a;
+	--color-purple-800: #44337a;
+	--color-purple-900: #322659;
+
+	--color-pink-100: #fed7e2;
+	--color-pink-200: #fbb6ce;
+	--color-pink-300: #f687b3;
+	--color-pink-400: #ed64a6;
+	--color-pink-500: #d53f8c;
+	--color-pink-600: #b83280;
+	--color-pink-700: #97266d;
+	--color-pink-800: #702459;
+	--color-pink-900: #521b41;
+
+	/* Highlight badge variants */
+	--color-red-highlight-foreground: #611b16;
+	--color-red-highlight-foreground-disabled: #611b16;
+	--color-red-highlight-background: #f3bdba;
+	--color-red-highlight-background-disabled: #f3dfde;
+
+	--color-gray-highlight-foreground: #7e7867;
+	--color-gray-highlight-background: #faf7f0;
+
+	--color-yellow-highlight-foreground: #65551f;
+	--color-yellow-highlight-foreground-disabled: #65551f;
+	--color-yellow-highlight-background: #f8ebbf;
+	--color-yellow-highlight-background-disabled: #f8f2db;
+
+	--color-green-highlight-foreground: #2e4934;
+	--color-green-highlight-foreground-disabled: #2e4934;
+	--color-green-highlight-background: #e3f695;
+	--color-green-highlight-background-disabled: #eef6cc;
+
+	--color-blue-highlight-foreground: #0363a9;
+	--color-blue-highlight-background: #b6c4e4;
+
+	--color-orange-highlight-foreground: #8a6603;
+	--color-orange-highlight-background: #f0ce71;
+
+	--color-transparent: transparent;
+
+	/* Animate */
+	--animate-aura-background: aura-background 3s ease-in-out infinite;
+}
+
+/* Primary Colors - Light Theme */
+@theme {
+	--color-background-mode: var(--color-oatmeal-100);
+	--color-background-menu: var(--color-oatmeal-100);
+
+	--color-background-primary: var(--color-neutral-100);
+	--color-background-secondary: var(--color-oatmeal-100);
+	--color-background-tertiary: var(--color-oatmeal-200);
+
+	--color-background-light-overlay: var(--color-white-alpha-900);
+	--color-background-dark-overlay: var(--color-black-alpha-500);
+
+	--color-foreground-primary: var(--color-gray-900);
+	--color-foreground-primary-on-dark: var(--color-neutral-100);
+	--color-foreground-secondary: var(--color-gray-600);
+	--color-foreground-tertiary: var(--color-gray-500);
+
+	--color-border-primary: var(--color-black-alpha-200);
+
+	--color-overlay-on-primary: var(--color-oatmeal-100);
+
+	--color-accent-brand: var(--color-orange-500);
+	--color-accent-error: var(--color-red-500);
+	--color-accent-error-on-primary: var(--color-red-400);
+	--color-accent-success: var(--color-green-200);
+	--color-accent-success-on-primary: var(--color-green-100);
+	--color-accent-pink: var(--color-pink-500);
+	--color-accent-pink-on-primary: var(--color-pink-500);
+	--color-accent-blue: var(--color-blue-500);
+	--color-accent-blue-on-primary: var(--color-blue-500);
+	--color-accent-orange: var(--color-orange-500);
+	--color-accent-orange-on-primary: var(--color-orange-500);
+	--color-accent-green: var(--color-green-500);
+	--color-accent-green-on-primary: var(--color-green-200);
+	--color-accent-yellow: var(--color-yellow-500);
+	--color-accent-yellow-on-primary: var(--color-yellow-500);
+	--color-accent-purple: var(--color-purple-500);
+	--color-accent-purple-on-primary: var(--color-purple-500);
+
+	--color-highlight-red-foreground: var(--color-red-highlight-foreground);
+	--color-highlight-red-foreground-disabled: var(
+		--color-red-highlight-foreground-disabled
+	);
+	--color-highlight-red-background: var(--color-red-highlight-background);
+	--color-highlight-red-background-disabled: var(
+		--color-red-highlight-background-disabled
+	);
+	--color-highlight-gray-foreground: var(--color-gray-highlight-foreground);
+	--color-highlight-gray-background: var(--color-gray-highlight-background);
+	--color-highlight-yellow-foreground: var(--color-yellow-highlight-foreground);
+	--color-highlight-yellow-foreground-disabled: var(
+		--color-yellow-highlight-foreground-disabled
+	);
+	--color-highlight-yellow-background: var(--color-yellow-highlight-background);
+	--color-highlight-yellow-background-disabled: var(
+		--color-yellow-highlight-background-disabled
+	);
+	--color-highlight-green-foreground: var(--color-green-highlight-foreground);
+	--color-highlight-green-foreground-disabled: var(
+		--color-green-highlight-foreground-disabled
+	);
+	--color-highlight-green-background: var(--color-green-highlight-background);
+	--color-highlight-green-background-disabled: var(
+		--color-green-highlight-background-disabled
+	);
+	--color-highlight-blue-foreground: var(--color-blue-highlight-foreground);
+	--color-highlight-blue-background: var(--color-blue-highlight-background);
+	--color-highlight-orange-foreground: var(--color-orange-highlight-foreground);
+	--color-highlight-orange-background: var(--color-orange-highlight-background);
+}
