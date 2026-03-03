@@ -1,0 +1,111 @@
+---
+title: 'BambooHR'
+---
+
+## About BambooHR
+
+BambooHR is a human resources information system (HRIS) designed for small and medium-sized businesses. It helps organizations manage employee data, track time off, handle onboarding and offboarding, and streamline HR workflows.
+
+## What the BambooHR integration enables
+
+| Capability          | Description                                                                     |
+| ------------------- | ------------------------------------------------------------------------------- |
+| Workflow Automation | Build Modern workflows to automate anything accessible via BambooHR's REST APIs |
+
+All resources exposed by the [BambooHR API](https://documentation.bamboohr.com/reference/getting-started) are available to Modern workflows using API key authentication.
+
+***
+
+## BambooHR configuration (in BambooHR)
+
+### Prerequisites
+
+Before configuring the BambooHR integration in Modern, ensure you have:
+
+* An active BambooHR account
+* Sufficient permissions to generate API keys
+* Your company domain (the subdomain used to access BambooHR)
+
+<Note>
+  If you access BambooHR at `https://mycompany.bamboohr.com`, then your company domain is `mycompany`.
+</Note>
+
+### Generate an API Key
+
+API requests to BambooHR are authenticated and permissioned as if a real user were using the software. The permissions of the user associated with the API key will determine which fields and employees each API request is allowed to view and/or edit.
+
+<Steps>
+  <Step title="Access the API Keys page">
+    1. Log in to your BambooHR account
+    2. Click your name in the lower left-hand corner of any page
+    3. In the user context menu, select **API Keys**
+
+    <Note>
+      If you don't see "API Keys" in the menu, you may not have sufficient permissions. Contact your BambooHR administrator.
+    </Note>
+  </Step>
+
+  <Step title="Generate a new API key">
+    1. On the API Keys page, click **Add New Key**
+    2. Provide a descriptive name for the key (e.g., "Modern Integration")
+    3. Click **Generate Key**
+    4. Copy the generated API key and store it securely
+
+    <Warning>
+      The API key is a 160-bit number expressed in hexadecimal form. Store it securely—treat it like a password. Anyone with access to this key can perform actions as if they were the user who created it.
+    </Warning>
+  </Step>
+</Steps>
+
+***
+
+## Modern configuration
+
+Once you have your BambooHR API key, follow these steps to configure the integration in Modern:
+
+<Steps>
+  <Step title="Navigate to BambooHR integration">
+    1. In Modern, go to **Applications → Available → BambooHR**
+    2. Click **Connect**
+    3. The BambooHR configuration form will appear
+  </Step>
+
+  <Step title="Enter configuration details">
+    Fill in the following fields:
+
+    | Field              | Description                           | Example                  |
+    | ------------------ | ------------------------------------- | ------------------------ |
+    | **Company Domain** | Your BambooHR domain                  | `mycompany.bamboohr.com` |
+    | **API Key**        | The API key you generated in BambooHR | `••••••••••••••••••••`   |
+
+    <Tip>
+      Enter your full BambooHR domain. If you access BambooHR at `https://acmecorp.bamboohr.com`, enter `acmecorp.bamboohr.com` as the company domain.
+    </Tip>
+  </Step>
+
+  <Step title="Submit the configuration">
+    1. Click **Submit** to complete the integration setup
+    2. Modern will verify the connection by making a test API request
+    3. Once verified, you can start building workflows with BambooHR
+  </Step>
+</Steps>
+
+***
+
+## Using BambooHR in workflows
+
+Once connected, you can use BambooHR in your Modern workflows to automate HR processes:
+
+* **Employee management**: Retrieve employee data, add new employees, update employee information
+* **Time tracking**: Clock in/out employees, manage timesheet entries, track hours worked
+* **Benefits administration**: Access benefits settings and deduction types
+* **Goals and performance**: Track employee goals and performance metrics
+* **Onboarding/offboarding**: Automate employee lifecycle management
+
+<Info>
+  The BambooHR integration provides access to all endpoints in the [BambooHR REST API](https://documentation.bamboohr.com/reference/getting-started). Explore the API documentation to discover all available capabilities.
+</Info>
+
+***
+
+Need help? Contact **[support@modern.com](mailto:support@modern.com)** for assistance with your BambooHR integration.

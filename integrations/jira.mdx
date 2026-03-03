@@ -1,0 +1,103 @@
+---
+title: 'Jira'
+---
+
+## What the Jira integration enables
+
+| Capability           | Description                                                                                     |
+| -------------------- | ----------------------------------------------------------------------------------------------- |
+| Automation workflows | Streamline issue creation, status updates, project management tasks, and user access management |
+| Ticket Syncing       | Sync tickets between Modern and Jira                                                            |
+
+Anything defined in the [Jira REST API](https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/) can be accessed through Modern.
+
+***
+
+## Jira Configuration
+
+Connecting Jira to Modern is straightforward and requires no manual configuration on the Jira side. The integration uses OAuth to securely connect your Jira instance with Modern.
+
+### Prerequisites
+
+* You must have admin permissions in your Jira instance
+* Access to install apps in your Jira workspace
+
+***
+
+## Modern Configuration
+
+1. In Modern go to **Apps → Available → Jira → Connect**
+2. Click the **Connect** button to initiate the OAuth flow
+3. A new window will open directing you to your Jira instance
+
+<Frame>
+  <img src="/images/jira-oauth-connect.png" alt="Jira OAuth Connect dialog" data-og-width="1599" width="1599" data-og-height="1926" height="1926" data-path="images/integrations/jira/jira-oauth-connect.png" data-optimize="true" data-opv="3" srcset="/images/jira-oauth-connect.png 280w, /images/jira-oauth-connect.png 560w, /images/jira-oauth-connect.png 840w, /images/jira-oauth-connect.png 1100w, /images/jira-oauth-connect.png 1650w, /images/jira-oauth-connect.png 2500w" />
+</Frame>
+
+4. Review and accept the integration permissions and scopes
+5. Click **Accept** to complete the connection
+6. You'll be redirected back to Modern with the integration successfully connected
+
+That's it! No additional configuration is needed. Modern can now access your Jira instance through the authorized OAuth connection.
+
+***
+
+## Additional Notes
+
+### Ticket Syncing
+
+To enable ticket syncing, you need to install the Modern app in your Jira instance and configure the sync settings.
+
+<Warning>
+  You must first connect your Jira instance to Modern using the OAuth flow described in the [Modern Configuration](#modern-configuration) section above before proceeding with ticket syncing setup.
+</Warning>
+
+#### Step 1: Install the Modern App
+
+<Steps>
+  <Step title="Install the Modern App">
+    Turn on Ticket Syncing from the Jira app in Modern.
+
+    <Frame>
+      <img src="/images/jira-turn-on-ticket-syncing.png" alt="Turn on Ticket Syncing toggle in Modern" data-og-width="2462" width="2462" data-og-height="1348" height="1348" data-path="images/integrations/jira/jira-turn-on-ticket-syncing.png" data-optimize="true" data-opv="3" srcset="/images/jira-turn-on-ticket-syncing.png 280w, /images/jira-turn-on-ticket-syncing.png 560w, /images/jira-turn-on-ticket-syncing.png 840w, /images/jira-turn-on-ticket-syncing.png 1100w, /images/jira-turn-on-ticket-syncing.png 1650w, /images/jira-turn-on-ticket-syncing.png 2500w" />
+    </Frame>
+  </Step>
+
+  <Step title="Open the Atlassian app installation page">
+    Go to the [Modern app installation page](https://developer.atlassian.com/console/install/c07d3f13-9bca-4772-8bd1-78cb643ba05c?signature=AYABeH3H0ZqUsljeX7xf7cjSBpYAAAADAAdhd3Mta21zAEthcm46YXdzOmttczp1cy13ZXN0LTI6NzA5NTg3ODM1MjQzOmtleS83MDVlZDY3MC1mNTdjLTQxYjUtOWY5Yi1lM2YyZGNjMTQ2ZTcAuAECAQB4IOp8r3eKNYw8z2v%2FEq3%2FfvrZguoGsXpNSaDveR%2FF%2Fo0Buwn9CCqeYgh1%2BEAlr0oGvQAAAH4wfAYJKoZIhvcNAQcGoG8wbQIBADBoBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDGve5jSoRhxnllo%2BiAIBEIA7MzrFlFGrb4Iy5UUirNrX5QJAtKfMDfWNjJ612r2U1%2BTum8UZFPOOU271doEn%2FKZVo911dkk1scv7zhoAB2F3cy1rbXMAS2Fybjphd3M6a21zOmV1LXdlc3QtMTo3MDk1ODc4MzUyNDM6a2V5LzQ2MzBjZTZiLTAwYzMtNGRlMi04NzdiLTYyN2UyMDYwZTVjYwC4AQICAHijmwVTMt6Oj3F%2B0%2B0cVrojrS8yZ9ktpdfDxqPMSIkvHAEKW%2FLX8KhHQrCfkDuzAgjBAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM52N1SKngCx8hQb%2BzAgEQgDtE%2FmCnfl%2Bz7WbS%2BEkpToi%2F2cFLschi1flQ9Ydmfm7ObPDfBCVxU92e9X8klbTIf5eTKCKUZMOobOLN%2BQAHYXdzLWttcwBLYXJuOmF3czprbXM6dXMtZWFzdC0xOjcwOTU4NzgzNTI0MzprZXkvNmMxMjBiYTAtNGNkNS00OTg1LWI4MmUtNDBhMDQ5NTJjYzU3ALgBAgIAeLKa7Dfn9BgbXaQmJGrkKztjV4vrreTkqr7wGwhqIYs5AacHR7PU7QXKh6Sf2GrPIs8AAAB%2BMHwGCSqGSIb3DQEHBqBvMG0CAQAwaAYJKoZIhvcNAQcBMB4GCWCGSAFlAwQBLjARBAwKMa2VNbko%2FI1kEDMCARCAO9x0vKkBou9b%2BSe4TA%2BPKefH9LSKCelNe2fiYRCaK%2FxDqDItkM9WnCRrnkVKyj8FpJXCs8%2BFpPtvZqdHAgAAAAAMAAAQAAAAAAAAAAAAAAAAALDiZ0DneS2rJV8Ssux8NWv%2F%2F%2F%2F%2FAAAAAQAAAAAAAAAAAAAAAQAAADImSOiACTGK7hIfRop51WUYOsukJB3tlCRlXI4Gvvc2TNQdrdvtYoIiMtFb9105M6i9ksQL4DOzGoC%2BQFImYkSpwjo%3D\&product=jira) on the Atlassian Developer Console.
+
+    <Frame>
+      <img src="/images/jira-atlassian-app-install.png" alt="Atlassian App Installation Page" data-og-width="1880" width="1880" data-og-height="1864" height="1864" data-path="images/integrations/jira/jira-atlassian-app-install.png" data-optimize="true" data-opv="3" srcset="/images/jira-atlassian-app-install.png 280w, /images/jira-atlassian-app-install.png 560w, /images/jira-atlassian-app-install.png 840w, /images/jira-atlassian-app-install.png 1100w, /images/jira-atlassian-app-install.png 1650w, /images/jira-atlassian-app-install.png 2500w" />
+    </Frame>
+  </Step>
+
+  <Step title="Complete the installation">
+    Follow the instructions on the Atlassian page to install the Modern app on your Jira instance.
+  </Step>
+
+  <Step title="Verify the installation">
+    Return to Modern and refresh the page to see the updated installation status.
+  </Step>
+</Steps>
+
+<Note>
+  It may take up to 5 minutes for the installation to take effect. This delay is on Jira's end.
+</Note>
+
+#### Step 2-6: Configure Sync Settings
+
+Once the app is installed, complete the remaining configuration steps in Modern:
+
+1. **Select Project** - Choose the Jira project to sync tickets with
+2. **Select Request Type** - Choose the request type for creating tickets in Jira
+3. **Priority Mapping** - Map each Jira priority to a Modern priority option
+4. **Status Mapping** - Map each Jira status to a Modern status option
+5. **Sync Strategy** - Configure how and when tickets should be synced
+
+<Frame>
+  <img src="/images/jira-ticket-sync-config.png" alt="Modern Ticket Syncing Configuration Steps" data-og-width="2462" width="2462" data-og-height="1958" height="1958" data-path="images/integrations/jira/jira-ticket-sync-config.png" data-optimize="true" data-opv="3" srcset="/images/jira-ticket-sync-config.png 280w, /images/jira-ticket-sync-config.png 560w, /images/jira-ticket-sync-config.png 840w, /images/jira-ticket-sync-config.png 1100w, /images/jira-ticket-sync-config.png 1650w, /images/jira-ticket-sync-config.png 2500w" />
+</Frame>
+
+***
+
+Need help? Contact **[support@modern.com](mailto:support@modern.com)** for assistance with your Jira integration.

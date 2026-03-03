@@ -1,0 +1,55 @@
+---
+title: 'Zoom'
+---
+
+## About Zoom
+
+Zoom provides video conferencing, chat and phone services for modern distributed teams. Connecting Zoom to Modern lets you automate user and meeting administration tasks directly from chat workflows.
+
+## What the Zoom integration enables
+
+| Capability           | Description                                            |
+| -------------------- | ------------------------------------------------------ |
+| Access Management    | Create, update, and manage users and their permissions |
+| Automation workflows | Streamline meeting and user management                 |
+
+Anything defined in the [Zoom API](https://developers.zoom.us/docs/api/) can be accessed through Modern.
+
+***
+
+## Create a Zoom Server-to-Server OAuth app
+
+The Modern Zoom integration requires you to create a new Zoom application for your organization. This allows you to control the exact permissions that Modern has within your Zoom account.
+
+### Create a new Zoom application
+
+1. Log in to your Zoom account and navigate to the [Zoom App Marketplace](https://marketplace.zoom.us/).
+2. Click Develop > Build app.
+3. Create a "Server to Server OAuth app".
+4. Name your application.
+5. Continue through the setup process. Ensure you select scopes for any APIs you wish to access via Modern.
+6. Activate your app.
+7. Navigate to your "App Credentials" page. These credentials will be used in Modern.
+
+### Configure the Zoom integration in Modern
+
+Enter the following information in the Modern UI:
+
+| Field         | Description                                                                                                                                                                                       |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Account ID    | This is the account ID displayed in your "App Credentials" page.                                                                                                                                  |
+| Account Name  | This should be a user-friendly name for your account, usually just your organization name. It will be displayed in the Modern UI and must be unique within your Modern team for this integration. |
+| Client ID     | This is the Client ID displayed in your "App Credentials" page.                                                                                                                                   |
+| Client Secret | This is the Client Secret displayed in your "App Credentials" page. This is a secret value and should not be shared with anyone.                                                                  |
+
+Submit the form to complete the integration.
+
+***
+
+## Modern Configuration
+
+1. In Modern go to **Apps → Available → Zoom → Connect**.
+2. Enter the **Account ID**, **Client ID**, **Client Secret** and a user-friendly **Account Name** from your Zoom app's *App Credentials* page.
+3. Click **Save**.
+
+That's it—Modern can now call the Zoom APIs you scoped in the app.

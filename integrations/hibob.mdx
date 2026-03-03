@@ -1,0 +1,249 @@
+---
+title: 'HiBob'
+---
+
+> Automate HR workflows and employee management with HiBob
+
+## About HiBob
+
+HiBob (Bob) is a modern human resources information system (HRIS) designed for mid-sized and enterprise companies. It helps organizations manage the entire employee lifecycle, including onboarding, time off, compensation, performance, and workforce planning.
+
+## What the HiBob integration enables
+
+| Capability          | Description                                                                  |
+| ------------------- | ---------------------------------------------------------------------------- |
+| Workflow Automation | Build Modern workflows to automate anything accessible via HiBob's REST APIs |
+
+All resources exposed by the [HiBob API](https://apidocs.hibob.com/) are available to Modern workflows using Service User authentication.
+
+<CardGroup cols={2}>
+  <Card title="Key Features" icon="users">
+    * Manage employee data and profiles
+    * Automate time off requests and approvals
+    * Track attendance and work schedules
+    * Handle onboarding and offboarding workflows
+  </Card>
+
+  <Card title="Common Use Cases" icon="wand-magic-sparkles">
+    * Automated employee onboarding provisioning
+    * Time off synchronization across systems
+    * Employee data sync with other HR tools
+    * Workforce planning automation
+  </Card>
+</CardGroup>
+
+***
+
+## HiBob configuration (in HiBob)
+
+### Prerequisites
+
+Before configuring the HiBob integration in Modern, ensure you have:
+
+<Info>
+  * Admin access to your HiBob (Bob) account
+  * Permissions to create API Service Users
+  * Permissions to create and manage Permission Groups
+</Info>
+
+### Understanding HiBob API authentication
+
+HiBob uses **Service User** authentication for API access. Service Users are special accounts that exist solely for API authentication—they aren't tied to actual employees and cannot log in to Bob.
+
+<Note>
+  HiBob discontinued the legacy "API Access Token" authentication method on October 31, 2024. The Service User method is now the exclusive means for API authentication.
+</Note>
+
+### Step 1: Create a Service User
+
+<Steps>
+  <Step title="Access the Service Users page">
+    1. Log in to your HiBob account as an Admin
+    2. Navigate to **Settings → Integrations → Service Users**
+    3. Click **Add Service User**
+
+    <Note>
+      If you don't see the Service Users option, contact your HiBob administrator to grant you the necessary permissions.
+    </Note>
+  </Step>
+
+  <Step title="Create the service user">
+    1. Provide a descriptive name (e.g., "Modern Integration")
+    2. Click **Create**
+    3. Copy both the **Service User ID** and **Token** immediately
+
+    <Warning>
+      The token is only displayed once when created. Store both the Service User ID and Token securely—you'll need them to configure the integration in Modern. If you lose the token, you'll need to regenerate it.
+    </Warning>
+  </Step>
+</Steps>
+
+### Step 2: Create a Permission Group
+
+By default, new service users have no access permissions. You must create a dedicated Permission Group and add the Service User to it.
+
+<Steps>
+  <Step title="Create a new permission group">
+    1. Go to **Settings → Account → Permission Groups**
+    2. Click **Add Permission Group**
+    3. Name it something descriptive (e.g., "Modern API Access")
+  </Step>
+
+  <Step title="Add the service user to the group">
+    1. In the Permission Group settings, add the Service User you created
+    2. This group should only contain permissions required for your Modern workflows
+  </Step>
+</Steps>
+
+### Step 3: Configure Permissions
+
+Permissions in HiBob are organized by categories. When you grant access to a category, you grant access to all fields within that category.
+
+<Steps>
+  <Step title="Configure Feature permissions">
+    1. Click **Edit** on your permission group
+    2. Under **Features**, select the areas of Bob you need to access
+    3. For example, enable **Reports** if you need to access reporting endpoints
+  </Step>
+
+  <Step title="Configure People's Data permissions">
+    Grant access to employee data categories based on your needs:
+
+    | Permission Type                                       | Description                                                                    |
+    | ----------------------------------------------------- | ------------------------------------------------------------------------------ |
+    | **View all employees' \[Category] sections**          | Required for reading employee data                                             |
+    | **View all employees' \[Category] section histories** | Required for accessing historical data (e.g., lifecycle or work table entries) |
+    | **Edit all employees' \[Category] sections**          | Required for updating data or accessing sensitive fields                       |
+
+    <Tip>
+      For basic employee data access via the People Search API, assign the **Default Employee Fields** permissions. This includes access to the "root," "about," "employment," and "work" categories.
+    </Tip>
+  </Step>
+
+  <Step title="Configure Access Rights">
+    Define whose data the service user can access:
+
+    1. Go to **People's Data → Access data for**
+    2. Choose the scope:
+       * **Everyone**: All active employees
+       * **Select by condition**: Filter by specific criteria
+       * **Select by name**: Choose specific employees
+
+    <Note>
+      By default, service users can only access **active** employees. To access inactive employees, edit the access conditions and remove the "Lifecycle status equals Employed" filter.
+    </Note>
+  </Step>
+</Steps>
+
+***
+
+## Modern configuration
+
+Once you have your HiBob Service User credentials, follow these steps to configure the integration in Modern:
+
+<Steps>
+  <Step title="Navigate to HiBob integration">
+    1. In Modern, go to **Applications → Available → HiBob**
+    2. Click **Connect**
+    3. The HiBob configuration form will appear
+  </Step>
+
+  <Step title="Enter configuration details">
+    Fill in the following fields:
+
+    | Field                  | Description                               | Example                                |
+    | ---------------------- | ----------------------------------------- | -------------------------------------- |
+    | **Service User ID**    | The ID of your HiBob API Service User     | `a1b2c3d4-e5f6-7890-abcd-ef1234567890` |
+    | **Service User Token** | The token generated for your Service User | `••••••••••••••••••••`                 |
+
+    <Tip>
+      Both credentials are combined and Base64-encoded to create the Basic Authentication header. Modern handles this automatically—just enter the raw credentials.
+    </Tip>
+  </Step>
+
+  <Step title="Submit the configuration">
+    1. Click **Submit** to complete the integration setup
+    2. Modern will verify the connection by making a test API request
+    3. Once verified, you can start building workflows with HiBob
+  </Step>
+</Steps>
+
+***
+
+## How authentication works
+
+HiBob uses **Basic Access Authentication**. When Modern makes API requests to HiBob on your behalf, it:
+
+1. Combines your Service User ID and Token as `SERVICE-USER-ID:TOKEN`
+2. Base64 encodes the combined string
+3. Sends the header: `Authorization: Basic <encoded-credentials>`
+
+This is handled automatically by Modern—you only need to provide the raw credentials during setup.
+
+***
+
+## Using HiBob in workflows
+
+Once connected, you can use HiBob in your Modern workflows to automate HR processes:
+
+* **Employee management**: Search employees, read profiles, create new employees, update employee data
+* **Time off**: Submit time off requests, check balances, manage approvals
+* **Attendance**: Import attendance data, manage time tracking
+* **Tasks**: Read and complete tasks, manage onboarding checklists
+* **Reports**: Access and download reports
+* **Documents**: Upload and manage employee documents
+* **Workforce planning**: Manage positions and openings
+
+<Info>
+  The HiBob integration provides access to all endpoints in the [HiBob Public API](https://apidocs.hibob.com/reference). Explore the API documentation to discover all available capabilities.
+</Info>
+
+***
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Authentication errors">
+    If you receive authentication errors:
+
+    * Verify the Service User ID and Token are correct
+    * Ensure the Service User hasn't been deleted or deactivated
+    * Check that the Service User is assigned to a Permission Group with appropriate permissions
+    * If you've lost the token, regenerate it in HiBob and update Modern
+  </Accordion>
+
+  <Accordion title="Permission denied errors">
+    If requests fail with permission errors:
+
+    * Review the Permission Group settings for your Service User
+    * Ensure the required category permissions are enabled (View, Edit, or View History)
+    * Check the Access Rights to confirm the Service User can access the specific employees
+    * Consult the [HiBob API documentation](https://apidocs.hibob.com/) for required permissions per endpoint
+  </Accordion>
+
+  <Accordion title="Cannot access inactive employees">
+    By default, Service Users only have access to active employees. To access inactive employees:
+
+    1. Edit the Permission Group's Access Rights
+    2. Go to **Access data for → Select by condition**
+    3. Remove the "Lifecycle status equals Employed" condition
+  </Accordion>
+</AccordionGroup>
+
+***
+
+## Additional Resources
+
+<CardGroup cols={2}>
+  <Card title="HiBob API Documentation" icon="book" href="https://apidocs.hibob.com/">
+    Complete API reference and guides for HiBob
+  </Card>
+
+  <Card title="API Service Users Guide" icon="user-gear" href="https://apidocs.hibob.com/docs/api-service-users">
+    Learn how to create and manage API Service Users
+  </Card>
+</CardGroup>
+
+***
+
+Need help? Contact **[support@modern.com](mailto:support@modern.com)** for assistance with your HiBob integration.

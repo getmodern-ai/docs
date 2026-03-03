@@ -1,0 +1,56 @@
+---
+title: 'Vanta'
+---
+
+## About Vanta
+
+Vanta is a compliance and security automation platform that helps organizations achieve and maintain compliance with standards like SOC 2, ISO 27001, HIPAA, and more. Connecting Vanta to Modern enables automated compliance workflows, security monitoring, and audit management directly from your service desk.
+
+## What the Vanta integration enables
+
+| Capability           | Description                                                                          |
+| -------------------- | ------------------------------------------------------------------------------------ |
+| Automation workflows | Query compliance status, manage security policies, retrieve audit evidence, and more |
+
+Anything defined in the [Vanta API](https://developer.vanta.com) which use the ["Manage Vanta"](https://developer.vanta.com/docs/api-access-setup#permission-scopes) permission scopes can be accessed through Modern.
+
+***
+
+## Vanta Configuration
+
+### Prerequisites
+
+* You must have admin access to your Vanta account
+
+### Create an OAuth Application
+
+1. Log in to your Vanta account as an admin
+2. Navigate to **Settings** → **Developer Console**
+3. Click **Create**
+4. Configure your application:
+   * **Name**: Enter "Modern Integration" or another descriptive name
+   * **Description**: Add a description for the integration
+   * **App Type**: Select "Manage Vanta"
+5. After creating the app, you'll receive:
+   * **Client ID**: Your application's unique identifier
+   * **Client Secret**: Your application's secret key
+
+***
+
+## Modern Configuration
+
+1. In Modern go to **Apps → Available → Vanta → Connect**
+
+2. Enter the following information:
+
+   | Field         | Description                                         |
+   | ------------- | --------------------------------------------------- |
+   | Instance Name | A friendly name for this integration instance       |
+   | Client ID     | The Client ID from your Vanta OAuth application     |
+   | Client Secret | The Client Secret from your Vanta OAuth application |
+
+3. Click **Save**
+
+***
+
+Need help? Contact **[support@modern.com](mailto:support@modern.com)** for assistance with your Vanta integration.

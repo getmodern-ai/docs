@@ -1,0 +1,236 @@
+---
+title: 'Ramp'
+---
+
+## About Ramp
+
+Ramp is a finance automation platform that combines corporate cards with expense management, bill payments, and accounting integrations. Connecting Ramp to Modern enables automated expense workflows, transaction monitoring, and financial reporting directly from your service desk.
+
+## What the Ramp integration enables
+
+| Capability           | Description                                                                       |
+| -------------------- | --------------------------------------------------------------------------------- |
+| Access Management    | Create, update, and manage users and their permissions within your Ramp account   |
+| Automation workflows | Query transactions, manage expense policies, retrieve spending insights, and more |
+
+Anything defined in the [Ramp API](https://docs.ramp.com/developer-api/v1/overview) which uses the available permission scopes can be accessed through Modern.
+
+***
+
+## Ramp Configuration
+
+### Prerequisites
+
+* You must have **Admin or Business Owner** access to your Ramp account
+* For default setup: No additional configuration needed
+* For advanced setup: A Ramp Developer App (instructions below)
+
+<Tabs>
+  <Tab title="Default Setup (Recommended)">
+    ## Quick Connect with Modern's Ramp App
+
+    The easiest way to connect - no need to create your own Ramp Developer App.
+
+    <Steps>
+      <Step title="Navigate to Ramp integration">
+        In Modern, go to **Apps → Available → Ramp → Connect**
+      </Step>
+
+      <Step title="Select your scopes">
+        Click **Edit scopes** to select the permissions you want to grant to the integration. You can also type scope names directly as a comma-separated list.
+
+        <Warning>
+          **REQUIRED**: `business:read` and `offline_access` are automatically included and cannot be removed. These are required for the integration to function.
+        </Warning>
+
+        <Info>
+          Common scopes to add:
+
+          * `users:read,users:write` - Manage users
+          * `transactions:read` - View transactions
+          * `cards:read,cards:write` - Manage cards
+          * `departments:read,departments:write` - Manage departments
+        </Info>
+
+        <Tip>
+          You must select at least one optional scope to connect. Start with the minimum scopes you need - you can always reconnect with additional scopes later.
+        </Tip>
+
+        <Accordion title="View all available scopes">
+          **Required Scopes** (automatically included):
+
+          * `business:read` - Business information
+          * `offline_access` - Refresh token support
+
+          **Optional Scopes** (select at least one):
+
+          * `accounting:read`, `accounting:write` - Accounting sync settings
+          * `attendee_types:read`, `attendee_types:write` - Event attendee types
+          * `audit_logs:read` - Audit log access
+          * `bank_accounts:read` - Bank account information
+          * `bank_feeds:read` - Bank feed data
+          * `bills:read`, `bills:write` - Bill management
+          * `cards:read`, `cards:write` - Card management
+          * `cashbacks:read` - Cashback rewards
+          * `custom_records:read`, `custom_records:write` - Custom data fields
+          * `departments:read`, `departments:write` - Department management
+          * `entities:read` - Legal entities
+          * `external_attendees:read`, `external_attendees:write` - External attendees
+          * `item_receipts:read`, `item_receipts:write` - Itemized receipts
+          * `leads:read`, `leads:write` - Sales leads
+          * `limits:read`, `limits:write` - Spending limits
+          * `locations:read`, `locations:write` - Locations
+          * `memos:read`, `memos:write` - Transaction memos
+          * `merchants:read` - Merchant information
+          * `openid` - OpenID Connect
+          * `purchase_orders:read`, `purchase_orders:write` - Purchase orders
+          * `receipt_integrations:read`, `receipt_integrations:write` - Receipt integrations
+          * `receipts:read`, `receipts:write` - Receipt management
+          * `reimbursements:read`, `reimbursements:write` - Reimbursement requests
+          * `repayments:read` - Repayment information
+          * `spend_programs:read`, `spend_programs:write` - Spend programs
+          * `statements:read` - Monthly statements
+          * `transactions:read`, `transactions:write` - Transaction data
+          * `transfers:read` - Transfer history
+          * `treasury:read` - Treasury information
+          * `trips:read` - Trip data
+          * `users:read`, `users:write` - User management
+          * `vendors:read`, `vendors:write` - Vendor information
+        </Accordion>
+      </Step>
+
+      <Step title="Authorize with Ramp">
+        After selecting at least one optional scope, click **Connect** and you'll be redirected to Ramp to sign in and authorize the integration.
+
+        <Info>
+          The Connect button will be disabled until you select at least one optional scope in addition to the required scopes.
+        </Info>
+
+        <Warning>
+          Only users with **Admin or Business Owner** roles can authorize third-party applications in Ramp. If you see a "Business not authorized" error, ask an Admin or Business Owner to complete the authorization.
+        </Warning>
+      </Step>
+
+      <Step title="Confirm connection">
+        After authorization, you'll be redirected back to Modern and the integration will be connected.
+
+        <Check>
+          Verify the connection is successful by checking the integration status in your Modern apps list.
+        </Check>
+      </Step>
+    </Steps>
+  </Tab>
+
+  <Tab title="Advanced Setup (BYOC)">
+    ## Bring Your Own Ramp Developer App
+
+    Use this method if you need to use your own Ramp Developer App credentials. This uses the OAuth 2.0 Client Credentials flow (2-legged OAuth) and doesn't require callback URLs.
+
+    <Note>
+      This method is designed for custom apps. We recommend using the default setup unless you have specific requirements for your own app credentials.
+    </Note>
+
+    <Steps>
+      <Step title="Create a Ramp Developer App">
+        1. Navigate to **Settings** → **Developer API** in your Ramp account
+        2. Click **Create New App**
+        3. Name your app (e.g., "Modern Integration"), accept the Terms, and click **Create**
+        4. Under **Grant types**, ensure **Client Credentials** is enabled
+        5. Under **Scopes**, configure the scopes you need for your use case
+        6. Copy your **Client ID** and **Client Secret**
+
+        <Info>
+          Client credentials flow doesn't require redirect URIs since authentication happens server-to-server without user interaction.
+        </Info>
+      </Step>
+
+      <Step title="Connect in Modern">
+        1. In Modern, go to **Apps → Available → Ramp → Connect**
+        2. Click **Edit scopes** to select your desired scopes (you must select at least one optional scope)
+        3. Click the three-dot menu (⋮) next to "Scopes" and select **"Use your own Ramp app"**
+        4. Enter your **Client ID** and **Client Secret**
+        5. Click **Connect**
+
+        <Warning>
+          The scopes you select in Modern must also be enabled in your Ramp Developer App settings.
+        </Warning>
+      </Step>
+
+      <Step title="Confirm connection">
+        The integration will authenticate using your credentials and connect immediately without requiring OAuth authorization.
+
+        <Check>
+          Verify the connection is successful by checking the integration status in your Modern apps list.
+        </Check>
+      </Step>
+    </Steps>
+  </Tab>
+</Tabs>
+
+***
+
+## Using the Ramp Integration
+
+Once connected, you can use Ramp actions in your Modern workflows:
+
+```typescript Example: List Ramp users theme={null}
+import { ramp } from "modern-integrations";
+
+const listUsers = async (ctx: ramp.RampIntegration) => {
+  const response = await ramp.apiRequest({
+    path: "/developer/v1/users",
+    method: "GET"
+  }, ctx);
+  
+  return response.data;
+};
+```
+
+For complete API documentation, refer to the [Ramp Developer API Reference](https://docs.ramp.com/developer-api/v1/overview).
+
+***
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="'Not Authorized' or 'Business not authorized' error">
+    This error occurs when:
+
+    * You don't have Admin or Business Owner permissions in Ramp
+    * The Modern app is not properly configured in Ramp
+
+    **Solution**: Ask a Ramp Admin or Business Owner to complete the authorization, or contact [support@modern.com](mailto:support@modern.com) for assistance.
+  </Accordion>
+
+  <Accordion title="Scope permission errors">
+    If you receive errors about missing permissions:
+
+    * Verify the scope is included in your authorization
+    * For BYOC mode: Ensure the scope is enabled in your Ramp Developer App settings
+    * Some scopes may require special approval from Ramp
+
+    **Solution**: Reconnect the integration with the required scopes.
+  </Accordion>
+
+  <Accordion title="Token expired errors">
+    If your integration stops working after some time:
+
+    * Your access token may have expired
+    * The `offline_access` scope is now automatically included and required for all connections
+
+    **Solution**: Reconnect the integration. The `offline_access` scope will be automatically included to enable automatic token refresh.
+  </Accordion>
+
+  <Accordion title="Invalid scope errors">
+    If you see errors about invalid scopes when typing scope names:
+
+    * You may have mistyped a scope name
+    * The scope might not exist in Ramp's API
+
+    **Solution**: Click **Edit scopes** to see a complete list of valid scopes you can select from, or refer to the [Ramp API documentation](https://docs.ramp.com/developer-api/v1/overview) for scope details.
+  </Accordion>
+</AccordionGroup>
+
+***
+
+Need help? Contact **[support@modern.com](mailto:support@modern.com)** for assistance with your Ramp integration.

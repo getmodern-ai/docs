@@ -1,0 +1,64 @@
+---
+title: 'Rapid7'
+---
+
+## About Rapid7
+
+Rapid7 is a comprehensive cybersecurity platform that provides vulnerability management, incident detection and response, application security testing, and log management. Connecting Rapid7 to Modern enables automated security operations, incident response workflows, and real-time threat detection directly from chat.
+
+## What the Rapid7 integration enables
+
+| Capability           | Description                                                                                         |
+| -------------------- | --------------------------------------------------------------------------------------------------- |
+| Security Operations  | Access vulnerability data, manage security incidents, and automate threat response                  |
+| Automation workflows | Streamline vulnerability scanning, incident investigation, log analysis, and security orchestration |
+
+The integration provides access to multiple Rapid7 APIs:
+
+* **InsightAppSec**: Application Security API
+* **InsightIDR**: Incident Detection and Response API
+* **InsightOps**: Log Management API
+* **InsightConnect**: Automation and Orchestration API
+* **Insight Account**: Account Management API
+
+***
+
+## Rapid7 Configuration
+
+### Create an API Key
+
+1. Log into your Rapid7 Insight Platform
+2. Click the **Gear Icon** in the top right corner
+3. Click **API keys** in the dropdown menu
+4. Select either **User API keys** or **Organization API keys**
+5. Click **Generate new key**
+6. Provide a descriptive name for your API key
+7. Copy and save the API key securely - you won't be able to view it again
+
+<Note>
+  The same API key works across all Rapid7 services in your region.
+</Note>
+
+### Determine Your API Domain
+
+Your API domain depends on your Rapid7 region:
+
+| Region        | API Domain                  |
+| ------------- | --------------------------- |
+| United States | `us.api.insight.rapid7.com` |
+| Europe        | `eu.api.insight.rapid7.com` |
+| Canada        | `ca.api.insight.rapid7.com` |
+| Australia     | `au.api.insight.rapid7.com` |
+| Asia Pacific  | `ap.api.insight.rapid7.com` |
+
+***
+
+## Modern Configuration
+
+1. In Modern go to **Apps → Available → Rapid7 → Connect**
+2. Enter your configuration:
+   * **API Domain**: Your regional domain from the table above (e.g., `us.api.insight.rapid7.com`)
+   * **API Key**: The API key you generated in the previous steps
+3. Click **Save**
+
+You can rotate the API key at any time—just reconnect the app to update the value in Modern to keep workflows running.

@@ -1,0 +1,130 @@
+---
+title: 'Cisco Meraki'
+---
+
+> Manage and monitor your Cisco Meraki network infrastructure with the Meraki Dashboard API
+
+## Overview
+
+The Cisco Meraki integration enables you to automate network management and monitoring workflows within your organization. Connect Modern to Meraki to streamline network operations, automate device management, and manage your Meraki infrastructure programmatically.
+
+<CardGroup cols={2}>
+  <Card title="Key Features" icon="network-wired">
+    * Manage organizations and networks
+    * Monitor network devices and clients
+    * Configure network settings and policies
+    * Automate device provisioning workflows
+  </Card>
+
+  <Card title="Common Use Cases" icon="wand-magic-sparkles">
+    * Automated network inventory management
+    * Device status monitoring and alerting
+    * Bulk configuration updates
+    * Network compliance reporting
+  </Card>
+</CardGroup>
+
+## Meraki Resources
+
+The Meraki API provides access to the following resources within your network infrastructure:
+
+| Resource          | Description                                                                    |
+| ----------------- | ------------------------------------------------------------------------------ |
+| **Organizations** | Top-level structure representing a collection of networks                      |
+| **Networks**      | Specific networks within an organization containing devices and configurations |
+| **Devices**       | Individual hardware units such as routers, switches, or access points          |
+| **VLANs**         | Virtual local area networks for segmenting traffic                             |
+| **SSIDs**         | Wireless network identifiers that can be configured and managed                |
+
+## Prerequisites
+
+<Info>
+  The Cisco Meraki Dashboard API is **enabled by default** on all organizations. You do not need to enable API access separately.
+</Info>
+
+Before setting up the Meraki integration, ensure you have admin permissions for your Meraki Dashboard account.
+
+## Setup Instructions
+
+### Step 1: Generate Your API Key
+
+<Steps>
+  <Step title="Open the Meraki Dashboard">
+    Log in to your [Meraki Dashboard](https://dashboard.meraki.com)
+  </Step>
+
+  <Step title="Navigate to My Profile">
+    Click the **avatar icon** in the top-right corner of the dashboard
+  </Step>
+
+  <Step title="Generate API Key">
+    Find the **API access** section and click **Generate new API key**
+  </Step>
+
+  <Step title="Save Your Key">
+    Copy the generated API key and store it in a secure location
+  </Step>
+</Steps>
+
+### Step 2: Configure Integration in Modern
+
+1. Navigate to the **Integrations** page in Modern
+2. Find **Cisco Meraki** and click **Connect**
+3. Enter your configuration details:
+
+<ParamField body="apiKey" type="string" required>
+  Your Meraki Dashboard API key from Step 1. This authenticates all API requests to the Meraki Dashboard API using Bearer token authentication.
+</ParamField>
+
+4. Click **Submit** to establish the integration
+
+<Check>
+  Integration configured! Modern will verify your credentials and establish the connection.
+</Check>
+
+## API Services
+
+The Meraki API provides three types of services for interacting with your network resources:
+
+| Service       | Description                                          |
+| ------------- | ---------------------------------------------------- |
+| **CONFIGURE** | Manage cloud configurations for networks and devices |
+| **MONITOR**   | Return status and history information                |
+| **LIVE TOOL** | Directly interact with devices in real-time          |
+
+## Rate Limits
+
+The Meraki Dashboard API enforces rate limits to ensure fair usage:
+
+<Info>
+  * **10 API calls per second** per organization
+  * Scoped to all API applications using your organization's API key
+
+  If you exceed these limits, the API will return a `429 Too Many Requests` response.
+</Info>
+
+## Additional Resources
+
+<CardGroup cols={2}>
+  <Card title="Meraki API Documentation" icon="book" href="https://developer.cisco.com/meraki/api-v1/">
+    Complete API reference for all Meraki Dashboard endpoints
+  </Card>
+
+  <Card title="API Authorization Guide" icon="key" href="https://developer.cisco.com/meraki/api-v1/authorization/">
+    Detailed guide on generating and managing Meraki API keys
+  </Card>
+
+  <Card title="Getting Started Guide" icon="rocket" href="https://developer.cisco.com/meraki/api-v1/getting-started/">
+    Step-by-step tutorial for making your first API calls
+  </Card>
+</CardGroup>
+
+## Regional Base URIs
+
+Modern currently connects to the default Meraki API endpoint (`https://api.meraki.com/api/v1`), which supports most regions.
+
+If your organization is hosted in Canada, China, India, or uses US FedRAMP, please contact **[support@modern.com](mailto:support@modern.com)** to discuss adding support for your region.
+
+***
+
+Need help? Contact **[support@modern.com](mailto:support@modern.com)** for assistance with your Meraki integration.

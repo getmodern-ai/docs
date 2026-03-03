@@ -1,0 +1,63 @@
+---
+title: 'Zendesk'
+---
+
+## 1. About Zendesk
+
+Zendesk is a customer service platform for support ticketing, knowledge management, and customer engagement. Connecting Zendesk to Modern enables automated ticket management and user provisioning workflows.
+
+## 2. What the Zendesk integration enables
+
+| Capability           | Description                                                                                      |
+| -------------------- | ------------------------------------------------------------------------------------------------ |
+| Automation workflows | Build workflows to streamline customer support processes, ticket escalation, and user management |
+
+Anything defined in the [Zendesk API](https://developer.zendesk.com/api-reference/) can be accessed through Modern.
+
+***
+
+## 3. Zendesk configuration
+
+### Prerequisites
+
+* Admin permissions in your Zendesk instance
+* Your Zendesk domain (e.g., `company.zendesk.com`)
+
+### Create an API Token
+
+1. In Zendesk, click the **gear icon** (Admin) in the left sidebar
+2. Navigate to **Apps and integrations** → **API Tokens**
+
+<img src="/images/zendesk_apps_sidebar.png" alt="Zendesk Apps and integrations sidebar" width="100" data-og-width="510" data-og-height="2024" data-path="images/integrations/zendesk/zendesk_apps_sidebar.png" data-optimize="true" data-opv="3" srcset="/images/zendesk_apps_sidebar.png 280w, /images/zendesk_apps_sidebar.png 560w, /images/zendesk_apps_sidebar.png 840w, /images/zendesk_apps_sidebar.png 1100w, /images/zendesk_apps_sidebar.png 1650w, /images/zendesk_apps_sidebar.png 2500w" />
+
+3. Enable **Token access** if not already enabled
+4. Click **+ Add API token**
+
+<img src="/images/zendesk_add_api_token_button.png" alt="Add API token button" data-og-width="2122" width="2122" data-og-height="470" height="470" data-path="images/integrations/zendesk/zendesk_add_api_token_button.png" data-optimize="true" data-opv="3" srcset="/images/zendesk_add_api_token_button.png 280w, /images/zendesk_add_api_token_button.png 560w, /images/zendesk_add_api_token_button.png 840w, /images/zendesk_add_api_token_button.png 1100w, /images/zendesk_add_api_token_button.png 1650w, /images/zendesk_add_api_token_button.png 2500w" />
+
+5. Add description: "Modern Integration"
+6. Copy the generated token (shown only once)
+7. Click **Save**
+
+<img src="/images/zendesk_add_api_token_screen.png" alt="Create API token screen" data-og-width="1454" width="1454" data-og-height="690" height="690" data-path="images/integrations/zendesk/zendesk_add_api_token_screen.png" data-optimize="true" data-opv="3" srcset="/images/zendesk_add_api_token_screen.png 280w, /images/zendesk_add_api_token_screen.png 560w, /images/zendesk_add_api_token_screen.png 840w, /images/zendesk_add_api_token_screen.png 1100w, /images/zendesk_add_api_token_screen.png 1650w, /images/zendesk_add_api_token_screen.png 2500w" />
+
+***
+
+## 4. Modern Configuration
+
+1. In Modern go to **Apps → Available → Zendesk → Connect**
+
+2. Enter the following:
+
+   | Field               | Description                                       |
+   | ------------------- | ------------------------------------------------- |
+   | Instance Name       | Friendly name (e.g., "Production Zendesk")        |
+   | Service Instance ID | Your Zendesk domain (e.g., `company.zendesk.com`) |
+   | Email Address       | Email of a Zendesk admin or agent                 |
+   | API Token           | The API token from step 3                         |
+
+3. Click **Save**
+
+***
+
+Need help? Contact **[support@modern.com](mailto:support@modern.com)** for assistance.

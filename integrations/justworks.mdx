@@ -1,0 +1,254 @@
+---
+title: 'Justworks'
+---
+
+> Connect Justworks to Modern to automate HR, payroll, and employee management workflows.
+
+## About Justworks
+
+Justworks is a Professional Employer Organization (PEO) and HR platform that simplifies payroll, benefits, compliance, and HR for businesses. It provides tools for managing employee data, running payroll, tracking time off, and handling deductions.
+
+## What the Justworks integration enables
+
+| Capability          | Description                                                                  |
+| ------------------- | ---------------------------------------------------------------------------- |
+| Workflow Automation | Build Modern workflows to automate anything accessible via the Justworks API |
+
+All resources exposed by the [Justworks API](https://public-api.justworks.com/v1/docs) are available to Modern workflows using OAuth 2.0 authentication.
+
+***
+
+## Justworks configuration (in Justworks)
+
+### Prerequisites
+
+Before configuring the Justworks integration in Modern, ensure you have:
+
+* An active Justworks account with administrator access
+* An OAuth application created by the Justworks team (see below)
+
+### Request an OAuth application
+
+<Warning>
+  Creation of OAuth applications for the Justworks API is **not self-service**. You must contact the Justworks team to have one created for you.
+</Warning>
+
+When requesting your OAuth application, you will need to provide Justworks with the following:
+
+| Information              | Required | Description                                                                                        |
+| ------------------------ | -------- | -------------------------------------------------------------------------------------------------- |
+| **Redirect URI**         | Yes      | `https://svflow-auth-config.api.modern.com/justworks/oauth/callback`                               |
+| **Scopes**               | Yes      | The set of data your application needs access to (see [Available Scopes](#available-scopes) below) |
+| **Name**                 | Yes      | How you want your app identified to customers (typically your company or product name)             |
+| **Logo URL**             | No       | A logo shown to customers during authorization                                                     |
+| **Terms of Service URL** | No       | Link to your terms of service                                                                      |
+| **Privacy Policy URL**   | No       | Link to your privacy policy                                                                        |
+
+<Note>
+  If you are using a self-hosted Modern deployment, your redirect URI will be different. Use `https://svflow-auth-config.api.<your-domain>/justworks/oauth/callback`, replacing `<your-domain>` with your Modern instance domain.
+</Note>
+
+Once the Justworks team creates your application, you will receive a **Client ID** and **Client Secret**.
+
+<Warning>
+  Store your Client ID and Client Secret securely. Treat the Client Secret like a password — anyone with access to these credentials can initiate OAuth flows on behalf of your application.
+</Warning>
+
+### Available scopes
+
+Justworks API scopes control which data and operations your integration can access. Select only the scopes your workflows require when requesting your OAuth application.
+
+<Note>
+  Some scopes have parent/child relationships:
+
+  * `company.detail:read` includes `company.basic:read`
+  * `member.detail:read` includes `member.basic:read`
+  * `deductions:write` includes `deductions:read`
+</Note>
+
+<AccordionGroup>
+  <Accordion title="Company scopes">
+    | Scope                       | Description                                                                               |
+    | --------------------------- | ----------------------------------------------------------------------------------------- |
+    | `company.basic:read`        | Read basic company information (name, ID)                                                 |
+    | `company.detail:read`       | Read detailed company info including addresses, departments, and offices (includes basic) |
+    | `company.bank_account:read` | Read company bank account information                                                     |
+  </Accordion>
+
+  <Accordion title="Member scopes">
+    | Scope                    | Description                                                                            |
+    | ------------------------ | -------------------------------------------------------------------------------------- |
+    | `member.basic:read`      | Read basic member information (name, emails)                                           |
+    | `member.detail:read`     | Read detailed member info including addresses, phones, and department (includes basic) |
+    | `member.dob:read`        | Read member date of birth                                                              |
+    | `member.sex:read`        | Read member sex assigned at birth                                                      |
+    | `member.employment:read` | Read employment history and current employment status                                  |
+    | `member.pay:read`        | Read pay rate, pay basis, and pay history                                              |
+    | `member.tax_id:read`     | Read member Social Security Number                                                     |
+  </Accordion>
+
+  <Accordion title="Payroll and deduction scopes">
+    | Scope              | Description                                            |
+    | ------------------ | ------------------------------------------------------ |
+    | `payroll:read`     | Read payroll information and fees                      |
+    | `paystub:read`     | Read paystub details including earnings and deductions |
+    | `deductions:read`  | Read employee deductions                               |
+    | `deductions:write` | Create, update, and cancel deductions (includes read)  |
+  </Accordion>
+
+  <Accordion title="Time off scopes">
+    | Scope           | Description                                    |
+    | --------------- | ---------------------------------------------- |
+    | `time_off:read` | Read time off policies, requests, and balances |
+  </Accordion>
+</AccordionGroup>
+
+### Recommended scopes
+
+For a typical HR automation setup, we recommend requesting these scopes at minimum:
+
+| Scope                    | Purpose                                         |
+| ------------------------ | ----------------------------------------------- |
+| `company.basic:read`     | Verify the connection and retrieve company info |
+| `company.detail:read`    | Access departments and office locations         |
+| `member.basic:read`      | Access employee names and emails                |
+| `member.detail:read`     | Access full employee profiles                   |
+| `member.employment:read` | Access employment status and history            |
+| `time_off:read`          | Access time off policies and balances           |
+
+***
+
+## Modern configuration
+
+Once you have your Justworks OAuth application credentials (Client ID and Client Secret), follow these steps to connect the integration in Modern.
+
+<Steps>
+  <Step title="Navigate to Justworks integration">
+    1. In Modern, go to **Applications → Available → Justworks**
+    2. Click **Connect**
+    3. The Justworks configuration dialog will appear
+  </Step>
+
+  <Step title="Enter your OAuth credentials">
+    Fill in the following fields:
+
+    | Field             | Description                                                                     |
+    | ----------------- | ------------------------------------------------------------------------------- |
+    | **Client ID**     | The Client ID provided by Justworks when your OAuth application was created     |
+    | **Client Secret** | The Client Secret provided by Justworks when your OAuth application was created |
+  </Step>
+
+  <Step title="Select permissions">
+    Choose the permission presets that match the data your workflows need. Each preset maps to one or more Justworks OAuth scopes:
+
+    | Preset                        | Description                                      | Scopes included                                            |
+    | ----------------------------- | ------------------------------------------------ | ---------------------------------------------------------- |
+    | **Company Information**       | Read company details, departments, and offices   | `company.basic:read`, `company.detail:read`                |
+    | **Member Information**        | Read employee/member details and contact info    | `member.basic:read`, `member.detail:read`                  |
+    | **Employment Data**           | Read employment history and job information      | `member.employment:read`                                   |
+    | **Time Off**                  | Read time off policies, requests, and balances   | `time_off:read`                                            |
+    | **Payroll & Paystubs**        | Read payroll runs and paystub details            | `payroll:read`, `paystub:read`                             |
+    | **Compensation**              | Read pay rates, salary, and compensation details | `member.pay:read`                                          |
+    | **Deductions (Read & Write)** | Manage employee deductions                       | `deductions:write`                                         |
+    | **Sensitive Member Data**     | Date of birth, sex, and Tax ID (SSN)             | `member.dob:read`, `member.sex:read`, `member.tax_id:read` |
+    | **Company Bank Account**      | Read company bank account information            | `company.bank_account:read`                                |
+
+    <Tip>
+      Company Information, Member Information, Employment Data, and Time Off are selected by default. Add additional presets based on your workflow requirements.
+    </Tip>
+
+    <Warning>
+      The scopes you select here must be enabled on your Justworks OAuth application. If you need scopes that were not included when the application was created, contact the Justworks team to update your application before connecting.
+    </Warning>
+  </Step>
+
+  <Step title="Authorize with Justworks">
+    1. Click **Connect to Justworks**
+    2. You will be redirected to Justworks at `payroll.justworks.com` to log in and authorize the connection
+    3. Review the requested permissions and click **Authorize**
+    4. After authorization, you will be redirected back to Modern and the integration will be active
+  </Step>
+</Steps>
+
+***
+
+## Token management
+
+Justworks uses short-lived access tokens with refresh tokens to maintain the connection.
+
+| Token type    | Lifetime |
+| ------------- | -------- |
+| Access token  | 24 hours |
+| Refresh token | 30 days  |
+
+<Info>
+  Modern automatically refreshes your access token before it expires, so no manual action is required. As long as your workflows run at least once within the 30-day refresh token window, the connection will remain active indefinitely.
+</Info>
+
+<Warning>
+  If the integration is not used for more than **30 days**, the refresh token will expire and you will need to reconnect by completing the OAuth flow again.
+</Warning>
+
+***
+
+## Healthchecks
+
+After connecting, the following healthchecks verify your integration is working correctly:
+
+| Check                    | Description                        | Required Scope        |
+| ------------------------ | ---------------------------------- | --------------------- |
+| Get Company Information  | Verifies access to company data    | `company.basic:read`  |
+| List Company Members     | Confirms access to member records  | `member.basic:read`   |
+| List Company Departments | Confirms access to department data | `company.detail:read` |
+| List Time Off Policies   | Confirms access to time off data   | `time_off:read`       |
+
+***
+
+## Using Justworks in workflows
+
+Once connected, you can use Justworks in your Modern workflows to automate HR and payroll processes:
+
+* **Employee management**: Retrieve member data, list employees, and access contact information
+* **Company data**: Access company details, departments, and office locations
+* **Employment tracking**: View employment history, current status, and job information
+* **Time off management**: Retrieve time off policies, requests, and balances
+* **Payroll information**: Access payroll runs and paystub details
+* **Compensation data**: View pay rates and compensation history
+* **Deductions management**: Read, create, update, and cancel employee deductions
+
+<Info>
+  The Justworks integration provides access to all endpoints in the [Justworks API](https://public-api.justworks.com/v1/docs). Explore the API documentation to discover all available capabilities.
+</Info>
+
+***
+
+## Troubleshooting
+
+### OAuth authorization failed
+
+* Verify that the Client ID and Client Secret you entered match the credentials provided by Justworks
+* Ensure your OAuth application is active with the Justworks team
+* Check that the scopes you selected in Modern are enabled on your Justworks OAuth application
+
+### Permission denied errors
+
+* Confirm that the scopes you selected during connection are enabled on your Justworks OAuth application
+* If you need additional scopes, contact the Justworks team to update your application, then reconnect in Modern
+
+### Connection stopped working
+
+* **Access token expired**: Modern refreshes access tokens automatically. If refreshes are failing, try reconnecting.
+* **Refresh token expired**: Refresh tokens expire after **30 days** of inactivity. If the integration has been idle for more than 30 days, reconnect by completing the OAuth flow again.
+* **OAuth application revoked**: If the Justworks OAuth application was revoked or modified, you will need new credentials from the Justworks team and must reconnect in Modern.
+
+### Need to update scopes
+
+To change the scopes for an existing connection:
+
+1. Contact the Justworks team to update the scopes on your OAuth application
+2. Disconnect the existing Justworks integration in Modern
+3. Reconnect and select the updated permission presets
+
+***
+
+Need help? Contact **[support@modern.com](mailto:support@modern.com)** for assistance with your Justworks integration.

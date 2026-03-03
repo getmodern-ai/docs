@@ -1,0 +1,202 @@
+---
+title: 'Okta'
+---
+
+## About Okta
+
+Okta is a cloud identity and access-management platform that lets organisations securely manage users, groups and application access. Connecting Okta to Modern enables zero-touch provisioning, access reviews and incident-response workflows directly from chat.
+
+## What the Okta integration enables
+
+| Capability           | Description                                                                                    |
+| -------------------- | ---------------------------------------------------------------------------------------------- |
+| Access Management    | Create, update, and manage users and groups                                                    |
+| Automation workflows | Streamline identity lifecycle management, provision users to applications via groups, and more |
+
+Anything defined in the [Okta API](https://developer.okta.com/docs/api/) can be accessed through Modern.
+
+***
+
+## Installation Methods
+
+There are two ways to connect Okta to Modern:
+
+1. **Okta Integration Network (Recommended)** - Install directly from the Okta app catalog for a streamlined setup experience
+2. **Custom App Integration** - Manually create an API Services app for more granular control over permissions
+
+***
+
+## Option 1: Okta Integration Network (Recommended)
+
+The fastest way to connect Okta to Modern is through the [Okta Integration Network (OIN) app catalog](https://www.okta.com/integrations/modern/).
+
+### 1. Install Modern from the Okta App Catalog
+
+* Log into your company's Okta admin console
+* Navigate to **Applications > Applications**
+* Click **Browse App Catalog**
+* Search for "Modern" and select it (or go directly to the [Modern integration page](https://www.okta.com/integrations/modern/))
+* Click **Add Integration**
+
+### 2. Authorize the Integration
+
+* On the authorization page, review the requested [API scopes](#default-api-scopes)
+* Click **Install and Authorize**
+* Okta will generate a **Client ID** and **Client Secret** for your organization
+* **Important:** Copy the Client Secret immediately - it will only be shown once
+
+### 3. Complete Modern Configuration
+
+* In Modern, navigate to **Applications** and click **Connect New +**
+* Find the Okta integration and click **Connect**
+* Enter the following details:
+  * **API Domain**: Your Okta domain (e.g., `mycompany.okta.com`). Do not include `-admin` if you're copying from the admin console URL.
+  * **Client ID**: The Client ID provided when you authorized the integration
+  * **Client Secret**: The Client Secret provided when you authorized the integration
+  * **Scopes**: Enter the following comma-separated scopes:
+
+```
+okta.apps.read, okta.apps.manage, okta.users.read, okta.users.manage, okta.groups.read, okta.groups.manage, okta.logs.read
+```
+
+* Click **Submit**
+
+<Check>
+  Your Okta integration is complete. Confirm the integration is configured correctly by running the health checks in the API Integration tab.
+</Check>
+
+***
+
+## Option 2: Custom App Integration
+
+Use this method if you need more granular control over permissions, want to create custom roles, or if the OIN app is not available in your region.
+
+### 1. Create App Integration
+
+* Log into your company's Okta admin console
+* Navigate to Applications > Applications
+* Select `Create App Integration`
+
+<Frame>
+  <img src="/images/image(33).png" alt="Okta Applications page with Create App Integration button" data-og-width="1906" width="1906" data-og-height="1478" height="1478" data-path="images/integrations/okta/image(33).png" data-optimize="true" data-opv="3" srcset="/images/image(33).png 280w, /images/image(33).png 560w, /images/image(33).png 840w, /images/image(33).png 1100w, /images/image(33).png 1650w, /images/image(33).png 2500w" />
+</Frame>
+
+* Select API Services
+
+<Frame>
+  <img src="/images/image(34).png" alt="Okta Create App Integration dialog with API Services option" data-og-width="1900" width="1900" data-og-height="1114" height="1114" data-path="images/integrations/okta/image(34).png" data-optimize="true" data-opv="3" srcset="/images/image(34).png 280w, /images/image(34).png 560w, /images/image(34).png 840w, /images/image(34).png 1100w, /images/image(34).png 1650w, /images/image(34).png 2500w" />
+</Frame>
+
+* Title the app "Modern" (this can be any value, but make sure to give it a title that helps you remember that this application is for integration with the Modern platform.
+* Hit Save & Finish creating the app integration.
+
+### 2. Configure scopes/permissions
+
+* Grant API scopes for the new integration. We recommend at least granting read access to users, groups and applications, as this will allow you to use read-only endpoints within Modern. However, to facilitate taking action in Okta to grant users access to applications or solve other common issues automatically, you will also need to grant some manage scopes.
+* Read: [okta.users.read](https://developer.okta.com/docs/api/openapi/okta-management/management/tag/User/), [okta.groups.read](https://developer.okta.com/docs/api/openapi/okta-management/management/tag/Group/), [okta.apps.read](https://developer.okta.com/docs/api/openapi/okta-management/management/tag/Application/), [okta.logs.read](https://developer.okta.com/docs/api/openapi/okta-management/management/tag/SystemLog/)
+* Write: [okta.users.manage](https://developer.okta.com/docs/api/openapi/okta-management/management/tag/User/), [okta.groups.manage](https://developer.okta.com/docs/api/openapi/okta-management/management/tag/Group/) and [okta.apps.manage](https://developer.okta.com/docs/api/openapi/okta-management/management/tag/Application/)
+
+<Frame>
+  <img src="/images/Okta-API-Scopes-Interface.png" alt="Okta API scopes interface showing read and write scopes" data-og-width="1510" width="1510" data-og-height="1296" height="1296" data-path="images/integrations/okta/Okta-API-Scopes-Interface.png" data-optimize="true" data-opv="3" srcset="/images/Okta-API-Scopes-Interface.png 280w, /images/Okta-API-Scopes-Interface.png 560w, /images/Okta-API-Scopes-Interface.png 840w, /images/Okta-API-Scopes-Interface.png 1100w, /images/Okta-API-Scopes-Interface.png 1650w, /images/Okta-API-Scopes-Interface.png 2500w" />
+</Frame>
+
+* Next, you will need to grant this app integration an admin role. Navigate to Admin roles and hit Edit Assignments.
+
+<Frame>
+  <img src="/images/image(36).png" alt="Okta Admin roles tab with Edit Assignments button" data-og-width="2216" width="2216" data-og-height="1198" height="1198" data-path="images/integrations/okta/image(36).png" data-optimize="true" data-opv="3" srcset="/images/image(36).png 280w, /images/image(36).png 560w, /images/image(36).png 840w, /images/image(36).png 1100w, /images/image(36).png 1650w, /images/image(36).png 2500w" />
+</Frame>
+
+* You must now assign roles to the application. [Here](https://support.okta.com/help/s/article/403-error-with-org2org-provisioning-with-oauth?language=en_US) is an article which explains the difference between roles and scopes. You can select one of the following options:
+  * Grant Modern the `Super Administrator` role. This will allow Modern to access all resources in your account, but only using the API scopes you configured previously.
+  * Assign another set of predefined roles. We recommend "Group Administrator", "Organization Administrator" and "Application Administrator" at a minimum. [Here](https://help.okta.com/en-us/content/topics/security/administrators-admin-comparison.htm) is an article which outlines the different permissions which can be accessed with these roles.
+  * Create a custom role. This option can be used if you want to configure fine grained permissions for Modern. Again, API scopes also govern which actions Modern can take in your Okta account.
+
+* Optionally, you can create a new role.
+  * If you've chosen to create a new role, grant it the permissions you want Modern to be able to perform.
+
+<Frame>
+  <img src="/images/image(37).png" alt="Okta custom role permissions configuration" data-og-width="2904" width="2904" data-og-height="1484" height="1484" data-path="images/integrations/okta/image(37).png" data-optimize="true" data-opv="3" srcset="/images/image(37).png 280w, /images/image(37).png 560w, /images/image(37).png 840w, /images/image(37).png 1100w, /images/image(37).png 1650w, /images/image(37).png 2500w" />
+</Frame>
+
+* Now you will need to assign a resource set to this role. Add an assignment, select the ones you like, and hit Save Changes
+
+<Frame>
+  <img src="/images/image(38).png" alt="Okta resource set assignment interface" data-og-width="2086" width="2086" data-og-height="1046" height="1046" data-path="images/integrations/okta/image(38).png" data-optimize="true" data-opv="3" srcset="/images/image(38).png 280w, /images/image(38).png 560w, /images/image(38).png 840w, /images/image(38).png 1100w, /images/image(38).png 1650w, /images/image(38).png 2500w" />
+</Frame>
+
+* If you don't already have an applicable resource set, you can create a resource set for this admin role to have control over. Navigate to Security → Administrators and then select the resources tab. Select Create a new resource set. Select the resources you want Modern to be able to manage and hit Create.
+
+<Frame>
+  <img src="/images/image(39).png" alt="Okta create new resource set interface" data-og-width="3044" width="3044" data-og-height="1742" height="1742" data-path="images/integrations/okta/image(39).png" data-optimize="true" data-opv="3" srcset="/images/image(39).png 280w, /images/image(39).png 560w, /images/image(39).png 840w, /images/image(39).png 1100w, /images/image(39).png 1650w, /images/image(39).png 2500w" />
+</Frame>
+
+<Frame>
+  <img src="/images/image(40).png" alt="Okta resource set creation with selected resources" data-og-width="2116" width="2116" data-og-height="1098" height="1098" data-path="images/integrations/okta/image(40).png" data-optimize="true" data-opv="3" srcset="/images/image(40).png 280w, /images/image(40).png 560w, /images/image(40).png 840w, /images/image(40).png 1100w, /images/image(40).png 1650w, /images/image(40).png 2500w" />
+</Frame>
+
+### 3. Complete app integration configuration
+
+* In general settings, uncheck the box requiring DPoP and hit Save. We do not currently provide PoP.
+
+<Frame>
+  <img src="/images/image(41).png" alt="Okta general settings with DPoP checkbox" data-og-width="1482" width="1482" data-og-height="1252" height="1252" data-path="images/integrations/okta/image(41).png" data-optimize="true" data-opv="3" srcset="/images/image(41).png 280w, /images/image(41).png 560w, /images/image(41).png 840w, /images/image(41).png 1100w, /images/image(41).png 1650w, /images/image(41).png 2500w" />
+</Frame>
+
+* Next, configure the client credentials. We use the private key/public key method for added security. Make sure your configuration looks like this:
+
+<Frame>
+  <img src="/images/image(42).png" alt="Okta client credentials configuration with public key method" data-og-width="1516" width="1516" data-og-height="1394" height="1394" data-path="images/integrations/okta/image(42).png" data-optimize="true" data-opv="3" srcset="/images/image(42).png 280w, /images/image(42).png 560w, /images/image(42).png 840w, /images/image(42).png 1100w, /images/image(42).png 1650w, /images/image(42).png 2500w" />
+</Frame>
+
+* Next, select `Add Key` and then generate one. Copy the JSON \*\*data to your clipboard and select Done.
+  * Note: Just because a key was generated does not mean it was saved, the key does not save until you select Done. Please verify that a key was actually created & saved.
+
+<Frame>
+  <img src="/images/image(43).png" alt="Okta Add Key interface with generated key" data-og-width="1210" width="1210" data-og-height="1506" height="1506" data-path="images/integrations/okta/image(43).png" data-optimize="true" data-opv="3" srcset="/images/image(43).png 280w, /images/image(43).png 560w, /images/image(43).png 840w, /images/image(43).png 1100w, /images/image(43).png 1650w, /images/image(43).png 2500w" />
+</Frame>
+
+### 4. Complete Modern Configuration
+
+* In Modern, navigate to `Applications` and click `Connect New +`. Find the Okta integration and press `Connect`.
+
+<Frame>
+  <img src="/images/image(44).png" alt="Modern Applications page with Okta connection option" data-og-width="3442" width="3442" data-og-height="1630" height="1630" data-path="images/integrations/okta/image(44).png" data-optimize="true" data-opv="3" srcset="/images/image(44).png 280w, /images/image(44).png 560w, /images/image(44).png 840w, /images/image(44).png 1100w, /images/image(44).png 1650w, /images/image(44).png 2500w" />
+</Frame>
+
+* Copy the JSON from the last step into the `Client Secret` section.
+* Your Instance ID should be the *domain* of your okta instance, so if your okta is found at `https://mycompany.okta.com/`, your instance ID would be `mycompany.okta.com` . If you are in the admin console, do *not* include the `-admin` in this (i.e. `mycompany-admin.okta.com`)
+* Your Client ID can be found at the top of the app integration page:
+
+<Frame>
+  <img src="/images/image(45).png" alt="Okta app integration page showing Client ID" data-og-width="1522" width="1522" data-og-height="988" height="988" data-path="images/integrations/okta/image(45).png" data-optimize="true" data-opv="3" srcset="/images/image(45).png 280w, /images/image(45).png 560w, /images/image(45).png 840w, /images/image(45).png 1100w, /images/image(45).png 1650w, /images/image(45).png 2500w" />
+</Frame>
+
+* Enter scopes. The scopes you enter should be a comma separated list of what you granted the application previously in Okta. See [Default API Scopes](#default-api-scopes) for the recommended scopes to include.
+* Click `Submit`
+* You should now be able to build or install workflows which leverage Okta APIs, e.g. you could build a workflow for creating a new Okta group or a new user.
+
+***
+
+## Default API Scopes
+
+The Modern OIN integration requests the following OAuth 2.0 scopes by default. You can copy the scopes below for use in the Modern configuration:
+
+```
+okta.apps.read, okta.apps.manage, okta.users.read, okta.users.manage, okta.groups.read, okta.groups.manage, okta.logs.read
+```
+
+| Scope                | Description                                             |
+| -------------------- | ------------------------------------------------------- |
+| `okta.apps.read`     | Read access to applications in your Okta organization   |
+| `okta.apps.manage`   | Create, update, and delete applications                 |
+| `okta.users.read`    | Read access to user profiles and attributes             |
+| `okta.users.manage`  | Create, update, and delete users                        |
+| `okta.groups.read`   | Read access to groups and group membership              |
+| `okta.groups.manage` | Create, update, and delete groups and manage membership |
+| `okta.logs.read`     | Read access to system logs for auditing and monitoring  |
+
+***
+
+## Support
+
+If you need assistance with the Modern Okta integration, please contact us at [support@modern.com](mailto:support@modern.com).

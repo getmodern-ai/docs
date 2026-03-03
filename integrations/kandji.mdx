@@ -1,0 +1,119 @@
+---
+title: 'Kandji'
+---
+
+## About Kandji
+
+Kandji is a cloud-native Apple device-management (MDM) and security platform that helps IT and InfoSec teams deploy, configure and protect Apple devices at scale through deep automation and policy-driven controls. Connecting Kandji to Modern lets you pull real-time inventory, enforce compliance and run remote commands directly from chat.
+
+## What the Kandji integration enables
+
+| Capability           | Description                                                                 |
+| -------------------- | --------------------------------------------------------------------------- |
+| Access Management    | Remove users from Kandji                                                    |
+| Automation workflows | Streamline device provisioning and management, enforce compliance, and more |
+
+Anything defined in the [Kandji API](https://api-docs.kandji.io/#intro) can be accessed through Modern.
+
+***
+
+## Kandji configuration (generate an API token)
+
+### Who Can Create API Tokens?
+
+| Kandji Role                               | Access to Settings ▸ Access ▸ API Tokens | Notes                                                                                        |
+| ----------------------------------------- | ---------------------------------------- | -------------------------------------------------------------------------------------------- |
+| Account Owner                             | ✅                                        | Full, non-revocable access.                                                                  |
+| Administrator                             | ✅                                        | Full access; can be revoked by other admins.                                                 |
+| Standard / Help Desk / Auditor-type roles | ❌ (by default)                           | Can only create a token if their custom role is explicitly granted the API Token permission. |
+
+> **Note:** Roles without Settings access (e.g., Standard, Help Desk) cannot reach the Access tab unless a custom permission set is applied.
+
+***
+
+### Create API Token with Required Permissions
+
+Follow these steps to create a dedicated Kandji API token for Modern with the appropriate permissions:
+
+<Steps>
+  <Step title="Navigate to API Token Settings">
+    1. Sign in to your Kandji instance
+    2. Click **Settings** in the sidebar
+    3. Click the **Access** tab
+    4. Scroll to the **API token** section
+    5. Click **Add Token**
+  </Step>
+
+  <Step title="Create the Token">
+    1. In the **Name** field, enter a descriptive name like `Modern Integration`
+    2. The **Description** field is optional
+    3. Click **Create**
+    4. Click the **Copy Token** icon to copy the token
+    5. **Important**: Store this token securely in your password manager—Kandji will never display the cleartext token again
+    6. Click the checkbox for "I have copied the token and understand that I will not be able to see these details again"
+    7. Click **Next**
+  </Step>
+
+  <Step title="Configure API Permissions">
+    In the **Manage API Permissions** dialog, click **Configure**, then scroll through the sections and enable the following permissions:
+
+    #### Devices Section (Required for Core Functionality)
+
+    Select the checkbox for each of the following:
+
+    * **Device list** - `/api/v1/devices`
+    * **Device ID** - `/api/v1/devices/{device_id}`
+    * **Device details** - `/api/v1/devices/{device_id}/details`
+    * **Application list** - `/api/v1/devices/{device_id}/apps`
+    * **Device Library Items** - `/api/v1/devices/{device_id}/library-items`
+    * **Device status** - `/api/v1/devices/{device_id}/status`
+    * **Device activity** - `/api/v1/devices/{device_id}/activity`
+
+    #### Device Actions Section (Required for Device Management Workflows)
+
+    If you plan to use workflows that manage or control devices, also enable:
+
+    * **Restart device** - `/api/v1/devices/{device_id}/action/restart`
+    * **Update inventory** - `/api/v1/devices/{device_id}/action/updateinventory`
+    * **Blank push** - `/api/v1/devices/{device_id}/action/blankpush`
+    * **Renew MDM profile** - `/api/v1/devices/{device_id}/action/renewmdmprofile`
+
+    **Note**: Additional device actions (lock, erase, remote desktop, etc.) can be enabled based on your specific workflow requirements.
+
+    #### Blueprints Section (Optional)
+
+    If you plan to use blueprint-related workflows:
+
+    * **Blueprint list** - `/api/v1/blueprints`
+    * **Blueprint ID** - `/api/v1/blueprints/{blueprint_id}`
+
+    #### Users Section (Optional)
+
+    If you plan to use user management workflows:
+
+    * **User list** - `/api/v1/users`
+    * **User ID** - `/api/v1/users/{user_id}`
+
+    #### Tags Section (Optional)
+
+    If you plan to use tag-related workflows:
+
+    * **Tag list** - `/api/v1/tags`
+
+    After selecting all required permissions, click **Save**.
+
+    **Security Best Practice**: Only enable the permissions you need for your specific workflows. You can update token permissions later by creating a new token and reconnecting the integration in Modern.
+  </Step>
+</Steps>
+
+***
+
+## Modern Configuration
+
+1. In Modern go to **Apps → Available → Kandji → Connect**.
+2. Enter your **Service Instance ID** and the **Bearer Token** you generated above.
+   * **Service Instance ID format**: `[your-subdomain].api.kandji.io`
+   * **Example**: If you access Kandji at `acme.kandji.io`, enter `acme.api.kandji.io`
+3. Click **Save**.
+
+You can rotate or update token permissions at any time by creating a new token in Kandji and reconnecting the integration in Modern.

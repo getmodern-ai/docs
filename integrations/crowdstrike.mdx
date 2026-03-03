@@ -1,0 +1,514 @@
+---
+title: 'CrowdStrike'
+---
+
+> Protect your endpoints with CrowdStrike Falcon's cloud-native security platform
+
+## Overview
+
+The CrowdStrike Falcon integration enables you to automate endpoint security, threat detection, and incident response workflows. Connect Modern to CrowdStrike to streamline security operations, automate threat hunting, and manage your endpoint protection programmatically.
+
+<CardGroup cols={2}>
+  <Card title="Key Features" icon="shield-halved">
+    <ul>
+      <li>Manage hosts and endpoint security</li>
+      <li>Monitor and respond to detections</li>
+      <li>Automate threat response workflows</li>
+      <li>Manage users and permissions</li>
+    </ul>
+  </Card>
+
+  <Card title="Common Use Cases" icon="wand-magic-sparkles">
+    <ul>
+      <li>Automated incident investigation</li>
+      <li>Host isolation and containment</li>
+      <li>Detection triage and analysis</li>
+      <li>Security policy enforcement</li>
+    </ul>
+  </Card>
+</CardGroup>
+
+## Prerequisites
+
+Before setting up the CrowdStrike integration, ensure you have:
+
+<Steps>
+  <Step title="CrowdStrike Account">
+    An active CrowdStrike Falcon account with administrative access
+  </Step>
+
+  <Step title="API Client Permissions">
+    Permissions to create API clients in your CrowdStrike tenant
+  </Step>
+
+  <Step title="Cloud Region">
+    Know your CrowdStrike cloud region (US-1, US-2, EU-1, or US-GOV-1)
+
+    <Tip>
+      Check your Falcon Console URL to determine your region:
+
+      <ul>
+        <li><code>falcon.crowdstrike.com</code> = US-1</li>
+        <li><code>falcon.us-2.crowdstrike.com</code> = US-2</li>
+        <li><code>falcon.eu-1.crowdstrike.com</code> = EU-1</li>
+        <li><code>falcon.laggar.gcw\.crowdstrike.com</code> = US-GOV-1</li>
+      </ul>
+    </Tip>
+  </Step>
+</Steps>
+
+## Setup Instructions
+
+### Step 1: Create API Client in CrowdStrike
+
+<Steps>
+  <Step title="Access API Settings">
+    Log in to your CrowdStrike Falcon Console. The URL depends on your cloud region:
+
+    <Tabs>
+      <Tab title="US-1">
+        [https://falcon.crowdstrike.com](https://falcon.crowdstrike.com)
+      </Tab>
+
+      <Tab title="US-2">
+        [https://falcon.us-2.crowdstrike.com](https://falcon.us-2.crowdstrike.com)
+      </Tab>
+
+      <Tab title="EU-1">
+        [https://falcon.eu-1.crowdstrike.com](https://falcon.eu-1.crowdstrike.com)
+      </Tab>
+
+      <Tab title="US-GOV-1">
+        [https://falcon.laggar.gcw.crowdstrike.com](https://falcon.laggar.gcw.crowdstrike.com)
+      </Tab>
+    </Tabs>
+
+    Once logged in:
+
+    <ol>
+      <li>Navigate to <strong>Support and resources</strong> → <strong>API Clients and Keys</strong></li>
+      <li>Click <strong>Add new API client</strong></li>
+    </ol>
+  </Step>
+
+  <Step title="Configure Client Details">
+    <ol>
+      <li>
+        Provide a descriptive name: <code>Modern Integration</code>
+      </li>
+
+      <li>
+        Add a description: <code>API client for Modern automation platform</code>
+      </li>
+    </ol>
+  </Step>
+
+  <Step title="Assign API Scopes">
+    Select the appropriate scopes based on your automation needs.
+
+    <Tip>
+      Start with read-only scopes and add write permissions as you build workflows that require them.
+    </Tip>
+  </Step>
+
+  <Step title="Generate Credentials">
+    <ol>
+      <li>Click <strong>Add</strong> to create the API client</li>
+      <li><strong>Copy the Client ID</strong> — you'll need this for Modern</li>
+      <li><strong>Copy the Client Secret</strong> — you'll need this for Modern</li>
+    </ol>
+
+    <Warning>
+      Store your Client Secret securely. CrowdStrike only displays it once and it cannot be retrieved later.
+    </Warning>
+  </Step>
+</Steps>
+
+### Step 2: Configure Integration in Modern
+
+<ol>
+  <li>
+    Navigate to the <strong>Integrations</strong> page in Modern
+  </li>
+
+  <li>
+    Find <strong>CrowdStrike</strong> in the available integrations
+  </li>
+
+  <li>
+    Click <strong>Connect</strong> to begin configuration
+  </li>
+
+  <li>Enter your configuration details:</li>
+</ol>
+
+<ParamField body="apiDomain" type="string" required>
+  Select your CrowdStrike cloud region. This determines which API endpoint to
+  use:
+
+  <ul>
+    <li>
+      <strong>US-1</strong>: <code>api.crowdstrike.com</code>
+    </li>
+
+    <li>
+      <strong>US-2</strong>: <code>api.us-2.crowdstrike.com</code>
+    </li>
+
+    <li>
+      <strong>EU-1</strong>: <code>api.eu-1.crowdstrike.com</code>
+    </li>
+
+    <li>
+      <strong>US-GOV-1</strong>: <code>api.laggar.gcw\.crowdstrike.com</code>
+    </li>
+  </ul>
+
+  <Tip>
+    Find your cloud region in the CrowdStrike console URL or contact your
+    CrowdStrike representative
+  </Tip>
+</ParamField>
+
+<ParamField body="clientId" type="string" required>
+  The Client ID from the API client you created in Step 1
+</ParamField>
+
+<ParamField body="clientSecret" type="string" required>
+  The Client Secret from the API client you created in Step 1
+</ParamField>
+
+<p>
+  5. Click <strong>Save</strong> to establish the integration
+</p>
+
+<Check>
+  Integration configured! Modern will verify your credentials and run health
+  checks automatically.
+</Check>
+
+## API Scopes Reference
+
+CrowdStrike uses granular API scopes to control access. Below are the most relevant scopes for IT operations and security automation with Modern:
+
+<AccordionGroup>
+  <Accordion title="Host Management">
+    <p><strong>Scopes:</strong> <code>hosts:read</code>, <code>hosts:write</code>, <code>sensor-update-policies:read</code>, <code>sensor-update-policies:write</code></p>
+
+    <p><strong>Read permissions enable:</strong></p>
+
+    <ul>
+      <li>View and search endpoint hosts</li>
+      <li>Retrieve detailed host information and metadata</li>
+      <li>Monitor host sensor status and version</li>
+    </ul>
+
+    <p><strong>Write permissions enable:</strong></p>
+
+    <ul>
+      <li>Contain or release hosts from network isolation</li>
+      <li>Modify host groups or tags</li>
+      <li>Initiate sensor updates and manage deployment policies</li>
+    </ul>
+  </Accordion>
+
+  <Accordion title="Alerts and Incidents">
+    <p><strong>Scopes:</strong> <code>alerts:read</code>, <code>alerts:write</code>, <code>incidents:read</code>, <code>incidents:write</code></p>
+
+    <p><strong>Read permissions enable:</strong></p>
+
+    <ul>
+      <li>Access lists of alerts and incidents</li>
+      <li>View threat indicators, behaviors, and status details</li>
+    </ul>
+
+    <p><strong>Write permissions enable:</strong></p>
+
+    <ul>
+      <li>Update alert or incident status</li>
+      <li>Assign ownership or add investigation notes</li>
+      <li>Automate triage and escalation workflows</li>
+    </ul>
+  </Accordion>
+
+  <Accordion title="Prevention and Response Policies">
+    <p><strong>Scopes:</strong> <code>prevention-policies:read</code>, <code>prevention-policies:write</code>, <code>response-policies:read</code>, <code>response-policies:write</code></p>
+
+    <p><strong>Read permissions enable:</strong></p>
+
+    <ul>
+      <li>View current policy configurations and applied host groups</li>
+      <li>Monitor enforcement across the environment</li>
+    </ul>
+
+    <p><strong>Write permissions enable:</strong></p>
+
+    <ul>
+      <li>Create or modify security policies</li>
+      <li>Assign policies to specific host groups for enforcement</li>
+    </ul>
+  </Accordion>
+
+  <Accordion title="Real Time Response (RTR)">
+    <p><strong>Scopes:</strong> <code>real-time-response:read</code>, <code>real-time-response:write</code>, <code>real-time-response-admin:read</code>, <code>real-time-response-admin:write</code></p>
+
+    <p><strong>Standard RTR scopes enable:</strong></p>
+
+    <ul>
+      <li>Start interactive response sessions on endpoints</li>
+      <li>Execute read-only diagnostic commands</li>
+      <li>Gather system information remotely</li>
+    </ul>
+
+    <p><strong>Admin RTR scopes enable:</strong></p>
+
+    <ul>
+      <li>Run elevated or administrative commands</li>
+      <li>Upload and execute remediation scripts</li>
+      <li>Transfer files for deeper forensics</li>
+    </ul>
+  </Accordion>
+
+  <Accordion title="User and Role Management">
+    <p><strong>Scopes:</strong> <code>users:read</code>, <code>users:write</code>, <code>roles:read</code></p>
+
+    <p><strong>Read permissions enable:</strong></p>
+
+    <ul>
+      <li>List users and their assigned roles</li>
+      <li>Audit user access levels and permissions</li>
+    </ul>
+
+    <p><strong>Write permissions enable:</strong></p>
+
+    <ul>
+      <li>Create or modify users</li>
+      <li>Assign or remove administrative privileges</li>
+    </ul>
+  </Accordion>
+
+  <Accordion title="Custom Indicators of Compromise (IOCs)">
+    <p><strong>Scopes:</strong> <code>custom-ioc:read</code>, <code>custom-ioc:write</code></p>
+
+    <p><strong>Read permissions enable:</strong></p>
+
+    <ul>
+      <li>Review all configured custom IOCs</li>
+    </ul>
+
+    <p><strong>Write permissions enable:</strong></p>
+
+    <ul>
+      <li>Create new IOCs to block or monitor malicious artifacts</li>
+      <li>Automate IOC creation based on Modern detection workflows</li>
+    </ul>
+  </Accordion>
+
+  <Accordion title="Sensor Health and Updates">
+    <p><strong>Scopes:</strong> <code>sensor-versions:read</code>, <code>sensor-update-policies:read</code>, <code>sensor-update-policies:write</code></p>
+
+    <p><strong>Read permissions enable:</strong></p>
+
+    <ul>
+      <li>Monitor sensor versions and deployment status</li>
+      <li>Track endpoints in reduced functionality mode</li>
+    </ul>
+
+    <p><strong>Write permissions enable:</strong></p>
+
+    <ul>
+      <li>Manage sensor rollout policies and update schedules</li>
+    </ul>
+  </Accordion>
+</AccordionGroup>
+
+## Example Workflows
+
+Build automated workflows that connect CrowdStrike with your IT operations:
+
+### Employee Onboarding
+
+When a new hire joins, automatically verify their device has the CrowdStrike sensor installed, assign it to the appropriate host group, apply security policies, and log the setup in your ITSM. If the sensor is missing, create a help desk ticket for IT to follow up.
+
+### Employee Offboarding
+
+When an employee leaves, trigger a workflow that contains their endpoint, removes it from active host groups, archives device information to your documentation system, and sends a summary report to the security team.
+
+### Security Incident Response
+
+When CrowdStrike detects a high-severity threat, automatically create a help desk ticket, send alerts to Slack, isolate the affected host, and compile a threat summary with host details and detection timeline for the security team to review.
+
+### Weekly Security Reports
+
+Schedule a workflow that queries all detections, host health status, and policy compliance data from the past week. Compile the information into a formatted report and distribute it via email or Slack to stakeholders.
+
+### Help Desk Ticket Resolution
+
+When users submit tickets about endpoint issues, automatically query CrowdStrike for the device's sensor status, recent detections, and policy assignments. Attach this context to the ticket to help support teams troubleshoot faster.
+
+### Access Audit Workflows
+
+Run monthly workflows that list all CrowdStrike users, identify inactive accounts or permission changes, compile an audit report, and send it to your compliance team with recommendations for access review.
+
+## Best Practices
+
+<Tip>
+  <strong>Start with Minimal Scopes</strong>: Begin with read-only API scopes
+  and add write permissions only as needed for specific workflows. This follows
+  the principle of least privilege.
+</Tip>
+
+<Info>
+  <strong>Use FQL Effectively</strong>: CrowdStrike's Falcon Query Language
+  (FQL) is powerful for filtering. Learn FQL syntax in the Falcon Console
+  documentation:
+  [https://falcon.crowdstrike.com/documentation/45/falcon-query-language-fql](https://falcon.crowdstrike.com/documentation/45/falcon-query-language-fql)
+</Info>
+
+<Warning>
+  <strong>Host Containment Impact</strong>: Network containment prevents a host
+  from communicating on the network except with the CrowdStrike cloud. Use
+  containment carefully and ensure you have documented procedures for lifting
+  containment.
+</Warning>
+
+<Tip>
+  <strong>Batch API Calls</strong>: When retrieving details for multiple
+  resources, use batch endpoints that accept arrays of IDs rather than making
+  individual calls for each resource.
+</Tip>
+
+## Troubleshooting
+
+### Common Issues
+
+<AccordionGroup>
+  <Accordion title="Authentication Failed">
+    <p><strong>Symptoms</strong>: 401 or 403 errors when making API requests</p>
+
+    <p><strong>Solutions</strong>:</p>
+
+    <ul>
+      <li>Verify your Client ID and Client Secret are correct</li>
+      <li>Confirm you're using the correct API domain for your cloud region</li>
+      <li>Check if the API client has been disabled in CrowdStrike</li>
+      <li>Ensure the API client has the required scopes</li>
+    </ul>
+  </Accordion>
+
+  <Accordion title="Insufficient Scope Errors">
+    <p><strong>Symptoms</strong>: 403 errors with "insufficient scope" messages</p>
+
+    <p><strong>Solutions</strong>:</p>
+
+    <ul>
+      <li>Review the API endpoint documentation for required scopes</li>
+      <li>Add the necessary scopes to your API client in CrowdStrike</li>
+      <li>Wait a few minutes after scope changes for them to take effect</li>
+      <li>Reconnect the integration in Modern after updating scopes</li>
+    </ul>
+  </Accordion>
+
+  <Accordion title="Wrong Cloud Region">
+    <p><strong>Symptoms</strong>: Connection timeouts or "customer not found" errors</p>
+
+    <p><strong>Solutions</strong>:</p>
+
+    <ul>
+      <li>Verify your cloud region by checking your CrowdStrike Falcon Console URL:</li>
+    </ul>
+
+    <ul>
+      <li><strong>US-1</strong>: <code>falcon.crowdstrike.com</code> → use <code>api.crowdstrike.com</code></li>
+      <li><strong>US-2</strong>: <code>falcon.us-2.crowdstrike.com</code> → use <code>api.us-2.crowdstrike.com</code></li>
+      <li><strong>EU-1</strong>: <code>falcon.eu-1.crowdstrike.com</code> → use <code>api.eu-1.crowdstrike.com</code></li>
+      <li><strong>US-GOV-1</strong>: <code>falcon.laggar.gcw\.crowdstrike.com</code> → use <code>api.laggar.gcw\.crowdstrike.com</code></li>
+    </ul>
+  </Accordion>
+
+  <Accordion title="Rate Limiting">
+    <p><strong>Symptoms</strong>: 429 errors or slow response times</p>
+
+    <p><strong>Solutions</strong>:</p>
+
+    <ul>
+      <li>Implement exponential backoff in workflows</li>
+      <li>Reduce the frequency of polling workflows</li>
+      <li>Use batch endpoints to reduce the number of API calls</li>
+      <li>Contact CrowdStrike support if you need higher rate limits</li>
+    </ul>
+  </Accordion>
+
+  <Accordion title="Health Check Failures">
+    <p><strong>Symptoms</strong>: Integration health checks fail during setup</p>
+
+    <p><strong>Solutions</strong>:</p>
+
+    <ul>
+      <li><strong>Test Connection fails</strong>: Verify Client ID and Secret</li>
+      <li><strong>List Hosts fails</strong>: Ensure <code>hosts:read</code> scope is granted</li>
+      <li><strong>List Alerts fails</strong>: Ensure <code>alerts:read</code> scope is granted</li>
+      <li><strong>List Users fails</strong>: Ensure <code>users:read</code> scope is granted</li>
+      <li>Wait 5–10 minutes after creating the API client for it to propagate</li>
+    </ul>
+  </Accordion>
+</AccordionGroup>
+
+## Security Considerations
+
+<Warning>
+  <strong>Credential Security</strong>: CrowdStrike API credentials provide
+  powerful access to your security infrastructure. Store them securely and
+  rotate them regularly.
+</Warning>
+
+<Info>
+  <strong>Audit Logging</strong>: All actions performed through the Modern
+  integration are logged in CrowdStrike's audit logs. Review these regularly to
+  ensure compliance.
+</Info>
+
+<Tip>
+  <strong>Multi-Factor Authentication</strong>: Require MFA for all users with
+  access to create or manage API clients in CrowdStrike.
+</Tip>
+
+## Additional Resources
+
+<CardGroup cols={2}>
+  <Card title="CrowdStrike API Documentation" icon="book" href="https://falcon.crowdstrike.com/documentation/page/a2a7fc0e/crowdstrike-oauth2-based-apis">
+    Complete API reference for all CrowdStrike endpoints
+  </Card>
+
+  <Card title="Falcon Query Language (FQL)" icon="code" href="https://falcon.crowdstrike.com/documentation/45/falcon-query-language-fql">
+    Learn how to write effective FQL queries
+  </Card>
+
+  <Card title="Real Time Response" icon="terminal" href="https://falcon.crowdstrike.com/documentation/page/d5b78bc0/real-time-response">
+    Guide to using RTR for remote endpoint actions
+  </Card>
+
+  <Card title="API Scopes Reference" icon="key" href="https://falcon.crowdstrike.com/documentation/page/a2a7fc0e/crowdstrike-oauth2-based-apis#q3c0f062">
+    Detailed documentation on all available API scopes
+  </Card>
+</CardGroup>
+
+## Support
+
+Need help with the CrowdStrike integration?
+
+<ul>
+  <li>
+    Review the CrowdStrike API documentation:
+    [https://falcon.crowdstrike.com/documentation](https://falcon.crowdstrike.com/documentation)
+  </li>
+
+  <li>Contact Modern support for integration-specific issues</li>
+  <li>Reach out to CrowdStrike support for API client or scope questions</li>
+</ul>
+
+<Note>
+  This integration is currently in <strong>beta</strong>. Features and
+  functionality may change. Please report any issues or feedback to the Modern
+  team.
+</Note>

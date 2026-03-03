@@ -1,0 +1,130 @@
+---
+title: 'Front'
+---
+
+> Manage shared inboxes, conversations, and customer communication with the Front API
+
+## Overview
+
+The Front integration enables you to automate customer communication workflows within your organization. Connect Modern to Front to streamline conversation management, automate inbox operations, and manage your team's communication infrastructure programmatically.
+
+<CardGroup cols={2}>
+  <Card title="Key Features" icon="inbox">
+    * Manage conversations and messages
+    * Automate inbox routing and tagging
+    * Access contacts and accounts
+    * Configure channels and teammates
+  </Card>
+
+  <Card title="Common Use Cases" icon="wand-magic-sparkles">
+    * Automated conversation triage and routing
+    * Contact and account data synchronization
+    * Message template management
+    * Team inbox analytics and reporting
+  </Card>
+</CardGroup>
+
+## Front APIs
+
+The integration provides access to two Front APIs:
+
+| API             | Description                                                                  |
+| --------------- | ---------------------------------------------------------------------------- |
+| **Core API**    | Manage conversations, contacts, accounts, inboxes, tags, teammates, and more |
+| **Channel API** | Configure and manage application channels and message templates              |
+
+Anything defined in the [Front API Reference](https://dev.frontapp.com/reference) can be accessed through Modern.
+
+## Prerequisites
+
+Before setting up the Front integration, ensure you have admin permissions in your Front account to generate API tokens.
+
+## Setup Instructions
+
+### Step 1: Generate Your API Token
+
+<Steps>
+  <Step title="Open Front Settings">
+    Log in to your [Front account](https://app.frontapp.com) and navigate to **Settings**
+  </Step>
+
+  <Step title="Go to API Tokens">
+    Navigate to **Developers** → **API tokens**
+  </Step>
+
+  <Step title="Create a New Token">
+    Click **New token** and provide a descriptive name (e.g., "Modern Integration")
+  </Step>
+
+  <Step title="Configure Token Scopes">
+    Select the appropriate scopes for your use case. At minimum, enable **Access resources** with **Shared resources** for the workspaces you want Modern to access.
+  </Step>
+
+  <Step title="Save Your Token">
+    Copy the generated API token and store it in a secure location
+  </Step>
+</Steps>
+
+<Warning>
+  API tokens are shown only once when created. Make sure to copy and save it before closing the dialog.
+</Warning>
+
+### Step 2: Configure Integration in Modern
+
+1. In Modern, go to **Apps → Available → Front → Connect**
+2. Click the **Connect** button
+3. Enter your configuration details:
+
+<ParamField body="apiKey" type="string" required>
+  Your Front API token from Step 1. This authenticates all API requests to Front using Bearer token authentication.
+</ParamField>
+
+4. Click **Submit** to establish the integration
+
+### Step 3: Verify the Connection
+
+1. After submitting, navigate to the **Front** integration page in Modern
+2. Click the **API** tab
+3. Click **Run** on the health check to test the connection
+
+<Check>
+  If the health check passes, your Front integration is ready to use.
+</Check>
+
+## Token Scopes
+
+Front API tokens support granular permissions. Configure scopes based on what Modern needs to access:
+
+| Scope                 | Description                                                               |
+| --------------------- | ------------------------------------------------------------------------- |
+| **Shared resources**  | Access shared inboxes, conversations, tags, and workspace-level resources |
+| **Private resources** | Access individual teammate resources (requires teammate opt-in)           |
+| **Global resources**  | Access company-level resources like teams, accounts, and rules            |
+
+<Info>
+  Front recommends limiting permissions to only what your integration needs. You can update scopes later by editing the token in Front settings.
+</Info>
+
+## Rate Limits
+
+The Front API enforces rate limits to ensure fair usage:
+
+<Info>
+  Rate limits vary by endpoint and plan. If you exceed the limit, the API returns a `429 Too Many Requests` response with a `Retry-After` header indicating when you can retry.
+</Info>
+
+## Additional Resources
+
+<CardGroup cols={2}>
+  <Card title="Front API Reference" icon="book" href="https://dev.frontapp.com/reference">
+    Complete API reference for all Front Core and Channel API endpoints
+  </Card>
+
+  <Card title="Authentication Guide" icon="key" href="https://dev.frontapp.com/docs/authentication">
+    Detailed guide on API tokens, OAuth, and token scopes
+  </Card>
+</CardGroup>
+
+***
+
+Need help? Contact **[support@modern.com](mailto:support@modern.com)** for assistance with your Front integration.

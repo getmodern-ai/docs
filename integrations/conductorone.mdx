@@ -1,0 +1,91 @@
+---
+title: 'ConductorOne'
+---
+
+## About ConductorOne
+
+ConductorOne is an identity security platform that helps organizations automate access reviews, manage entitlements, and enforce least-privilege access. Connecting ConductorOne to Modern enables automated access workflows, entitlement management, and identity governance directly from your service desk.
+
+## What the ConductorOne integration enables
+
+| Capability           | Description                                                       |
+| -------------------- | ----------------------------------------------------------------- |
+| Automation workflows | Manage access reviews, entitlements, users, apps, tasks, and more |
+
+Anything defined in the [ConductorOne API](https://www.conductorone.com/docs/conductorone-api/api) can be accessed through Modern.
+
+***
+
+## ConductorOne configuration
+
+### Prerequisites
+
+* An active ConductorOne tenant
+* Ability to create API keys (via your profile, or the **Super Administrator** role for tenant-wide keys)
+
+### Create an API key
+
+<Steps>
+  <Step title="Navigate to API credentials">
+    In the ConductorOne web app, click your username at the bottom of the screen and select **AI & API**. In the **API credentials** section, click **Create credential**.
+  </Step>
+
+  <Step title="Configure the key">
+    * **Name**: Enter a descriptive name (e.g., "Modern Integration")
+    * **Lifespan**: Choose 30 days, 90 days, or never expires
+    * **Allowed IPs** (optional): Restrict which IPs can use the key
+    * **Scope**: Select the permissions for the key. Choose **Full permissions** for read-write access, or select specific roles for more limited access.
+  </Step>
+
+  <Step title="Copy your credentials">
+    Click **Create**. Copy both the **Client ID** and **Client Secret**.
+  </Step>
+</Steps>
+
+<Warning>
+  The **Client Secret** is only shown once. Store it securely before leaving the page. If lost, you must create a new API key.
+</Warning>
+
+### Identify your Tenant Domain
+
+Your **Tenant Domain** is the hostname portion of your Client ID. The Client ID format is `<random-id>@<hostname>/<use-case>`.
+
+For example, if your Client ID is `strange-hydra-68836@acme.conductor.one/pcc`, your Tenant Domain is `acme.conductor.one`.
+
+***
+
+## Modern configuration
+
+1. In Modern, go to **Apps** → **Available** → **ConductorOne** → **Connect**
+
+2. Enter the following:
+
+   | Field         | Description                                                          |
+   | ------------- | -------------------------------------------------------------------- |
+   | Tenant Domain | Your ConductorOne tenant domain (e.g., `your-company.conductor.one`) |
+   | Client ID     | Your ConductorOne API Client ID                                      |
+   | Client Secret | Your ConductorOne API Client Secret                                  |
+
+3. Click **Save**
+
+<Check>
+  Modern will verify your credentials and connect to ConductorOne. Once saved, the integration is ready to use in workflows.
+</Check>
+
+***
+
+## Additional resources
+
+<CardGroup cols={2}>
+  <Card title="ConductorOne API documentation" icon="book" href="https://www.conductorone.com/docs/conductorone-api/api">
+    API overview and how to create and manage API keys
+  </Card>
+
+  <Card title="How to authenticate requests" icon="key" href="https://www.conductorone.com/docs/conductorone-api/authenticate">
+    Details on ConductorOne's authentication flow
+  </Card>
+</CardGroup>
+
+***
+
+Need help? Contact **[support@modern.com](mailto:support@modern.com)** for assistance with your ConductorOne integration.

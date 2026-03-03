@@ -1,0 +1,110 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "almond",
+  "name": "Integrations",
+  "colors": {
+    "primary": "#dd6b20",
+    "light": "#faf8f5",
+    "dark": "#000000"
+  },
+  "favicon": "/favicon.ico",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Integrations",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": ["index"]
+          },
+          {
+            "group": "Integrations",
+            "pages": [
+              "integrations/apple-business-manager",
+              "integrations/asana",
+              "integrations/ashby",
+              "integrations/aws",
+              "integrations/azure-resource-manager",
+              "integrations/bamboohr",
+              "integrations/box",
+              "integrations/brex",
+              "integrations/calendly",
+              "integrations/cisco-meraki",
+              "integrations/clickup",
+              "integrations/conductorone",
+              "integrations/crowdstrike",
+              "integrations/crxplorer",
+              "integrations/databricks",
+              "integrations/datadog",
+              "integrations/daytona",
+              "integrations/envoy",
+              "integrations/exchange-online",
+              "integrations/figma",
+              "integrations/firstbase",
+              "integrations/fleetdm",
+              "integrations/freshservice",
+              "integrations/front",
+              "integrations/github",
+              "integrations/gitlab",
+              "integrations/google-workspace",
+              "integrations/hibob",
+              "integrations/hubspot",
+              "integrations/incident-io",
+              "integrations/ironclad",
+              "integrations/jamf",
+              "integrations/jira",
+              "integrations/jumpcloud",
+              "integrations/justworks",
+              "integrations/kandji",
+              "integrations/linear",
+              "integrations/microsoft-graph",
+              "integrations/mosyle",
+              "integrations/navan",
+              "integrations/notion",
+              "integrations/okta",
+              "integrations/oomnitza",
+              "integrations/openpath",
+              "integrations/opsgenie",
+              "integrations/pagerduty",
+              "integrations/pandadoc",
+              "integrations/persona",
+              "integrations/ramp",
+              "integrations/rapid7",
+              "integrations/rippling",
+              "integrations/rootly",
+              "integrations/servicenow",
+              "integrations/sigma",
+              "integrations/slack",
+              "integrations/slack-admin",
+              "integrations/snipeit",
+              "integrations/snowflake",
+              "integrations/stripe",
+              "integrations/vanta",
+              "integrations/verkada",
+              "integrations/workday",
+              "integrations/zendesk",
+              "integrations/zoom"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Support",
+        "href": "mailto:support@getmodern.ai"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Log In",
+      "href": "https://app.getmodern.ai"
+    }
+  }
+}

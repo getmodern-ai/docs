@@ -1,0 +1,93 @@
+---
+title: 'Mosyle'
+---
+
+## About Mosyle
+
+Mosyle is an Apple Device Management solution for businesses and schools.
+
+## What the Mosyle integration enables
+
+| Capability          | Description                                                                      |
+| ------------------- | -------------------------------------------------------------------------------- |
+| Workflow Automation | Build Modern workflows to automate anything accessible via Mosyle's Business API |
+
+All resources exposed by the Mosyle Business API are available to Modern workflows using JWT authentication.
+
+***
+
+## Mosyle configuration (in Mosyle)
+
+### Prerequisites
+
+Before configuring the Mosyle integration in Modern, ensure you have:
+
+* An active Mosyle account
+* Administrator access to enable API integration
+
+### Enable API Integration and Get Credentials
+
+<Steps>
+  <Step title="Enable API Profile">
+    1. Log in to your Mosyle account.
+    2. Navigate to **Organization > API Integration**.
+    3. Enable the profile.
+  </Step>
+
+  <Step title="Get Access Token">
+    1. Once enabled, you will see your **Access Token**.
+    2. Copy this token as it will be required for the configuration.
+  </Step>
+
+  <Step title="Prepare User Credentials">
+    You will also need the **Email** and **Password** of a user with appropriate permissions to access the API.
+  </Step>
+</Steps>
+
+***
+
+## Modern configuration
+
+Once you have your Mosyle Access Token and user credentials, follow these steps to configure the integration in Modern:
+
+<Steps>
+  <Step title="Navigate to Mosyle integration">
+    1. In Modern, go to **Applications → Available → Mosyle**
+    2. Click **Connect**
+    3. The Mosyle configuration form will appear
+  </Step>
+
+  <Step title="Enter configuration details">
+    Fill in the following fields:
+
+    | Field            | Description                                                  |
+    | ---------------- | ------------------------------------------------------------ |
+    | **Email**        | Your Mosyle account email                                    |
+    | **Password**     | Your Mosyle account password                                 |
+    | **Access Token** | The Access Token you retrieved from the API Integration page |
+  </Step>
+
+  <Step title="Submit the configuration">
+    1. Click **Submit** to complete the integration setup
+    2. Modern will verify the connection by attempting to authenticate.
+    3. Once verified, you can start building workflows with Mosyle.
+  </Step>
+</Steps>
+
+***
+
+## Using Mosyle in workflows
+
+Once connected, you can use Mosyle in your Modern workflows to automate device management tasks.
+Supported endpoints include:
+
+* `/users`
+* `/devices`
+* `/usergroups`
+* `/devicegroups`
+
+Note that the Mosyle API uses the POST method for requests.
+
+***
+
+Need help? Contact **[support@modern.com](mailto:support@modern.com)** for assistance with your Mosyle integration.

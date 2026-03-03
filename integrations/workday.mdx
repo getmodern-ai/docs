@@ -1,0 +1,295 @@
+---
+title: 'Workday'
+---
+
+## About Workday
+
+Workday is a human capital management (HCM) platform that manages employee data, benefits, and organizational information. Connect it to Modern to automate HR workflows and employee lifecycle management.
+
+## What the Workday integration enables
+
+| Capability          | Description                                                                    |
+| ------------------- | ------------------------------------------------------------------------------ |
+| Workflow Automation | Build Modern workflows to automate anything accessible via Workday's REST APIs |
+
+All resources exposed by the [Workday REST APIs](https://community.workday.com/sites/default/files/file-hosting/restapi) are available to Modern workflows using Integration System User (ISU) authentication.
+
+<Info>
+  Support for building workflows with Workday's SOAP (WSDL-based) APIs is coming soon.
+</Info>
+
+## Workday Configuration
+
+### Prerequisites
+
+Before configuring the Workday integration in Modern, ensure you have:
+
+* Administrator access to your Workday tenant
+* Permissions to create Integration System Users and Security Groups
+* Access to domain security policy configuration
+
+<Warning>
+  These steps require Workday administrator privileges. If you do not have these privileges, contact your Workday administrator. Workday recommends using Integration System Users (ISUs) for third-party integrations such as Modern.
+</Warning>
+
+<Note>
+  Throughout this guide, we'll use example names for entities you create to keep instructions clear:
+
+  * ISU username: "ServalIntegration"
+  * Security Group: "Modern Integration Group"
+  * API Client: "Modern Workday API Client"
+
+  You can use any names you prefer—just substitute your names wherever these examples appear.
+</Note>
+
+### Step 1: Create an Integration System User (ISU)
+
+<Steps>
+  <Step title="Create the ISU Account">
+    1. Log in to your Workday tenant
+    2. In the search bar, type **"Create Integration System User"**
+    3. Select the **Create Integration System User** task
+    4. Fill in the account information:
+       * **User Name**: Enter a descriptive username (e.g., "ServalIntegration")
+       * **Password**: Create a strong password
+       * **Confirm Password**: Re-enter the same password
+
+    <Warning>
+      **Important**: The password cannot contain &, \<, or > characters.
+    </Warning>
+  </Step>
+
+  <Step title="Prevent Password Expiration">
+    1. Search for **"Maintain Password Rules"**
+    2. Add the ISU username to the **"System Users exempt from password expiration"** field
+    3. Click **OK** to save
+
+    <Tip>
+      This ensures your integration will not break due to password expiration.
+    </Tip>
+  </Step>
+</Steps>
+
+### Step 2: Create Security Group and Assign ISU
+
+<Steps>
+  <Step title="Create Security Group">
+    1. Search for **"Create Security Group"**
+    2. Select **Integration System Security Group (Unconstrained)** from the Type dropdown
+    3. Enter a descriptive name (e.g., "Modern Integration Group")
+    4. Click **OK**
+  </Step>
+
+  <Step title="Assign ISU to Security Group">
+    1. In the **Integration System Users** field, enter **ServalIntegration** (or your ISU's name)
+    2. Click **OK** to save
+  </Step>
+</Steps>
+
+### Step 3: Configure Domain Security Permissions
+
+<Steps>
+  <Step title="Set Permissions">
+    1. Search for **"Maintain Permissions for Security Group"**
+    2. Set **Operation** to **Maintain**
+    3. Set **Source Security Group** to **Modern Integration Group** (or your security group's name)
+    4. Add the **Domain Security Policies** required for your use case. See below for commonly used policies.
+
+    <Note>
+      Only add the permissions you need for your specific integration requirements.
+    </Note>
+  </Step>
+
+  <AccordionGroup>
+    <Accordion title="HRIS domain security policies">
+      | Operation | Domain Security Policy                                              | Notes                                                  |
+      | --------- | ------------------------------------------------------------------- | ------------------------------------------------------ |
+      | Get Only  | Worker Data: Public Worker Reports                                  | Minimum required permission                            |
+      | Get Only  | Person Data: Name                                                   |                                                        |
+      | Get Only  | Person Data: Personal Data                                          |                                                        |
+      | Get Only  | Person Data: Home Contact Information                               |                                                        |
+      | Get Only  | Person Data: Work Contact Information                               |                                                        |
+      | Get Only  | Person Data: Private Work Email Integration                         | Required to surface the work email of employees        |
+      | Get Only  | Person Data: Public Work Email Address Integration                  | Required to surface the work email of employees        |
+      | Get Only  | Worker Data: Compensation                                           |                                                        |
+      | Get Only  | Worker Data: Compensation by Organization                           |                                                        |
+      | Get Only  | Worker Data: Workers                                                |                                                        |
+      | Get Only  | Worker Data: All Positions                                          |                                                        |
+      | Get Only  | Worker Data: Current Staffing Information                           | Required to surface the employment status of employees |
+      | Get Only  | Worker Data: Employment Data                                        |                                                        |
+      | Get Only  | Worker Data: Compensation - All Workers' Positions Past and Present |                                                        |
+      | Get Only  | Worker Data: Organization Information                               |                                                        |
+      | Get Only  | Manage: Organization Integration                                    | Required to surface the organization hierarchy         |
+      | Get Only  | Reports: Pay Calculation Results for Worker (Results)               |                                                        |
+      | Get Only  | Worker Data: Payroll                                                |                                                        |
+      | Get Only  | Process: Export Time Blocks                                         | Required to retrieve timesheet entries                 |
+      | Get Only  | Worker Data: Time Off                                               | Time Off access may require additional configuration.  |
+    </Accordion>
+
+    <Accordion title="ATS domain security policies">
+      | Operation       | Domain Security Policy                    | Notes                                  |
+      | --------------- | ----------------------------------------- | -------------------------------------- |
+      | Get Only        | Worker Data: Public Worker Reports        |                                        |
+      | Get Only        | Worker Data: Workers                      |                                        |
+      | Get Only        | Worker Data: All Positions                |                                        |
+      | Get Only        | Worker Data: Current Staffing Information |                                        |
+      | Get Only        | Job Requisition Data                      |                                        |
+      | Get Only        | Worker Data: Employment Data              |                                        |
+      | Get Only        | Worker Data: Organization Information     |                                        |
+      | Get Only        | Manage Pre-Hire Process: Manage Pre-Hires |                                        |
+      | Get and Put     | Manage Pre-Hire Data                      |                                        |
+      | Get and Put     | Candidate Data: Edit Job Application      |                                        |
+      | Get and Put     | Job Requisitions for Recruiting           |                                        |
+      | Get and Put     | Candidate Data: Personal Information      |                                        |
+      | Get and Put     | Set Up: Pre-Hire Process                  |                                        |
+      | Get and Put     | Candidate Data: Other Information         |                                        |
+      | Get and Put     | Manage Pre-Hire Process                   |                                        |
+      | View and Modify | Candidate Data: Other Information         |                                        |
+      | Get and Put     | Candidate Data: Job Application           | Get is the minimum required permission |
+      | Get and Put     | Move Candidate                            |                                        |
+      | Get and Put     | Prospects                                 |                                        |
+      | Get             | Manage: Evergreen Requisitions            |                                        |
+      | Get             | Job Postings                              |                                        |
+      | Get             | Job Postings External                     |                                        |
+      | Get             | Job Postings Internal                     |                                        |
+      | Get             | Questionnaire                             |                                        |
+      | Get             | Integration Build                         |                                        |
+    </Accordion>
+
+    <Accordion title="System Monitoring domain security policies">
+      | Operation | Domain Security Policy       | Notes                                                 |
+      | --------- | ---------------------------- | ----------------------------------------------------- |
+      | Get Only  | System Monitor Administrator | Required for accessing system metrics and health data |
+      | Get Only  | System Monitor Support       | Alternative permission for system monitoring access   |
+      | Get Only  | System Health Dashboard      | Required for system health monitoring capabilities    |
+    </Accordion>
+  </AccordionGroup>
+
+  <Step title="Activate Security Changes">
+    1. Search for **"Activate Pending Security Policy Changes"**
+    2. Review and confirm the changes
+    3. Click **OK** to activate
+  </Step>
+</Steps>
+
+### Step 4: Configure Authentication Policy
+
+<Steps>
+  <Step title="Set Authentication Rules">
+    1. Search for **"Manage Authentication Policies"**
+    2. Click **Edit** on the authentication policy
+    3. Create or update an Authentication Rule with:
+       * Add **Modern Integration Group** (or your security group's name)
+       * Set **Allowed Authentication Types** to **User Name Password** or **Any**
+    4. Click **OK** to save
+  </Step>
+
+  <Step title="Activate Authentication Changes">
+    1. Search for **"Activate All Pending Authentication Policy Changes"**
+    2. Confirm the changes to save the Authentication Policy
+  </Step>
+</Steps>
+
+### Step 5: Register an API Client for Integrations (OAuth 2.0)
+
+<Steps>
+  <Step title="Create the API Client">
+    1. Search for **"Register API Client for Integrations"**
+    2. Click **OK** to start a new registration
+    3. Fill in basic details (Name/Description). For the Name, use e.g., **Modern Workday API Client**.
+    4. Set the client as a **Confidential** application (if prompted)
+    5. Enable the **Refresh Token** grant
+    6. Allow **Non-Expiring Refresh Tokens**
+    7. Click **Save** to register
+
+    <Warning>
+      After registration, Workday shows the **Client ID** and **Client Secret**. The secret may only be shown once; store it securely.
+      If rotated later, you must update Modern.
+    </Warning>
+  </Step>
+</Steps>
+
+### Step 6: Associate the API Client with the ISU and Generate a Refresh Token
+
+<Steps>
+  <Step title="Generate Refresh Token for the ISU">
+    1. Search for **"Manage Refresh Tokens for Integrations"** (sometimes labeled **"API Client: Manage Refresh Tokens"**)
+    2. Select **Modern Workday API Client** (or your API client's name)
+    3. Add an **Authorized User** and select **ServalIntegration** (or your ISU's name)
+    4. Choose an expiration (select **Never** if your policy allows) and **Generate** the refresh token
+    5. Copy the **Refresh Token** and store it securely
+
+    <Warning>
+      You will not be able to view the refresh token again once you leave the page. This value is required in Modern as **Refresh Token**.
+    </Warning>
+  </Step>
+</Steps>
+
+### Step 7: Collect API Endpoints and SOAP Web Services Endpoint
+
+<Steps>
+  <Step title="Find REST and Token endpoints on View API Clients">
+    1. Search for **"View API Clients"** and open **Modern Workday API Client** (or your API client's name)
+    2. Copy the **REST API endpoint** (typically ends with `/ccx/api/mycompany`, e.g., `https://wd2-impl-services1.workday.com/ccx/api/mycompany`)
+    3. Copy the **Token endpoint** (typically ends with `/ccx/oauth2/token`, e.g., `https://wd2-impl-services1.workday.com/ccx/oauth2/token`)
+
+    <Tip>
+      These two values map directly to Modern fields **REST API Endpoint** and **Token Endpoint**.
+    </Tip>
+  </Step>
+
+  <Step title="Find SOAP Web Services Endpoint (WSDL)">
+    1. Search for **"Public Web Services"** in Workday
+    2. If connecting HRIS, locate **"Human Resources (Public)"**
+    3. Click the three dots (⋯) → **Web Services** → **View WSDL**
+    4. When the WSDL page loads, scroll to the bottom
+    5. Copy the full URL shown under **Human\_ResourcesService**. It will look like `https://wd2-impl-services1.workday.com/ccx`
+
+    <Tip>
+      Enter this as the **Web Services Endpoint URL** in Modern. This is the SOAP endpoint prefix, not the full WSDL document URL. Do not include `?wsdl`.
+    </Tip>
+  </Step>
+
+  <Step title="Determine Tenant Name">
+    Your tenant name is typically visible in your Workday URL. For example, in
+    `https://wd2-impl.workday.com/tenant/d/home.html`, the tenant name is `tenant`.
+    You can also ask your administrator.
+  </Step>
+</Steps>
+
+***
+
+## Modern Configuration
+
+Once you have completed the Workday ISU and API Client setup, follow these steps to configure the integration in Modern:
+
+<Steps>
+  <Step title="Navigate to Workday Integration">
+    1. In Modern, go to **Apps → Available → Workday → Connect**
+    2. The Workday configuration form will appear
+  </Step>
+
+  <Step title="Enter Configuration Details">
+    Fill in the following fields with the information from your Workday configuration:
+
+    | Field                         | Where to find it                                  | Example                                                    |
+    | ----------------------------- | ------------------------------------------------- | ---------------------------------------------------------- |
+    | **Tenant Name**               | From your Workday URL or admin                    | `mycompany`                                                |
+    | **Client ID**                 | From Step 5 (API Client registration)             | `1234567890abcdef`                                         |
+    | **Client Secret**             | From Step 5 (shown once at registration/rotation) | `••••••••••••`                                             |
+    | **REST API Endpoint**         | From Step 7 (View API Clients)                    | `https://wd2-impl-services1.workday.com/ccx/api/mycompany` |
+    | **Token Endpoint**            | From Step 7 (View API Clients)                    | `https://wd2-impl-services1.workday.com/ccx/oauth2/token`  |
+    | **Refresh Token**             | From Step 6 (generated for the ISU)               | `••••••••••••`                                             |
+    | **Web Services Endpoint URL** | From Step 7 (Public Web Services → View WSDL)     | `https://wd2-impl-services1.workday.com/ccx`               |
+    | **ISU Username**              | From Step 1 (ISU you created)                     | `ServalIntegration`                                        |
+    | **ISU Password**              | From Step 1 (ISU password)                        | `••••••••••••`                                             |
+
+    <Warning>
+      Ensure endpoints include the full path (e.g., `/ccx/api/mycompany` and `/ccx/oauth2/token`) exactly as shown on the **View API Clients** page, with the `https://` prefix.
+    </Warning>
+  </Step>
+
+  <Step title="Submit Configuration Form">
+    1. Click **Submit** to complete the integration setup
+  </Step>
+</Steps>

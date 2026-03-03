@@ -1,0 +1,119 @@
+---
+title: 'AWS'
+---
+
+## About AWS
+
+Amazon Web Services (AWS) is a public-cloud platform, offering on-demand compute, storage, database, and networking services. Connecting AWS to Modern lets you automate everyday cloud-ops and security workflows—from listing IAM roles to spinning down unused EC2 instances—directly from chat.
+
+## What the AWS integration enables
+
+| Capability           | Description                                                       |
+| -------------------- | ----------------------------------------------------------------- |
+| Access Management    | Create, update, and manage users and their permissions            |
+| Automation workflows | Manage resources, create roles, and automate lifecycle management |
+
+***
+
+## AWS configuration (in the AWS console)
+
+Follow these steps to create a cross-account role that Modern can assume. The role's policies determine exactly which AWS APIs Modern can call.
+
+1. **Open the modal in Modern**
+   In the Modern UI navigate to **Apps → Connect AWS**. Leave this window open; it shows the **Modern AWS Account ID** and **External ID** you will need shortly.
+
+<Frame>
+  <img src="/images/aws_serval_modal.png" alt="AWS Modern modal showing Account ID and External ID" data-og-width="1012" width="1012" data-og-height="1318" height="1318" data-path="images/integrations/aws/aws_serval_modal.png" data-optimize="true" data-opv="3" srcset="/images/aws_serval_modal.png 280w, /images/aws_serval_modal.png 560w, /images/aws_serval_modal.png 840w, /images/aws_serval_modal.png 1100w, /images/aws_serval_modal.png 1650w, /images/aws_serval_modal.png 2500w" />
+</Frame>
+
+2. **Create a new IAM role**\
+   In AWS go to **IAM → Roles → Create role** and choose **Another AWS account** as the trusted entity.\
+   Enter the **Account ID** shown in Modern, then tick **Require external ID** and paste the **External ID**.
+
+<Frame>
+  <img src="/images/image(1).png" alt="AWS IAM trusted entity configuration with Account ID and External ID fields" data-og-width="2776" width="2776" data-og-height="946" height="946" data-path="images/integrations/aws/image(1).png" data-optimize="true" data-opv="3" srcset="/images/image(1).png 280w, /images/image(1).png 560w, /images/image(1).png 840w, /images/image(1).png 1100w, /images/image(1).png 1650w, /images/image(1).png 2500w" />
+</Frame>
+
+<Frame>
+  <img src="/images/aws_create_role.png" alt="AWS create role wizard" data-og-width="2076" width="2076" data-og-height="1202" height="1202" data-path="images/integrations/aws/aws_create_role.png" data-optimize="true" data-opv="3" srcset="/images/aws_create_role.png 280w, /images/aws_create_role.png 560w, /images/aws_create_role.png 840w, /images/aws_create_role.png 1100w, /images/aws_create_role.png 1650w, /images/aws_create_role.png 2500w" />
+</Frame>
+
+3. **Attach policies**\
+   Select AWS-managed or custom policies that grant the actions Modern needs (e.g. `IAMReadOnlyAccess`).
+
+<Frame>
+  <img src="/images/image(3).png" alt="AWS IAM policy attachment interface" data-og-width="2108" width="2108" data-og-height="1340" height="1340" data-path="images/integrations/aws/image(3).png" data-optimize="true" data-opv="3" srcset="/images/image(3).png 280w, /images/image(3).png 560w, /images/image(3).png 840w, /images/image(3).png 1100w, /images/image(3).png 1650w, /images/image(3).png 2500w" />
+</Frame>
+
+4. **Finish the role wizard** — name the role something memorable and click **Create role**.
+
+<Frame>
+  <img src="/images/image(4).png" alt="AWS IAM role creation wizard final step" data-og-width="2138" width="2138" data-og-height="848" height="848" data-path="images/integrations/aws/image(4).png" data-optimize="true" data-opv="3" srcset="/images/image(4).png 280w, /images/image(4).png 560w, /images/image(4).png 840w, /images/image(4).png 1100w, /images/image(4).png 1650w, /images/image(4).png 2500w" />
+</Frame>
+
+5. **Update the trust policy**\
+   Open the new role → **Trust relationships → Edit trust policy** and replace the document with the version below (adds the required `sts:TagSession` action).
+
+<Frame>
+  <img src="/images/image(5).png" alt="AWS IAM trust relationships edit trust policy interface" data-og-width="2270" width="2270" data-og-height="1134" height="1134" data-path="images/integrations/aws/image(5).png" data-optimize="true" data-opv="3" srcset="/images/image(5).png 280w, /images/image(5).png 560w, /images/image(5).png 840w, /images/image(5).png 1100w, /images/image(5).png 1650w, /images/image(5).png 2500w" />
+</Frame>
+
+<Tip>
+  In the JSON below, replace `<replace-with-your-external-id>` (including the angle brackets `<` and `>`) with the actual **External ID** shown in the Modern **Connect AWS** modal.
+</Tip>
+
+```json  theme={null}
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": { "AWS": "arn:aws:iam::992382851720:root" },
+      "Action": "sts:AssumeRole",
+      "Condition": {
+        "StringEquals": { "sts:ExternalId": "<replace-with-your-external-id>" }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Principal": { "AWS": "arn:aws:iam::992382851720:root" },
+      "Action": "sts:TagSession"
+    }
+  ]
+}
+```
+
+* Here is an example of the updated policy in the UI.
+
+<Frame>
+  <img src="/images/aws_ui_trust_policy.png" alt="AWS trust policy JSON in the console" data-og-width="2738" width="2738" data-og-height="1384" height="1384" data-path="images/integrations/aws/aws_ui_trust_policy.png" data-optimize="true" data-opv="3" srcset="/images/aws_ui_trust_policy.png 280w, /images/aws_ui_trust_policy.png 560w, /images/aws_ui_trust_policy.png 840w, /images/aws_ui_trust_policy.png 1100w, /images/aws_ui_trust_policy.png 1650w, /images/aws_ui_trust_policy.png 2500w" />
+</Frame>
+
+6. **Copy the Role ARN & Account ID** — you will paste these into Modern in the next section.
+
+***
+
+## Modern Configuration
+
+1. Return to the **Connect AWS** modal in Modern.
+2. Enter your **AWS Account ID**, a **display name** for the account (e.g. "Production" or "Sandbox"), and the **Role ARN** of the role you just created, then click **Submit**.
+
+<Note>
+  The **Your AWS Account Name** field is a human-readable label used to identify this AWS account within Modern. It does not affect the integration — you can enter any name that helps you distinguish between accounts.
+</Note>
+
+<Frame>
+  <img src="/images/aws_serval_modal.png" alt="Modern AWS connection modal with Account ID, Account Name, and Role ARN fields" data-og-width="1012" width="1012" data-og-height="1318" height="1318" data-path="images/integrations/aws/aws_serval_modal.png" data-optimize="true" data-opv="3" srcset="/images/aws_serval_modal.png 280w, /images/aws_serval_modal.png 560w, /images/aws_serval_modal.png 840w, /images/aws_serval_modal.png 1100w, /images/aws_serval_modal.png 1650w, /images/aws_serval_modal.png 2500w" />
+</Frame>
+
+Your AWS account is now connected—try running the *List IAM Roles* workflow to verify connectivity.
+
+<Warning>
+  After connecting AWS, the resource sync will only discover roles that have been tagged with a `modern` tag. To tag roles for ingestion and set up temporary access provisioning, follow the [AWS Role Access guide](/sections/access-management/configuration/aws-role-access).
+</Warning>
+
+***
+
+## Next steps
+
+To allow users to request temporary access to specific AWS roles through Modern, see [Configure AWS roles for temporary access](/sections/access-management/configuration/aws-role-access#configure-aws-roles-so-that-modern-can-grant-temporary-access-to-them).

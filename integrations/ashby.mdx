@@ -1,0 +1,121 @@
+---
+title: 'Ashby'
+---
+
+## About Ashby
+
+Ashby is an all-in-one recruiting platform that helps companies streamline their hiring process. It provides tools for applicant tracking, interview scheduling, analytics, and candidate relationship management.
+
+## What the Ashby integration enables
+
+| Capability          | Description                                                                  |
+| ------------------- | ---------------------------------------------------------------------------- |
+| Workflow Automation | Build Modern workflows to automate anything accessible via Ashby's REST APIs |
+
+All resources exposed by the [Ashby API](https://developers.ashbyhq.com/reference) are available to Modern workflows using API key authentication.
+
+***
+
+## Ashby configuration (in Ashby)
+
+### Prerequisites
+
+Before configuring the Ashby integration in Modern, ensure you have:
+
+* An active Ashby account
+* Sufficient permissions to generate API keys
+* Access to the Admin panel in Ashby
+
+### Generate an API Key
+
+<Steps>
+  <Step title="Access the API Keys page">
+    1. Log in to your Ashby account at `https://app.ashbyhq.com`
+    2. Navigate to **Admin → Integrations → [API Keys](https://app.ashbyhq.com/admin/api/keys)**
+
+    <Note>
+      If you don't see the API Keys option, you may not have admin permissions. Contact your Ashby administrator.
+    </Note>
+  </Step>
+
+  <Step title="Create a new API key">
+    1. Click the **+ New** button to open the API key setup wizard
+    2. Enter a descriptive name for your key (e.g., "Modern Integration")
+    3. Optionally, select your **Integration Partner** if applicable
+  </Step>
+
+  <Step title="Configure endpoint permissions">
+    By default, the API key will have no permissions. Configure the appropriate access levels:
+
+    1. Use the checkboxes to allow access to each module
+    2. Determine whether read or write access should be provided for each module
+    3. Hover over the **i** icon beside each module to view the specific endpoints that can be accessed
+    4. Optionally, enable access to confidential jobs if needed for your workflows
+
+    <Tip>
+      Grant only the minimum permissions necessary for your intended use case. You can always update permissions later if needed.
+    </Tip>
+  </Step>
+
+  <Step title="Save and copy the API key">
+    1. Click **Save and Continue** to finalize your scope selections
+    2. On the final step, copy your API key and store it securely
+
+    <Warning>
+      The API key provides access to your Ashby data. Store it securely and never commit it to version control. Anyone with access to this key can perform actions within the granted permissions.
+    </Warning>
+  </Step>
+</Steps>
+
+***
+
+## Modern configuration
+
+Once you have your Ashby API key, follow these steps to configure the integration in Modern:
+
+<Steps>
+  <Step title="Navigate to Ashby integration">
+    1. In Modern, go to **Applications → Available → Ashby**
+    2. Click **Connect**
+    3. The Ashby configuration form will appear
+  </Step>
+
+  <Step title="Enter configuration details">
+    Fill in the following fields:
+
+    | Field             | Description                                | Example                       |
+    | ----------------- | ------------------------------------------ | ----------------------------- |
+    | **Instance Name** | A descriptive name for your Ashby instance | `Ashby` or `My Company Ashby` |
+    | **API Key**       | The API key you generated in Ashby         | `••••••••••••••••••••`        |
+
+    <Note>
+      The Instance Name is used to identify this integration within Modern. Choose a name that makes sense for your organization, especially if you plan to connect multiple Ashby instances.
+    </Note>
+  </Step>
+
+  <Step title="Submit the configuration">
+    1. Click **Submit** to complete the integration setup
+    2. Modern will verify the connection by making a test API request
+    3. Once verified, you can start building workflows with Ashby
+  </Step>
+</Steps>
+
+***
+
+## Using Ashby in workflows
+
+Once connected, you can use Ashby in your Modern workflows to automate recruiting processes:
+
+* **Candidate management**: Create, update, and retrieve candidate information
+* **Application tracking**: Monitor and manage job applications throughout the hiring pipeline
+* **Interview scheduling**: Automate interview coordination and scheduling
+* **Job postings**: Manage job openings and postings
+* **Analytics and reporting**: Access hiring metrics and performance data
+
+<Info>
+  The Ashby integration provides access to all endpoints in the [Ashby REST API](https://developers.ashbyhq.com/reference). Explore the API documentation to discover all available capabilities and build powerful recruiting automations.
+</Info>
+
+***
+
+Need help? Contact **[support@modern.com](mailto:support@modern.com)** for assistance with your Ashby integration.

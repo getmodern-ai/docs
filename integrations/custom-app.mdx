@@ -1,0 +1,148 @@
+---
+title: 'Custom App'
+---
+
+> Connect any third-party application to Modern using Custom Apps
+
+## About Custom Apps
+
+Custom Apps in Modern allow you to integrate any third-party application that has an API, even if it's not available as a pre-built integration. This feature enables you to extend Modern's capabilities to work with your organization's unique tools and services.
+
+## What the Custom App integration enables
+
+| Capability          | Description                                                                       |
+| ------------------- | --------------------------------------------------------------------------------- |
+| Workflow Automation | Create custom workflows to interact with your integrated applications             |
+| API Proxying        | Modern securely proxies API requests to your custom apps, handling authentication |
+| Access Management   | Manage access to your custom apps using Modern's access policies                  |
+
+***
+
+## Creating a Custom App in Modern
+
+Follow these steps to create and configure a custom app integration:
+
+### Step 1: Navigate to Custom Apps
+
+1. In the Modern UI, go to the **Available Apps** section
+2. Scroll down to the bottom where you'll find the **Custom App** option
+3. Click **Connect** to begin the setup process
+
+<Frame>
+  <img src="/images/create-custom-app.png" alt="Modern Custom App option in Available Apps" data-og-width="2550" width="2550" data-og-height="1912" height="1912" data-path="images/integrations/custom-app/create-custom-app.png" data-optimize="true" data-opv="3" srcset="/images/create-custom-app.png 280w, /images/create-custom-app.png 560w, /images/create-custom-app.png 840w, /images/create-custom-app.png 1100w, /images/create-custom-app.png 1650w, /images/create-custom-app.png 2500w" />
+</Frame>
+
+### Step 2: Configure Basic App Information
+
+A modal will appear allowing you to configure your custom app:
+
+<Frame>
+  <img src="/images/custom-app-modal.png" alt="Custom App configuration modal" data-og-width="1054" width="1054" data-og-height="828" height="828" data-path="images/integrations/custom-app/custom-app-modal.png" data-optimize="true" data-opv="3" srcset="/images/custom-app-modal.png 280w, /images/custom-app-modal.png 560w, /images/custom-app-modal.png 840w, /images/custom-app-modal.png 1100w, /images/custom-app-modal.png 1650w, /images/custom-app-modal.png 2500w" />
+</Frame>
+
+Fill in the following fields:
+
+* **App Name**: Enter the name of the application (typically the service name)
+* **App Domain**: Provide the application's domain URL. This allows Modern to automatically pull the logo for easy identification
+* **Instance Name** (Optional): Add a brief instance name if needed to distinguish between multiple instances
+
+<Frame>
+  <img src="/images/custom-app-fields-filled.png" alt="Custom App modal with fields filled in" data-og-width="1050" width="1050" data-og-height="836" height="836" data-path="images/integrations/custom-app/custom-app-fields-filled.png" data-optimize="true" data-opv="3" srcset="/images/custom-app-fields-filled.png 280w, /images/custom-app-fields-filled.png 560w, /images/custom-app-fields-filled.png 840w, /images/custom-app-fields-filled.png 1100w, /images/custom-app-fields-filled.png 1650w, /images/custom-app-fields-filled.png 2500w" />
+</Frame>
+
+Click **Connect** to create the custom app.
+
+### Step 3: Configure Authentication
+
+After creating the app, you'll be taken to the application configuration page, which looks similar to other pre-built integrations.
+
+To enable Modern to interact with your third-party app:
+
+1. Select the **API** tab
+2. Choose your authentication method:
+   * **OAuth**: For OAuth-based authentication
+   * **API Key**: For traditional API key authentication
+
+#### OAuth Configuration
+
+<Frame>
+  <img src="/images/OAuth-setup.png" alt="Custom App OAuth authentication setup" data-og-width="2890" width="2890" data-og-height="1970" height="1970" data-path="images/integrations/custom-app/OAuth-setup.png" data-optimize="true" data-opv="3" srcset="/images/OAuth-setup.png 280w, /images/OAuth-setup.png 560w, /images/OAuth-setup.png 840w, /images/OAuth-setup.png 1100w, /images/OAuth-setup.png 1650w, /images/OAuth-setup.png 2500w" />
+</Frame>
+
+#### API Key Configuration
+
+<Frame>
+  <img src="/images/api-key-setup.png" alt="Custom App API Key authentication setup" data-og-width="2952" width="2952" data-og-height="1656" height="1656" data-path="images/integrations/custom-app/api-key-setup.png" data-optimize="true" data-opv="3" srcset="/images/api-key-setup.png 280w, /images/api-key-setup.png 560w, /images/api-key-setup.png 840w, /images/api-key-setup.png 1100w, /images/api-key-setup.png 1650w, /images/api-key-setup.png 2500w" />
+</Frame>
+
+3. Enter your credentials and click **Save**
+
+***
+
+## Obtaining Third-Party Credentials
+
+To complete the integration, you'll need to obtain credentials from your third-party service:
+
+* **For OAuth**: Follow the OAuth app creation process in your third-party service's developer documentation
+* **For API Keys**: Generate an API key through your third-party service's settings or developer portal
+
+Please refer to your specific third-party application's documentation for detailed instructions on:
+
+* Creating OAuth applications
+* Generating API keys
+* Setting appropriate permissions and scopes
+
+***
+
+## Important Notes
+
+### Security Considerations
+
+* Credentials are never returned to the frontend after being saved
+* To update credentials, you must re-obtain them from the third-party service
+
+### Updating Configuration
+
+To change any authentication fields:
+
+1. Go to the third-party service and grab the old credentials OR generate new credentials
+2. Return to the Custom App configuration in Modern
+3. Enter the new credentials (old credentials cannot be retrieved)
+4. Click **Save** to update the configuration
+
+Your custom app is now connected and ready to use in Modern workflows!
+
+***
+
+## Programmatic Access (API)
+
+You can also create and manage Custom Apps programmatically using the Modern API. This is useful for:
+
+* Automating the creation of Custom Apps as part of your infrastructure-as-code
+* Building integrations that programmatically manage app connections
+* Syncing Custom Apps from external systems
+
+### Understanding the Data Model
+
+When using the API, it's important to understand that Custom Apps consist of two separate resources:
+
+* **Custom Service**: Represents the third-party application definition (e.g., "Internal HR System"). It stores the service name and domain for branding purposes.
+* **App Instance**: Represents a specific installation/connection of a service that appears in your Apps list. Each Custom Service can have multiple App Instances.
+
+<Warning>
+  **Important:** Creating a Custom Service alone does **not** create a usable Custom App. You must also create an App Instance linked to the Custom Service. Only App Instances appear in your Apps list in Modern.
+</Warning>
+
+When you create a Custom App through the UI, Modern automatically creates both resources for you. When using the API, you must create both separately.
+
+### API Endpoints
+
+<CardGroup cols={2}>
+  <Card title="Custom Service API" icon="cube" href="/api-reference/custom-service-api/create-custom-service">
+    Create, read, update, and delete Custom Services (the underlying app definition).
+  </Card>
+
+  <Card title="App Instance API" icon="plug" href="/api-reference/app-instance-api/create-app-instance">
+    Create App Instances linked to Custom Services using the `customServiceId` parameter.
+  </Card>
+</CardGroup>

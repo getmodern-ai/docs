@@ -1,0 +1,83 @@
+---
+title: 'Jamf'
+---
+
+## About Jamf Pro
+
+Jamf Pro is a mobile-device-management (MDM) platform used to deploy, configure and secure macOS, iOS, iPadOS and tvOS devices. Connecting Jamf to Modern lets your IT team trigger remote commands, pull inventory or enforce compliance policies directly from chat.
+
+## What the Jamf integration enables
+
+| Capability           | Description                                            |
+| -------------------- | ------------------------------------------------------ |
+| Access Management    | Create, update, and manage users and their permissions |
+| Automation workflows | Streamline device provisioning and management          |
+
+Anything defined in the [Jamf API](https://developer.jamf.com/jamf-pro/reference/classic-api) can be accessed through Modern.
+
+***
+
+## Jamf configuration (in Jamf Pro)
+
+### 1. Create or select an API role
+
+* Log in at \<yourdomain>.[jamfcloud.com](http://jamfcloud.com) and navigate to the settings. From there, search for "API roles and clients"
+
+<Frame>
+  <img src="/images/image(46).png" alt="Jamf Pro settings search for API roles and clients" data-og-width="2716" width="2716" data-og-height="1166" height="1166" data-path="images/integrations/jamf/image(46).png" data-optimize="true" data-opv="3" srcset="/images/image(46).png 280w, /images/image(46).png 560w, /images/image(46).png 840w, /images/image(46).png 1100w, /images/image(46).png 1650w, /images/image(46).png 2500w" />
+</Frame>
+
+* From the API Roles tab you may now click on the + New button in the top right to begin creating a new API Role. If you already have a role that you wish to use with Modern, you may skip the rest of this section.
+
+<Frame>
+  <img src="/images/image(47).png" alt="Jamf Pro API Roles tab with New button" data-og-width="3456" width="3456" data-og-height="1740" height="1740" data-path="images/integrations/jamf/image(47).png" data-optimize="true" data-opv="3" srcset="/images/image(47).png 280w, /images/image(47).png 560w, /images/image(47).png 840w, /images/image(47).png 1100w, /images/image(47).png 1650w, /images/image(47).png 2500w" />
+</Frame>
+
+* Create the API Role by choosing a name and selecting the privileges you wish Modern to have and hit Save.
+
+<Frame>
+  <img src="/images/image(48).png" alt="Jamf Pro API Role creation with privileges selection" data-og-width="2936" width="2936" data-og-height="1634" height="1634" data-path="images/integrations/jamf/image(48).png" data-optimize="true" data-opv="3" srcset="/images/image(48).png 280w, /images/image(48).png 560w, /images/image(48).png 840w, /images/image(48).png 1100w, /images/image(48).png 1650w, /images/image(48).png 2500w" />
+</Frame>
+
+### 2. Create an API Client
+
+* From the same settings page, navigate to the API Clients tab and click the + New button once again.
+
+<Frame>
+  <img src="/images/image(49).png" alt="Jamf Pro API Clients tab with New button" data-og-width="3456" width="3456" data-og-height="1730" height="1730" data-path="images/integrations/jamf/image(49).png" data-optimize="true" data-opv="3" srcset="/images/image(49).png 280w, /images/image(49).png 560w, /images/image(49).png 840w, /images/image(49).png 1100w, /images/image(49).png 1650w, /images/image(49).png 2500w" />
+</Frame>
+
+* From here, begin filling out the details: For the name, we recommend something like `Modern Integration`. Make sure to include the proper role(s) and set a custom Access token lifetime if you wish to do so. Confirm that the API client is enabled and then hit save.
+  * Note: For more details on how this integration works from a security perspective, check out this doc: [Jamf Integration Security Details](https://www.notion.so/Jamf-Integration-Security-Details-1065b4e67d2680c49e6ad47914ee5b19?pvs=21)
+
+<Frame>
+  <img src="/images/image(50).png" alt="Jamf Pro API Client configuration form" data-og-width="2934" width="2934" data-og-height="1628" height="1628" data-path="images/integrations/jamf/image(50).png" data-optimize="true" data-opv="3" srcset="/images/image(50).png 280w, /images/image(50).png 560w, /images/image(50).png 840w, /images/image(50).png 1100w, /images/image(50).png 1650w, /images/image(50).png 2500w" />
+</Frame>
+
+* With the client created, next you will need to hit the Generate client secret button to generate the client credentials. Be sure to keep the client ID and the client secret on hand for the next section.
+
+<Frame>
+  <img src="/images/image(51).png" alt="Jamf Pro Generate client secret button" data-og-width="2932" width="2932" data-og-height="1618" height="1618" data-path="images/integrations/jamf/image(51).png" data-optimize="true" data-opv="3" srcset="/images/image(51).png 280w, /images/image(51).png 560w, /images/image(51).png 840w, /images/image(51).png 1100w, /images/image(51).png 1650w, /images/image(51).png 2500w" />
+</Frame>
+
+### 3. Configure the integration in Modern
+
+* In Modern, navigate to Applications and then the Available tab. Find the Jamf integration and press Connect.
+
+<Frame>
+  <img src="/images/jamf_serval_modal.png" alt="Modern Jamf connection modal" data-og-width="2466" width="2466" data-og-height="1494" height="1494" data-path="images/integrations/jamf/jamf_serval_modal.png" data-optimize="true" data-opv="3" srcset="/images/jamf_serval_modal.png 280w, /images/jamf_serval_modal.png 560w, /images/jamf_serval_modal.png 840w, /images/jamf_serval_modal.png 1100w, /images/jamf_serval_modal.png 1650w, /images/jamf_serval_modal.png 2500w" />
+</Frame>
+
+* The Service Instance ID should be the full domain of your Jamf Cloud instance. For example, if your Jamf Cloud URL is `https://modern.jamfcloud.com`, you should enter `modern.jamfcloud.com` here.
+* Copy over the client ID and client secret from the previous section.
+* Leave the scopes blank and hit `Save`. That's it! Jamf should now be connected.
+
+***
+
+## Modern Configuration
+
+1. In Modern go to **Apps → Available → Jamf → Connect**.
+2. Outlined in step 3.3, enter your **Service Instance ID** (your Jamf Cloud domain, e.g., `modern.jamfcloud.com`), **Client ID** and **Client Secret** from the API Client you generated above.
+3. Click **Save**.
+
+Modern will now use the Jamf OAuth token it generates to run your workflows. Rotate the client secret anytime—just update it in Modern by reconnecting the app.

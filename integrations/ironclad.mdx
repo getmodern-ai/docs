@@ -1,0 +1,156 @@
+---
+title: 'Ironclad'
+---
+
+## About Ironclad
+
+Ironclad is a digital contracting platform that streamlines the entire contract lifecycle - from creation and negotiation to signature and management. Connecting Ironclad to Modern enables automated contract workflows, approvals management, and document tracking directly from your service desk.
+
+## What the Ironclad integration enables
+
+| Capability           | Description                                                                    |
+| -------------------- | ------------------------------------------------------------------------------ |
+| Workflow Management  | Create, read, and update workflows including approvals and document management |
+| Records Management   | Create, read, update and delete contract records                               |
+| Document Operations  | Upload documents, retrieve signed documents, and manage attachments            |
+| Automation workflows | Streamline contract approvals, automate document routing, and more             |
+
+Anything defined in the [Ironclad API](https://developer.ironcladapp.com/reference) can be accessed through Modern.
+
+***
+
+## Ironclad Configuration
+
+### Prerequisites
+
+* You must have admin access to your Ironclad account
+* You must have the API add-on enabled for your Ironclad instance
+
+### 1. Create an OAuth Client Application
+
+1. In Ironclad, click on your user profile dropdown at the top right-hand corner and select **Company Settings**
+2. Select the **API** tab on the left sidebar
+
+<Note>
+  The "API" tab will only be visible if you have the API add-on enabled for your instance.
+</Note>
+
+3. Click on the **Create new app** button
+4. Enter a name for your OAuth application (e.g., "Modern Integration") and click **Create app**
+5. Save the generated **Client ID** and **Client Secret** immediately
+
+<Warning>
+  Save the Client Secret securely - you will not be able to access it again after closing the modal.
+</Warning>
+
+### 2. Configure the OAuth Application
+
+After creating the app, configure the following settings:
+
+1. **Title**: Enter "Modern Integration" (this will appear in authorization dialogs)
+2. **Description**: Add "Integration with Modern for automated workflows"
+3. **Grant Types**: Select **only** "Client Credentials"
+
+<Tip>
+  Make sure only "Client Credentials" is selected as the grant type. Do not enable "Authorization Code" grant.
+</Tip>
+
+4. **Redirect URIs**: Leave this blank (not needed for Client Credentials flow)
+5. **Requested Resource Scopes**: Add the following scopes based on your needs:
+
+<CodeGroup>
+  ```text Recommended Scopes theme={null}
+  public.workflows.readSchemas
+  public.workflows.readWorkflows
+  public.workflows.createWorkflows
+  public.workflows.updateWorkflows
+  public.workflows.createComments
+  public.workflows.readApprovals
+  public.workflows.updateApprovals
+  public.workflows.readDocuments
+  public.records.readSchemas
+  public.records.readRecords
+  public.records.createRecords
+  public.records.updateRecords
+  public.records.deleteRecords
+  public.webhooks.createWebhooks
+  public.webhooks.deleteWebhooks
+  ```
+
+  ```text Minimal Read-Only Scopes theme={null}
+  public.workflows.readSchemas
+  public.workflows.readWorkflows
+  public.workflows.readApprovals
+  public.workflows.readDocuments
+  public.records.readSchemas
+  public.records.readRecords
+  ```
+</CodeGroup>
+
+**Recommended scopes for Modern (comma-separated):**
+
+```
+public.workflows.readSchemas, public.workflows.readWorkflows, public.workflows.createWorkflows, public.workflows.updateWorkflows, public.workflows.createComments, public.workflows.readApprovals, public.workflows.updateApprovals, public.workflows.readDocuments, public.records.readSchemas, public.records.readRecords, public.records.createRecords, public.records.updateRecords, public.records.deleteRecords, public.webhooks.createWebhooks, public.webhooks.deleteWebhooks
+```
+
+6. Click **Save Changes**
+
+### 3. Identify Admin User Email
+
+The Ironclad API requires all requests to include an admin user email for permission scoping. You'll need to identify an appropriate admin user:
+
+<Info>
+  According to [Ironclad's documentation](https://developer.ironcladapp.com/reference/client-credentials-grant#access-token-scope), API requests must include either the `x-as-user-id` or `x-as-user-email` header to specify who the request is being made on behalf of within the company.
+</Info>
+
+Choose one of the following:
+
+* An existing admin user with full permissions in Ironclad
+* A dedicated service account user with admin privileges
+
+<Warning>
+  The user email you provide must have sufficient permissions in Ironclad to perform all the actions your workflows require. API requests will be scoped to this user's permissions.
+</Warning>
+
+***
+
+## Modern Configuration
+
+1. In Modern, navigate to **Apps → Available → Ironclad → Connect**
+
+2. Enter the following information:
+
+   | Field                  | Description                                                                                                                                                                 |
+   | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+   | API Base URL           | Your Ironclad API domain (e.g., `na1.ironcladapp.com` for US, `eu1.ironcladapp.com` for EU)                                                                                 |
+   | Client ID              | The OAuth Client ID from your Ironclad application settings                                                                                                                 |
+   | Client Secret          | The OAuth Client Secret from your Ironclad application settings                                                                                                             |
+   | Admin Email (Optional) | Email address of an admin user or service account for impersonation. This will be sent as `x-as-user-email` header in API requests. Leave blank if not using impersonation. |
+   | Scopes                 | Comma-separated list of scopes (copy from the recommended list above)                                                                                                       |
+
+3. Click **Save**
+
+<Check>
+  You should now be able to build workflows that leverage Ironclad APIs, such as creating contracts, managing approvals, or retrieving signed documents.
+</Check>
+
+***
+
+## Environment Support
+
+Ironclad has multiple environments that operate independently:
+
+| Environment   | Domain                    | Purpose                   |
+| ------------- | ------------------------- | ------------------------- |
+| NA Production | `na1.ironcladapp.com`     | US production environment |
+| EU Production | `eu1.ironcladapp.com`     | EU production environment |
+| Demo          | `demo.ironcladapp.com`    | Demo environment          |
+| Preview       | `preview.ironcladapp.com` | Preview environment       |
+
+<Note>
+  Client applications created in one environment cannot be used in another. You'll need to create separate OAuth applications for each environment you want to connect.
+</Note>
+
+***
+
+Need help? Contact **[support@modern.com](mailto:support@modern.com)** for assistance with your Ironclad integration.

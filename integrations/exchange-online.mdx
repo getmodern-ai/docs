@@ -1,0 +1,257 @@
+---
+title: 'Exchange Online'
+---
+
+## About Exchange Online
+
+<Note>
+  This integration is currently in **beta**. If you encounter any issues, please contact **[support@modern.com](mailto:support@modern.com)**.
+</Note>
+
+Exchange Online is Microsoft's cloud-based email and calendaring service, part of Microsoft 365. Connecting Exchange Online to Modern enables automated mailbox management, distribution group operations, and Exchange administration directly from your service desk workflows.
+
+## What the Exchange Online integration enables
+
+| Capability          | Description                                                      |
+| ------------------- | ---------------------------------------------------------------- |
+| Mailbox Management  | Get and configure mailbox settings for users                     |
+| Distribution Groups | Create, modify, and remove distribution groups and their members |
+| Custom Commands     | Run arbitrary Exchange Online PowerShell commands via Modern     |
+
+***
+
+## Azure AD Configuration
+
+### Prerequisites
+
+* You must have **Global Administrator** or **Application Administrator** access to your Azure AD tenant
+* You must know your Microsoft 365 tenant domain (e.g., `contoso.onmicrosoft.com`)
+
+### 1. Create an App Registration
+
+1. Log in to the [Azure Portal](https://portal.azure.com)
+2. Navigate to **Azure Active Directory** → **App registrations**
+3. Click **New registration**
+4. Enter a name (e.g., "Modern Exchange Online")
+5. Set **Supported account types** to "Accounts in this organizational directory only"
+6. Leave **Redirect URI** blank
+7. Click **Register**
+8. Copy the **Application (client) ID** and **Directory (tenant) ID** from the Overview page
+
+### 2. Create Credentials (Client Secret or Certificate)
+
+Modern supports two authentication methods for Exchange Online. Choose the one that fits your security requirements:
+
+#### Option A: Client Secret
+
+1. In your app registration, go to **Certificates & secrets**
+2. Click **New client secret**
+3. Enter a description (e.g., "Modern") and select an expiration period
+4. Click **Add**
+5. **Copy the secret value immediately** — it won't be shown again
+
+<Warning>
+  The client secret value is only displayed once. Copy it before navigating away
+  from the page.
+</Warning>
+
+#### Option B: Certificate
+
+1. Generate a self-signed certificate:
+
+```bash  theme={null}
+openssl req -x509 -newkey rsa:2048 -keyout key.pem -out cert.pem -days 365 -nodes -subj "/CN=ServalExchangeOnline"
+cat cert.pem key.pem > combined.pem
+```
+
+2. In your app registration, go to **Certificates & secrets** → **Certificates** tab
+3. Click **Upload certificate** and upload `cert.pem` (the certificate only, not the private key)
+4. Keep `combined.pem` — you'll paste its contents into Modern during configuration
+
+### 3. Add API Permissions
+
+1. In your app registration, go to **API permissions**
+2. Click **Add a permission**
+3. Select **APIs my organization uses**
+4. Search for **Office 365 Exchange Online** and select it
+5. Select **Application permissions**
+6. Check **Exchange.ManageAsApp**
+7. Click **Add permissions**
+8. Click **Grant admin consent for \[your organization]**
+
+<Tip>
+  The `Exchange.ManageAsApp` permission is an application-level permission that
+  allows managing Exchange Online without a signed-in user. Admin consent is
+  required.
+</Tip>
+
+### 4. Assign the Exchange Administrator Role
+
+The app registration's service principal must be assigned the **Exchange Administrator** role in Azure AD:
+
+1. In the Azure Portal, navigate to **Azure Active Directory** → **Roles and administrators**
+2. Search for and click **Exchange Administrator**
+3. Click **Add assignments**
+4. Search for your app registration name (e.g., "Modern Exchange Online")
+5. Select the service principal and click **Add**
+
+<Note>
+  Without the Exchange Administrator role, the app will be able to authenticate
+  but will not have permission to run Exchange Online cmdlets.
+</Note>
+
+### 5. Register the Service Principal in Exchange Online
+
+Azure AD authentication alone is not enough — you must also register the app as a service principal directly in Exchange Online. This is a one-time setup that requires PowerShell.
+
+1. Install the Exchange Online PowerShell module (if not already installed):
+
+```powershell  theme={null}
+Install-Module -Name ExchangeOnlineManagement -Scope CurrentUser
+```
+
+2. Connect as an Exchange admin:
+
+```powershell  theme={null}
+Connect-ExchangeOnline
+```
+
+3. Get your app's **Enterprise Application Object ID** from the [Entra admin center](https://entra.microsoft.com) → **Identity** → **Applications** → **Enterprise Applications** → search for your app → copy the **Object ID**.
+
+<Warning>
+  Use the Object ID from **Enterprise Applications**, not from **App registrations**. These are different values.
+</Warning>
+
+4. Register the service principal in Exchange Online:
+
+```powershell  theme={null}
+New-ServicePrincipal -AppId "<your-app-client-id>" -ObjectId "<enterprise-app-object-id>"
+```
+
+5. Assign a management role. For full Exchange management access:
+
+```powershell  theme={null}
+$sp = Get-ServicePrincipal -Identity "<your-app-client-id>"
+New-ManagementRoleAssignment -App $sp.ObjectId -Role "Application Exchange Full Access"
+```
+
+For more granular access, assign only the roles you need:
+
+| Role                    | Enables                       |
+| ----------------------- | ----------------------------- |
+| Mail Recipients         | Get-Mailbox, Set-Mailbox      |
+| Distribution Groups     | Distribution group management |
+| View-Only Configuration | Get-OrganizationConfig        |
+
+6. Disconnect:
+
+```powershell  theme={null}
+Disconnect-ExchangeOnline -Confirm:$false
+```
+
+<Note>
+  Exchange Online caches permissions for up to 30 minutes. If actions fail with
+  "UnAuthorized" immediately after setup, wait and retry.
+</Note>
+
+***
+
+## Modern Configuration
+
+1. In Modern, navigate to **Apps → Available → Exchange Online → Connect**
+
+2. Enter the following information:
+
+   | Field                    | Description                                                                       |
+   | ------------------------ | --------------------------------------------------------------------------------- |
+   | App (Client) ID          | The Application (client) ID from your Azure AD app registration                   |
+   | Tenant (Directory) ID    | The Directory (tenant) ID from your Azure AD app registration                     |
+   | Organization             | Your Microsoft 365 tenant domain (e.g., `contoso.onmicrosoft.com`)                |
+   | Authentication Method    | Choose **Client Secret** or **Certificate (PEM)**                                 |
+   | Client Secret            | The client secret value (shown when Client Secret is selected)                    |
+   | Certificate (PEM)        | The combined cert + private key PEM contents (shown when Certificate is selected) |
+   | Instance Name (Optional) | A friendly name to identify this connection                                       |
+
+3. Click **Save**
+
+Your tenant domain can be found in the Azure Portal under **Azure Active Directory** → **Overview** → **Primary domain**. It typically ends in `.onmicrosoft.com`.
+
+If using certificate authentication, paste the full contents of `combined.pem` (both the `BEGIN CERTIFICATE` and `BEGIN PRIVATE KEY` blocks) into the Certificate (PEM) field.
+
+<Check>
+  You should now be able to build workflows that manage Exchange Online
+  mailboxes, distribution groups, and run Exchange PowerShell commands.
+</Check>
+
+***
+
+## How It Works
+
+The Exchange Online integration uses PowerShell under the hood. When a workflow runs an Exchange Online action:
+
+**Client Secret authentication:**
+
+1. Modern acquires an OAuth access token using your app's client credentials
+2. The token is passed to `Connect-ExchangeOnline` in a secure PowerShell session
+3. The requested Exchange cmdlet is executed
+4. Results are returned to your workflow
+
+**Certificate authentication:**
+
+1. Modern retrieves the stored certificate and private key
+2. PowerShell loads the certificate and authenticates directly with Azure AD using `Connect-ExchangeOnline -Certificate`
+3. The requested Exchange cmdlet is executed
+4. Results are returned to your workflow
+
+All credentials (client secrets and certificates) are stored encrypted and are only accessible to Modern's internal credential proxy — they never enter the workflow execution environment.
+
+***
+
+## Troubleshooting
+
+### "AADSTS7000215: Invalid client secret"
+
+The client secret may have expired or been entered incorrectly:
+
+* Verify the secret hasn't expired in Azure AD → App registrations → Certificates & secrets
+* Generate a new secret and update the integration in Modern
+
+### "AADSTS700016: Application not found"
+
+The App ID or Tenant ID is incorrect:
+
+* Double-check the Application (client) ID from the app registration's Overview page
+* Verify the Directory (tenant) ID matches your Azure AD tenant
+
+### Exchange commands fail with "UnAuthorized"
+
+The app can authenticate with Azure AD but Exchange Online rejects the token. This means the service principal is not registered in Exchange Online:
+
+* Complete **Step 5** in the setup guide above to register the service principal via PowerShell
+* If already registered, the role assignment may not have propagated yet — wait up to 30 minutes
+
+### Exchange commands fail with "Access Denied"
+
+The service principal is missing the required Exchange management role:
+
+* Verify the role assignment in Azure AD → Roles and administrators → Exchange Administrator
+* Ensure admin consent was granted for the `Exchange.ManageAsApp` permission
+* Verify the Exchange Online management role assignment via `Get-ManagementRoleAssignment -RoleAssignee <object-id>`
+
+### "PEM must contain a private key" (certificate auth)
+
+The PEM you pasted is missing the private key:
+
+* Ensure your PEM file contains both a `BEGIN CERTIFICATE` and a `BEGIN PRIVATE KEY` block
+* If you generated separate `cert.pem` and `key.pem` files, combine them: `cat cert.pem key.pem > combined.pem`
+* Paste the full contents of the combined file
+
+### "The term 'Get-Mailbox' is not recognized"
+
+The Exchange Online PowerShell module may not be available on the worker:
+
+* Contact **[support@modern.com](mailto:support@modern.com)** if the issue persists
+
+***
+
+Need help? Contact **[support@modern.com](mailto:support@modern.com)** for assistance with your Exchange Online integration.

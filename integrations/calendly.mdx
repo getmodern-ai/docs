@@ -1,0 +1,54 @@
+---
+title: 'Calendly'
+---
+
+## About Calendly
+
+Calendly is a scheduling automation platform for meetings and appointments. Connecting Calendly to Modern enables automated event management and scheduling workflows directly from your service desk.
+
+## What the Calendly integration enables
+
+| Capability           | Description                                                                                                                                |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| Automation workflows | Automate event creation, rescheduling, and cancellation. Retrieve user availability, manage meeting links, and generate scheduling reports |
+
+Anything defined in the [Calendly API v2](https://developer.calendly.com/api-docs/c2NoOjI2MDE2NzE-introduction) can be accessed through Modern.
+
+***
+
+## Calendly Configuration
+
+### Prerequisites
+
+* Access to your Calendly account with permissions to generate API tokens
+
+### Create a Personal Access Token
+
+1. Log in to your Calendly account
+2. Go to **Integrations** → **API & Webhooks**
+3. Under **Personal Access Tokens**, click **Get a token now** (or **Generate new token** if you have existing tokens)
+4. Enter a name for your token (e.g., "Modern Integration")
+5. Click **Create Token**, then **Copy token**
+
+> **Important**: Tokens are only shown once. Copy and save it immediately.
+
+For detailed API documentation, see [Calendly's API v2 Documentation](https://developer.calendly.com/api-docs/c2NoOjI2MDE2NzE-introduction).
+
+***
+
+## Modern Configuration
+
+1. In Modern go to **Apps → Available → Calendly → Connect**
+
+2. Enter the following information:
+
+   | Field                 | Description                                                                 |
+   | --------------------- | --------------------------------------------------------------------------- |
+   | Instance Name         | A friendly name for this integration instance (e.g., "Production Calendly") |
+   | Personal Access Token | A personal access token generated for your Calendly account.                |
+
+3. Click **Save**
+
+***
+
+Need help? Contact **[support@modern.com](mailto:support@modern.com)** for assistance with your Calendly integration.

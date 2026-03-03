@@ -1,0 +1,159 @@
+---
+title: 'Datadog'
+---
+
+> Monitor infrastructure, applications, and logs with Datadog's comprehensive observability platform
+
+## Overview
+
+The Datadog integration enables you to automate monitoring and observability workflows within your organization. Connect Modern to Datadog to streamline incident response, automate metric collection, and manage your monitoring infrastructure programmatically.
+
+<CardGroup cols={2}>
+  <Card title="Key Features" icon="chart-line">
+    * Access metrics and monitoring data
+    * Query and analyze logs
+    * Manage dashboards and monitors
+    * Automate incident response workflows
+  </Card>
+
+  <Card title="Common Use Cases" icon="wand-magic-sparkles">
+    * Automated incident investigation
+    * Metric-based workflow triggers
+    * Log analysis and correlation
+    * Dashboard creation and updates
+  </Card>
+</CardGroup>
+
+## Prerequisites
+
+Before setting up the Datadog integration, ensure you have:
+
+<Steps>
+  <Step title="Datadog Account">
+    An active Datadog account with appropriate permissions
+  </Step>
+
+  <Step title="API Key">
+    A valid Datadog API key with the necessary scopes
+  </Step>
+
+  <Step title="Application Key">
+    A Datadog application key for advanced API operations
+  </Step>
+</Steps>
+
+## Setup Instructions
+
+### Step 1: Generate Datadog API Credentials
+
+<Tabs>
+  <Tab title="API Key">
+    1. Log in to your [Datadog account](https://app.datadoghq.com)
+    2. Navigate to **Organization Settings** → **API Keys**
+    3. Click **New Key**
+    4. Provide a descriptive name (e.g., "Modern Integration")
+    5. Copy the generated API key
+  </Tab>
+
+  <Tab title="Application Key">
+    1. In Datadog, go to **Organization Settings** → **Application Keys**
+    2. Click **New Key**
+    3. Name your key (e.g., "Modern App Key")
+    4. Click **Edit** to configure Scopes
+    5. Enable **Actions API Access** under Scopes (optional)
+    6. Copy the generated application key
+    7. Click **Finish** to save
+  </Tab>
+</Tabs>
+
+### Step 2: Configure Integration in Modern
+
+1. Navigate to the **Integrations** page in Modern
+2. Find **Datadog** and click **Configure**
+3. Enter your configuration details:
+
+<Info>
+  <ParamField body="apiDomain" type="string" required>
+    Your Datadog API domain (without `https://`). Look at your Datadog dashboard URL to determine your region. For example:
+
+    * `api.datadoghq.com`
+    * `api.us3.datadoghq.com`
+  </ParamField>
+
+  <ParamField body="apiKey" type="string" required>
+    Your Datadog API key from Step 1. This authenticates all API requests.
+  </ParamField>
+
+  <ParamField body="applicationKey" type="string" required>
+    Your Datadog application key from Step 1. Required for accessing metrics, logs, and other data.
+  </ParamField>
+</Info>
+
+4. Click **Submit** to establish the integration
+
+<Check>
+  Integration configured! Modern will verify your credentials and establish the connection.
+</Check>
+
+## API Permissions
+
+The Datadog integration requires specific permissions based on your use cases:
+
+<AccordionGroup>
+  <Accordion title="Metrics API">
+    **Required for**: Reading metric data, querying time series
+
+    * `metrics_read` - Query and retrieve metric data
+    * `timeseries_query` - Query timeseries data.
+  </Accordion>
+
+  <Accordion title="Logs API">
+    **Required for**: Searching and analyzing log data
+
+    * `logs_read_data` - Read log content
+    * `logs_read_index_data` - Access log indexes
+    * `logs_read_archives` - Read archived logs
+  </Accordion>
+
+  <Accordion title="Monitors API">
+    **Required for**: Creating and managing alerts
+
+    * `monitors_read` - View existing monitors
+    * `monitors_write` - Create and modify monitors
+    * `monitors_downtime` - Manage downtime schedules
+  </Accordion>
+
+  <Accordion title="Dashboards API">
+    **Required for**: Creating and updating dashboards
+
+    * `dashboards_read` - View dashboard configurations
+    * `dashboards_write` - Create and modify dashboards
+    * `dashboards_public_share` - Share dashboards publicly
+  </Accordion>
+</AccordionGroup>
+
+## Best Practices
+
+<Info>
+  **Query Optimization**: When querying metrics, use appropriate time ranges and aggregations to minimize data transfer and improve performance.
+</Info>
+
+<Warning>
+  **API Key Security**: Never expose your Datadog API keys in client-side code or public repositories. Always use Modern's secure credential storage.
+</Warning>
+
+## Additional Resources
+
+<CardGroup cols={2}>
+  <Card title="Datadog API Documentation" icon="book" href="https://docs.datadoghq.com/api/latest/">
+    Complete API reference for all Datadog endpoints
+  </Card>
+
+  <Card title="Permissions and Scopes" icon="shield-check" href="https://docs.datadoghq.com/account_management/rbac/permissions/#permissions-list">
+    Comprehensive list of Datadog RBAC permissions and API scopes
+  </Card>
+</CardGroup>
+
+***
+
+Need help? Contact **[support@modern.com](mailto:support@modern.com)** for assistance with your Datadog integration.

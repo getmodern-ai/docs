@@ -1,0 +1,141 @@
+---
+title: 'Snipe-IT'
+---
+
+> Manage your IT assets with the Snipe-IT asset management platform
+
+## Overview
+
+The Snipe-IT integration enables you to automate IT asset management workflows within your organization. Connect Modern to Snipe-IT to streamline hardware tracking, user assignments, and inventory management programmatically.
+
+<CardGroup cols={2}>
+  <Card title="Key Features" icon="desktop">
+    * Manage hardware assets and inventory
+    * Track asset assignments to users
+    * Monitor asset status and locations
+    * Automate asset lifecycle workflows
+  </Card>
+
+  <Card title="Common Use Cases" icon="wand-magic-sparkles">
+    * Automated asset provisioning for new employees
+    * Asset recovery during offboarding
+    * Inventory audits and compliance reporting
+    * Bulk asset updates and maintenance tracking
+  </Card>
+</CardGroup>
+
+## Snipe-IT Resources
+
+The Snipe-IT API provides access to the following resources within your asset management system:
+
+| Resource          | Description                                             |
+| ----------------- | ------------------------------------------------------- |
+| **Hardware**      | Physical assets like laptops, monitors, and peripherals |
+| **Users**         | People who can be assigned assets                       |
+| **Locations**     | Physical locations where assets are deployed            |
+| **Categories**    | Asset categories for organization                       |
+| **Models**        | Asset models from manufacturers                         |
+| **Manufacturers** | Companies that produce assets                           |
+| **Status Labels** | Custom status indicators for assets                     |
+| **Companies**     | Companies for multi-tenant setups                       |
+
+## Prerequisites
+
+Before setting up the Snipe-IT integration, ensure you have:
+
+<Info>
+  * Admin access to your Snipe-IT instance
+  * API access enabled (enabled by default in Snipe-IT)
+  * Your Snipe-IT instance URL
+</Info>
+
+## Setup Instructions
+
+### Step 1: Generate Your API Key
+
+<Steps>
+  <Step title="Log in to Snipe-IT">
+    Access your Snipe-IT instance at your organization's URL (e.g., `https://your-company.snipeitapp.com` or your self-hosted domain)
+  </Step>
+
+  <Step title="Navigate to Manage API Keys">
+    Click on your **account dropdown** in the top-right corner and select **Manage API Keys**
+  </Step>
+
+  <Step title="Create a New API Key">
+    Click **Create New Token** and give it a descriptive name (e.g., "Modern Integration")
+  </Step>
+
+  <Step title="Save Your API Key">
+    Copy the generated API key immediately - it will only be shown once. Store it in a secure location.
+  </Step>
+</Steps>
+
+<Warning>
+  Your API key will only be displayed once when created. If you lose it, you'll need to generate a new one.
+</Warning>
+
+### Step 2: Configure Integration in Modern
+
+1. Navigate to the **Integrations** page in Modern
+2. Find **Snipe-IT** and click **Connect**
+3. Enter your configuration details:
+
+<ParamField body="apiDomain" type="string" required>
+  Your Snipe-IT instance URL (e.g., `your-company.snipeitapp.com` or your self-hosted domain). Do not include `https://` or trailing slashes.
+</ParamField>
+
+<ParamField body="apiKey" type="string" required>
+  Your Snipe-IT API key from Step 1. This authenticates all API requests using Bearer token authentication.
+</ParamField>
+
+4. Click **Submit** to establish the integration
+
+<Check>
+  Integration configured! Modern will verify your credentials and establish the connection.
+</Check>
+
+## API Capabilities
+
+The Snipe-IT API allows you to perform the following operations:
+
+### Hardware Assets
+
+* List, create, update, and delete hardware assets
+* Check out assets to users, locations, or other assets
+* Check in assets
+* Audit assets
+* View asset maintenance history
+
+### Users
+
+* List, create, update, and delete users
+* View user's assigned assets
+* Manage user permissions and groups
+
+### Other Resources
+
+* Manage locations, categories, and manufacturers
+* Configure status labels and custom fields
+* Generate reports and activity logs
+* Handle consumables, accessories, and components
+
+## Additional Resources
+
+<CardGroup cols={2}>
+  <Card title="Snipe-IT API Documentation" icon="book" href="https://snipe-it.readme.io/reference/api-overview">
+    Complete API reference for all Snipe-IT endpoints
+  </Card>
+
+  <Card title="Authentication Guide" icon="key" href="https://snipe-it.readme.io/reference/authenticating-with-the-api">
+    Detailed guide on generating and managing API keys
+  </Card>
+
+  <Card title="Snipe-IT Documentation" icon="rocket" href="https://snipe-it.readme.io/docs">
+    General documentation for Snipe-IT
+  </Card>
+</CardGroup>
+
+***
+
+Need help? Contact **[support@modern.com](mailto:support@modern.com)** for assistance with your Snipe-IT integration.

@@ -1,0 +1,32 @@
+---
+title: 'Styling guide'
+description: 'Light-theme styling source of truth.'
+icon: 'palette'
+---
+
+Use `snippets/modern-style-guide.css` as the only source of truth.
+
+## Scope
+
+This setup is light-theme only.
+Dark mode tokens and `.dark` overrides are intentionally removed.
+
+## Maintain these parts
+
+- `@theme` token blocks
+- Semantic color mappings under `/* Primary Colors - Light Theme */`
+- Utility classes (`.custom-scrollbar*`, `.bg-glass`, `.loading-*`, `.auraAnimate`, `.shine-text`)
+- Editor/terminal selectors (`.cm-*`, `.xterm-*`)
+
+## Copy command
+
+```bash
+cp snippets/modern-style-guide.css path/to/your-app/src/styles/globals.css
+```
+
+## Required assets
+
+- `/images/aura-horizontal.jpg`
+- `/images/grain.png`
+- `/images/aura-05.jpg`
+- `/images/aura-03.jpg`

@@ -1,0 +1,56 @@
+---
+title: 'Asana'
+---
+
+## About Asana
+
+Asana is a work management platform that helps teams organize, track, and manage their work. Connecting Asana to Modern enables automated project management, task creation, team coordination, and workflow optimization directly from your service desk.
+
+## What the Asana integration enables
+
+| Capability           | Description                                                                                |
+| -------------------- | ------------------------------------------------------------------------------------------ |
+| Access Management    | Create, update, and manage users and their permissions. Add users to teams and workspaces. |
+| Automation workflows | Run automated workflows to create projects, tasks, and manage user access.                 |
+
+Anything defined in the [Asana API](https://developers.asana.com/reference/rest-api-reference) can be accessed through Modern.
+
+### Prerequisites
+
+* You must have admin permissions in your Asana workspace to create API tokens
+* Access to Asana's developer console for token management
+
+### Create an API Token
+
+1. In Asana, click your profile picture in the top right corner
+2. Select **Settings** from the dropdown menu
+3. Navigate to the **Apps** tab
+4. Scroll down to the **Build new apps** section
+5. Click **[View developer console](https://app.asana.com/0/my-apps)**
+6. In the developer console, click **Create new token**
+7. Configure your token:
+   * **Token name**: Enter "Modern Integration" or another descriptive name
+   * **Description**: Brief description of the integration purpose (optional)
+8. Click **Create token**
+9. Copy the **Personal Access Token** that appears (this will only be shown once)
+
+For detailed API documentation, see [Asana's REST API Reference](https://developers.asana.com/reference/rest-api-reference).
+
+***
+
+## Modern Configuration
+
+1. In Modern go to **Apps → Available → Asana → Connect**
+
+2. Enter the following information:
+
+   | Field            | Description                                                             |
+   | ---------------- | ----------------------------------------------------------------------- |
+   | Integration Name | A friendly name for this integration (e.g., "Asana Project Management") |
+   | API Token        | The Personal Access Token from Asana                                    |
+
+3. Click **Save**
+
+***
+
+Need help? Contact **[support@modern.com](mailto:support@modern.com)** for assistance with your Asana integration.

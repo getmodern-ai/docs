@@ -1,0 +1,53 @@
+---
+title: 'Slack Admin'
+---
+
+💡 Connecting the Slack Admin integration is fairly straight forward but getting all the permissions/scopes correct is slightly complicated. See the **Important Setup Considerations** section for troubleshooting tips.
+
+## About Slack Admin
+
+Slack Admin (also known as the **Enterprise Grid Admin API**) allows workspace and organisation owners to manage channels, users and workspaces programmatically. Connecting Slack Admin to Modern unlocks powerful chat-ops workflows for channel lifecycle, user provisioning and compliance tasks.
+
+## What the Slack Admin integration enables
+
+| Capability           | Description                                            |
+| -------------------- | ------------------------------------------------------ |
+| Access Management    | Create, update, and manage users and their permissions |
+| Automation workflows | Streamline workspace, user, and channel management     |
+
+## Connect Slack Admin
+
+* In the Modern UI, Navigate to "Apps", "Available", then click "Slack Admin". You will be rerouted to Slack's integration page.
+
+<Frame>
+  <img src="/images/image(53).png" alt="Modern Apps page with Slack Admin option" data-og-width="1098" width="1098" data-og-height="1432" height="1432" data-path="images/integrations/slack-admin/image(53).png" data-optimize="true" data-opv="3" srcset="/images/image(53).png 280w, /images/image(53).png 560w, /images/image(53).png 840w, /images/image(53).png 1100w, /images/image(53).png 1650w, /images/image(53).png 2500w" />
+</Frame>
+
+* Hit allow and Slack Admin should be connected!
+
+### **Important Setup Considerations**
+
+* Unlike the standard Slack integration, Slack Admin will use a user token rather than a bot token, meaning it assumes the permissions of the user. If your user does not have the correct permission to run certain actions, this will result in a permission error.
+* This integration MUST be connected by the primary owner, an org owner, or an org admin. Ideally, the "primary owner" of the org will be the one to connect this integration as that is the user with the most permission.
+* If an org owner or org admin is used to connect this integration, ensure that the role has full permission in the org settings. The org settings can be found in the slack desktop app here:
+
+<Frame>
+  <img src="/images/image(55).png" alt="Slack desktop app settings navigation" data-og-width="2450" width="2450" data-og-height="1426" height="1426" data-path="images/integrations/slack-admin/image(55).png" data-optimize="true" data-opv="3" srcset="/images/image(55).png 280w, /images/image(55).png 560w, /images/image(55).png 840w, /images/image(55).png 1100w, /images/image(55).png 1650w, /images/image(55).png 2500w" />
+</Frame>
+
+* From there, navigate to People → Manage permissions
+
+<Frame>
+  <img src="/images/image(54).png" alt="Slack People and Manage permissions menu" data-og-width="3442" width="3442" data-og-height="1708" height="1708" data-path="images/integrations/slack-admin/image(54).png" data-optimize="true" data-opv="3" srcset="/images/image(54).png 280w, /images/image(54).png 560w, /images/image(54).png 840w, /images/image(54).png 1100w, /images/image(54).png 1650w, /images/image(54).png 2500w" />
+</Frame>
+
+* Common missing permissions are `Manage public channels for a team` and `Manage private channels at the org level` as those are only enabled for the primary owner by default.
+* The Modern Admin app will be treated as a "Workspace Admin", so you will just need to enable any missing permissions for the "Workspace Admin" account type.
+
+## Modern Configuration
+
+After completing the OAuth flow above as an owner / admin:
+
+1. Verify the Slack Admin tile is in the Connected Apps tab.
+2. Build workflows that use Slack Admin actions—Modern automatically injects the user token tied to the connecting admin.
+3. If you rotate roles or permissions, re-run the connection flow to refresh the token.

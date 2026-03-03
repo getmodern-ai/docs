@@ -1,0 +1,115 @@
+---
+title: 'Persona'
+---
+
+## About Persona
+
+Persona is an identity verification and compliance platform that helps organizations verify user identities, prevent fraud, and meet regulatory requirements. Connecting Persona to Modern enables automated identity verification workflows, compliance checks, and fraud prevention directly from your service desk.
+
+## What the Persona integration enables
+
+| Capability            | Description                                                                   |
+| --------------------- | ----------------------------------------------------------------------------- |
+| Identity Verification | Create and manage identity verification inquiries for users                   |
+| Automation workflows  | Automate KYC/KYB processes, compliance checks, and fraud prevention workflows |
+
+Anything defined in the [Persona API](https://docs.withpersona.com/reference) can be accessed through Modern.
+
+***
+
+## Persona Configuration
+
+### Prerequisites
+
+Before connecting Persona to Modern, you'll need:
+
+* A Persona account
+* Appropriate permissions to create and manage API keys in Persona
+
+### Step 1: Log in to Persona Dashboard
+
+1. Navigate to the [Persona Dashboard](https://app.withpersona.com)
+2. Sign in with your business email
+3. Complete any onboarding steps if this is your first time accessing the dashboard
+
+### Step 2: Create an API Key
+
+<Steps>
+  <Step title="Navigate to API Keys">
+    In the Persona Dashboard, navigate to **API → API Keys**
+  </Step>
+
+  <Step title="Create a new API key">
+    Click **Create API key** to generate a new key for your Modern integration.
+  </Step>
+
+  <Step title="Select API version">
+    During the API key creation process, you must select the API version.
+
+    **Important**: Select API version **2025-10-27** to ensure compatibility with Modern.
+
+    <Warning>
+      Choosing the wrong API version may cause integration issues. Always select version **2025-10-27** when creating API keys for Modern.
+    </Warning>
+  </Step>
+
+  <Step title="Configure permissions (optional)">
+    By default, API keys have full permissions. You can optionally restrict permissions based on your security requirements.
+
+    <Info>
+      API permissions are not limited until you explicitly configure restrictions. Review the [Persona API Key documentation](https://docs.withpersona.com/reference/api-keys) for detailed permission settings.
+    </Info>
+  </Step>
+
+  <Step title="Copy your API key">
+    Once created, click the **Copy** button to copy your API key to your clipboard.
+
+    <Warning>
+      Store your API key securely. Persona will not show the full key again after you leave this page. Never commit API keys to version control or share them in publicly accessible locations.
+    </Warning>
+  </Step>
+</Steps>
+
+***
+
+## Modern Configuration
+
+### Connect Persona to Modern
+
+<Steps>
+  <Step title="Navigate to Applications">
+    In Modern, navigate to **Applications → Available** and locate **Persona**.
+  </Step>
+
+  <Step title="Click Connect">
+    Click **Connect** to begin the integration setup.
+  </Step>
+
+  <Step title="Enter your API credentials">
+    In the configuration modal, provide your **API Key** by pasting the API key you created in Persona.
+
+    <Check>
+      Modern will automatically validate your API key. If successful, the connection status will show as **Healthy**.
+    </Check>
+  </Step>
+
+  <Step title="Save the configuration">
+    Click **Save** to complete the integration.
+  </Step>
+</Steps>
+
+### Building Workflows
+
+Once connected, you can build workflows using Persona in the **Workflow Builder**:
+
+1. Navigate to **Workflow Builder** in Modern
+2. Create a new workflow or edit an existing one
+3. Add Persona actions such as:
+   * Creating identity verification inquiries
+   * Retrieving inquiry status
+   * Managing verification reports
+   * Updating inquiry information
+
+<Tip>
+  Start by creating a simple workflow that creates an inquiry to test your integration. You can use the inquiry template ID from your Persona Dashboard (starts with `itmpl_`).
+</Tip>

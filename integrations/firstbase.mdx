@@ -1,0 +1,76 @@
+---
+title: 'Firstbase'
+---
+
+## About Firstbase
+
+Firstbase is an IT asset management and equipment logistics platform that helps companies manage their hardware lifecycle—from procurement and deployment to retrieval and offboarding. It handles device ordering, inventory tracking, and shipping to employees worldwide.
+
+## What the Firstbase integration enables
+
+| Capability         | Description                                                           |
+| ------------------ | --------------------------------------------------------------------- |
+| User Management    | View, create, update, and delete users for onboarding and offboarding |
+| Inventory Tracking | View equipment inventory tracked in Firstbase                         |
+| Order Management   | View existing orders and create new equipment orders                  |
+| Catalog Access     | View the Firstbase product catalog                                    |
+
+The Firstbase API supports common IT and HRIS workflows including:
+
+* **HRIS Use Cases**: Account provisioning (onboarding), updating user details, and de-provisioning (offboarding)
+* **ITSM Use Cases**: Getting details and updates on inventory tracked in Firstbase
+* **Catalog & Ordering**: Viewing the Firstbase catalog and placing orders via API
+
+***
+
+## Firstbase Configuration
+
+### Prerequisites
+
+* You must have **Admin** access to your Firstbase account
+
+### Generate an API Key
+
+<Steps>
+  <Step title="Log in to Firstbase">
+    Navigate to [app.firstbasehq.com](https://app.firstbasehq.com/) and sign in as an Admin user.
+  </Step>
+
+  <Step title="Access API settings">
+    Click on the **Settings** menu in the top navigation bar, then select **Firstbase API**.
+  </Step>
+
+  <Step title="Create a new token">
+    Provide a name for your token (e.g., "Modern Integration" or "Production").
+
+    <Info>
+      Tokens never expire by default. If you need to rotate tokens, you can delete old tokens in the Firstbase app UI.
+    </Info>
+  </Step>
+</Steps>
+
+***
+
+## Modern Configuration
+
+<Steps>
+  <Step title="Navigate to Firstbase integration">
+    In Modern, go to **Apps → Available → Firstbase → Connect**
+  </Step>
+
+  <Step title="Enter your API key">
+    Paste the API key you generated in Firstbase.
+  </Step>
+
+  <Step title="Save the connection">
+    Click **Submit** to complete the integration setup.
+
+    <Check>
+      Verify the connection is successful by checking the integration healthchecks.
+    </Check>
+  </Step>
+</Steps>
+
+***
+
+Need help? Contact **[support@modern.com](mailto:support@modern.com)** for assistance with your Firstbase integration.

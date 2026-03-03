@@ -1,0 +1,108 @@
+---
+title: 'Daytona'
+---
+
+> Manage cloud development environments with Daytona's sandbox platform
+
+## About Daytona
+
+Daytona is a cloud development environment platform that enables teams to create, manage, and scale isolated sandbox environments. The Daytona API enables programmatic management of sandboxes, snapshots, volumes, and organization resources.
+
+## What the Daytona integration enables
+
+| Capability              | Description                                                            |
+| ----------------------- | ---------------------------------------------------------------------- |
+| Sandbox Management      | Create, start, stop, resize, and delete cloud development environments |
+| Snapshot Management     | Create and manage environment snapshots for reproducible setups        |
+| Volume Management       | Manage persistent storage volumes attached to sandboxes                |
+| Organization Management | Manage users, roles, and organization settings                         |
+
+***
+
+## Setting up Daytona API Access
+
+This guide will walk you through setting up API key authentication for Daytona, which is required for integrating with Modern.
+
+### Step 1: Generate a Daytona API Key
+
+1. Log in to the [Daytona Dashboard](https://app.daytona.io/dashboard/keys)
+2. Click **Create Key**
+3. Enter a descriptive name for the key (e.g., "Modern Integration")
+4. Set an appropriate expiration date
+5. Select the permissions your workflows will need (see recommended scopes below)
+6. Click **Create** and copy the generated API key
+
+<Warning>
+  Store your API key securely. It will only be shown once during creation.
+</Warning>
+
+### Available Scopes
+
+| Scope              | Description                 |
+| ------------------ | --------------------------- |
+| `write:sandboxes`  | Create and modify sandboxes |
+| `delete:sandboxes` | Delete sandboxes            |
+| `write:snapshots`  | Create and modify snapshots |
+| `delete:snapshots` | Delete snapshots            |
+| `read:volumes`     | View volumes                |
+| `write:volumes`    | Create and modify volumes   |
+| `delete:volumes`   | Delete volumes              |
+| `read:audit_logs`  | View audit logs             |
+| `write:regions`    | Create and modify regions   |
+| `delete:regions`   | Delete regions              |
+
+<Info>
+  Only provide Modern with the scopes that you intend to utilize. You can always update your API key's scopes later as your workflow needs change.
+</Info>
+
+### Step 2: Add the key to Modern
+
+1. In Modern, navigate to **Applications → Connect new → Daytona → Connect**
+
+2. Enter the following information:
+
+   | Field         | Description                                                                                                                                |
+   | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+   | Instance Name | A friendly name for this integration (e.g., "Daytona Production")                                                                          |
+   | Server URL    | Your Daytona server URL including the `/api` path (e.g., `https://app.daytona.io/api` for Daytona Cloud, or your self-hosted instance URL) |
+   | API Key       | The API key you copied from Daytona                                                                                                        |
+
+3. Click **Submit** to complete the integration
+
+<Check>
+  Your Daytona integration is now connected! You can start creating workflows to automate sandbox and environment management.
+</Check>
+
+***
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Healthcheck failure">
+    * Verify your API key is properly copied and pasted with no extra characters
+    * Ensure your Server URL includes the `/api` path (e.g., `https://app.daytona.io/api`)
+    * Confirm the API key has not expired
+  </Accordion>
+
+  <Accordion title="Self-hosted instance connection issues">
+    * Ensure your server URL includes the `/api` path suffix (e.g., `https://daytona.yourcompany.com/api`)
+    * Verify the Daytona server is reachable from the internet
+    * Check that your API key was created on the correct Daytona instance
+  </Accordion>
+</AccordionGroup>
+
+## Additional Resources
+
+<CardGroup cols={2}>
+  <Card title="Daytona Documentation" icon="book" href="https://www.daytona.io/docs/">
+    Official Daytona platform documentation
+  </Card>
+
+  <Card title="Daytona API Reference" icon="code" href="https://www.daytona.io/docs/en/tools/api/">
+    Complete API reference for all Daytona endpoints
+  </Card>
+</CardGroup>
+
+***
+
+Need help? Contact **[support@modern.com](mailto:support@modern.com)** for assistance with your Daytona integration.
