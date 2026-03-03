@@ -20,7 +20,6 @@
           {
             "group": "Integrations",
             "pages": [
-              "integrations/custom-app",
               "integrations/apple-business-manager",
               "integrations/asana",
               "integrations/ashby",
